@@ -8,8 +8,9 @@
     align-items: center;
     flex-direction: row;
     flex-wrap: nowrap;
-    background-color: black;
-    
+    background-color: rgb(194, 180, 180);
+    height: 100vh;
+    /* height: max-content; */
   }
   
   .container__slider > button {

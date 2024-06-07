@@ -4,7 +4,7 @@ import Navbar from "../Components/Navbar";
 const Contact = () => {
   return (
     <div>
-      <Navbar />
+      <Navbar page={"contact"}/>
       <div class="font-sans text-base text-gray-900 sm:px-10">
         <div class="text-base text-gray-900">
           <div class="mx-auto w-full sm:max-w-screen-sm md:max-w-screen-md lg:max-w-screen-lg xl:max-w-screen-xl">

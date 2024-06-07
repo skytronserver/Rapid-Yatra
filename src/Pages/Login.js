@@ -3,9 +3,11 @@ import Slider from "../Components/Slider";
 import image3a from "../Images/image3a.jpg";
 import image2 from "../Images/image2.jpg";
 import image1 from "../Images/image1.jpg";
+import loginBg from "../Images/loginBg.png"
 import home1 from "../Images/home1.jpg";
 import home2 from "../Images/home2.jpg";
 import Navbar from "../Components/Navbar";
+import Footer from "../Components/Footer";
 
 const Login = () => {
   const images = [
@@ -25,21 +27,7 @@ const Login = () => {
       imgURL: image1,
       imgAlt: "img-4",
     },
-    // {
-    //   imgURL:
-    //     "https://djwaiia8q94ix.cloudfront.net/04.140.00/images/logo/trakzee/image2.jpg",
-    //   imgAlt: "img-2"
-    // },
-    // {
-    //   imgURL:
-    //     "https://djwaiia8q94ix.cloudfront.net/04.140.00/images/logo/trakzee/image3.jpg",
-    //   imgAlt: "img-3"
-    // },
-    // {
-    //   imgURL:
-    //     "https://djwaiia8q94ix.cloudfront.net/04.140.00/images/logo/trakzee/image4.jpg",
-    //   imgAlt: "img-4"
-    // }
+
   ];
   return (
     <div className="">
@@ -56,7 +44,7 @@ const Login = () => {
             })}
           </Slider>
         </div>
-        <div class="flex flex-col md:w-1/2 lg:w-3/12">
+        <div class="flex flex-col md:w-1/2 lg:w-3/12 w-full" style={{ backgroundImage: `url(${loginBg})`}}>
           {/* <div class="flex justify-center pt-12 md:-mb-24 md:justify-start md:pl-12">
             <a
               href="#"
@@ -66,9 +54,9 @@ const Login = () => {
               Skytrack{" "}
             </a>
           </div> */}
-          <div class="my-auto flex flex-col justify-center px-6 pt-8 sm:px-24 md:justify-start md:px-8 md:pt-0 lg:px-20">
+          <div class="my-auto flex flex-col justify-center px-6 pt-8 sm:px-24 md:justify-start md:px-8 md:pt-0 lg:px-20 h-screen">
             {/* <p class="text-center text-3xl font-bold">Welcome</p> */}
-            <p class=" text-center">Login to access your account.</p>
+            {/* <p class=" text-center text-white">Login to access your account</p> */}
             <form class="flex flex-col pt-3 md:pt-6">
               <div class="flex flex-col pt-2">
                 <div class="relative flex overflow-hidden rounded-lg border focus-within:border-transparent focus-within:ring-2 transition focus-within:ring-blue-600">
@@ -131,6 +119,7 @@ const Login = () => {
           </div>
         </div>
       </div>
+      <Footer/>
     </div>
   );
 };

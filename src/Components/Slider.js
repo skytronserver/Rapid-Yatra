@@ -55,7 +55,7 @@ function Slider({ children }) {
 
   return (
     <div
-      className="container__slider"
+      className="container__slider absolute inset-0"
       // onMouseEnter={AutoPlayStop}
       // onMouseLeave={AutoPlayStart}
     >

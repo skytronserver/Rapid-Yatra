@@ -4,7 +4,7 @@ import Navbar from "../Components/Navbar";
 const About = () => {
   return (
     <div>
-      <Navbar />
+      <Navbar page={"about"}/>
       <div>
         <section class="mx-auto flex max-w-lg flex-col px-4 py-10 lg:max-w-screen-xl lg:flex-row">
           <div class="max-w-md pr-20 lg:pt-28">
