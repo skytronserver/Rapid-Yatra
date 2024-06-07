@@ -1,5 +1,4 @@
 import React from "react";
-import footerIcon from "../Images/footerIcon.png";
 
 const Footer = () => {
   return (
