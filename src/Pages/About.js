@@ -9,19 +9,19 @@ const About = () => {
     <div>
       <Navbar page={"about"} />
       <div>
-        <div class="py-6 sm:py-8 lg:py-12 bg-[#f7dbc0]">
+        <div class="py-6 sm:py-8 lg:py-12 bg-white">
           <div class="mx-auto max-w-screen-xl px-4 md:px-8 mb-20 ">
             <div class="grid gap-8 md:grid-cols-2 lg:gap-12">
               <div class="md:pt-8 lg:flex lg:flex-col lg:justify-center">
-                <p class="text-center font-bold text-green-500 md:text-left">
+                <p class="text-center font-bold text-blue-500 md:text-left">
                   Who we are
                 </p>
 
-                <h1 class="mb-4 text-center text-2xl font-bold text-green-800 sm:text-3xl md:mb-6 md:text-left">
-                  Best GPS and IOT Solutions
+                <h1 class="mb-4 text-center text-2xl font-bold text-blue-800 sm:text-3xl md:mb-6 md:text-left">
+                  Best Trackers and IoT Solutions
                 </h1>
 
-                <p class="mb-6 text-green-800 sm:text-lg md:mb-8">
+                <p class="mb-6 text-gray-500 sm:text-lg md:mb-8">
                   Mapwala is not just a name; it's a commitment to excellence
                   and innovation. Our robust in-house electronics design team
                   works tirelessly to create products that are not only
@@ -43,11 +43,11 @@ const About = () => {
                 </div>
               </div>
               <div class="md:col-span-2">
-                <h2 class="mb-2 text-center text-xl font-semibold text-green-800 sm:text-2xl md:mb-4 md:text-left">
+                <h2 class="mb-2 text-center text-xl font-semibold text-blue-800 sm:text-2xl md:mb-4 md:text-left">
                   About us
                 </h2>
 
-                <p class="mb-6 text-green-800 sm:text-lg md:mb-8">
+                <p class="mb-6 text-gray-500 sm:text-lg md:mb-8">
                   At Mapwala, we are dedicated to revolutionizing the way you
                   interact with technology. As a pioneering startup in the
                   design, sales, and service of Internet of Things (IoT)
