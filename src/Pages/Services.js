@@ -13,23 +13,23 @@ const Services = () => {
   return (
     <div>
       <Navbar page={"services"} />
-      {/* <section class=" py-12 sm:py-16 lg:py-20 bg-[#f7dbc0]">
-        <div class="mx-auto px-4 sm:px-6 lg:px-8">
-          <div class="sm:text-center">
-            <h2 class="text-3xl font-medium leading-7 text-blue-800 sm:text-4xl xl:text-5xl">
-              What We <br class="sm:hidden" />
+      {/* <section className=" py-12 sm:py-16 lg:py-20 bg-[#f7dbc0]">
+        <div className="mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="sm:text-center">
+            <h2 className="text-3xl font-medium leading-7 text-blue-800 sm:text-4xl xl:text-5xl">
+              What We <br className="sm:hidden" />
               Offer
             </h2>
-            <hr class="mt-4 h-1 w-32 border-none bg-blue-600 sm:mx-auto sm:mt-8" />
+            <hr className="mt-4 h-1 w-32 border-none bg-blue-600 sm:mx-auto sm:mt-8" />
           </div>
 
-          <div class="mt-20 grid grid-cols-1 gap-x-8 gap-y-12 text-blue-800 text-center sm:grid-cols-3 sm:text-left lg:gap-0 max-w-screen-xl mx-auto">
-            <div class="relative mb-3 text-left lg:px-12">
-              <div class="absolute left-3 -top-4 h-16 w-16 rounded-full bg-white"></div>
-              <p class="relative text-3xl font-black">
+          <div className="mt-20 grid grid-cols-1 gap-x-8 gap-y-12 text-blue-800 text-center sm:grid-cols-3 sm:text-left lg:gap-0 max-w-screen-xl mx-auto">
+            <div className="relative mb-3 text-left lg:px-12">
+              <div className="absolute left-3 -top-4 h-16 w-16 rounded-full bg-white"></div>
+              <p className="relative text-3xl font-black">
                 Custom IoT Design and Solutions
               </p>
-              <p class="relative mt-5">
+              <p className="relative mt-5">
                 Our team of experienced engineers and designers specialize in
                 developing bespoke IoT solutions tailored to meet your specific
                 needs. From initial concept to final product, we ensure that
@@ -38,13 +38,13 @@ const Services = () => {
               </p>
             </div>
 
-            <div class="relative mb-3 text-left lg:px-12">
-              <div class="absolute left-3 -top-4 h-16 w-16 rounded-full bg-white"></div>
-              <div class="absolute bottom-0 left-0 hidden h-16 w-px lg:block"></div>
-              <p class="relative text-3xl font-black">
+            <div className="relative mb-3 text-left lg:px-12">
+              <div className="absolute left-3 -top-4 h-16 w-16 rounded-full bg-white"></div>
+              <div className="absolute bottom-0 left-0 hidden h-16 w-px lg:block"></div>
+              <p className="relative text-3xl font-black">
                 Sales of Cutting-Edge Products
               </p>
-              <p class="relative mt-5 ">
+              <p className="relative mt-5 ">
                 Explore our extensive range of IoT products designed to cater to
                 a variety of applications. Whether you're looking for smart home
                 devices, industrial automation solutions, or innovative consumer
@@ -52,13 +52,13 @@ const Services = () => {
               </p>
             </div>
 
-            <div class="relative mb-3 text-left lg:px-12">
-              <div class="absolute left-3 -top-4 h-16 w-16 rounded-full bg-white"></div>
-              <div class="absolute bottom-0 left-0 hidden h-16 w-px lg:block"></div>
-              <p class="relative m-0 text-3xl font-black">
+            <div className="relative mb-3 text-left lg:px-12">
+              <div className="absolute left-3 -top-4 h-16 w-16 rounded-full bg-white"></div>
+              <div className="absolute bottom-0 left-0 hidden h-16 w-px lg:block"></div>
+              <p className="relative m-0 text-3xl font-black">
                 Comprehensive Service and Support
               </p>
-              <p class="relative mt-5">
+              <p className="relative mt-5">
                 At Mapwala, our commitment to you doesn't end at the point of
                 sale. We offer comprehensive after-sales service and support to
                 ensure your devices continue to operate at their best. Our
@@ -70,74 +70,74 @@ const Services = () => {
         </div>
       </section> */}
 
-      <section class="mx-auto max-w-screen-xl py-12 text-blue-700 sm:py-16 lg:py-20">
-        <div class="mx-auto px-4 sm:px-6 lg:px-8">
-          <div class="mx-auto max-w-2xl text-center">
-            {/* <p class="text-sm font-medium text-blue-800">INTRODUCING</p> */}
-            <h2 class="mt-2 text-3xl font-bold sm:text-4xl xl:text-5xl">
+      <section className="mx-auto max-w-screen-xl py-12 text-blue-700 sm:py-16 lg:py-20">
+        <div className="mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="mx-auto max-w-2xl text-center">
+            {/* <p className="text-sm font-medium text-blue-800">INTRODUCING</p> */}
+            <h2 className="mt-2 text-3xl font-bold sm:text-4xl xl:text-5xl">
               What We Offer
             </h2>
-            <hr class="mx-auto mt-4 h-2 w-32 border-none bg-blue-700" />
+            <hr className="mx-auto mt-4 h-2 w-32 border-none bg-blue-700" />
           </div>
 
-          <div class="mt-10 grid grid-cols-1 gap-20 text-center sm:mx-auto sm:max-w-sm md:mt-20 md:max-w-full md:text-left">
-            <div class="flex flex-col items-center justify-center md:flex-row">
+          <div className="mt-10 grid grid-cols-1 gap-20 text-center sm:mx-auto sm:max-w-sm md:mt-20 md:max-w-full md:text-left">
+            <div className="flex flex-col items-center justify-center md:flex-row">
               <img
-                class="h-56 object-contain md:order-2 md:object-left"
+                className="h-56 object-contain md:order-2 md:object-left"
                 src={weoffer1}
                 alt=""
               />
-              <div class="">
-                <h3 class="text-4xl">Custom IoT Design</h3>
-                <p class="mt-6 text-base text-gray-500">
+              <div className="">
+                <h3 className="text-4xl">Custom IoT Design</h3>
+                <p className="mt-6 text-base text-gray-500">
                   Our team of experienced engineers and designers specialize in
                   developing bespoke IoT solutions tailored to meet your
                   specific needs. From initial concept to final product, we
                   ensure that every detail is meticulously crafted to deliver
                   optimal performance and reliability.
                 </p>
-                {/* <button class="mt-4 rounded-lg bg-blue-700 px-6 py-2 text-white transition hover:translate-y-1">
+                {/* <button className="mt-4 rounded-lg bg-blue-700 px-6 py-2 text-white transition hover:translate-y-1">
                   Learn more
                 </button> */}
               </div>
             </div>
 
-            <div class="flex flex-col items-center justify-center md:flex-row">
+            <div className="flex flex-col items-center justify-center md:flex-row">
               <img
-                class="h-56 object-contain md:ml-0 md:object-left"
+                className="h-56 object-contain md:ml-0 md:object-left"
                 src={weoffer2}
                 alt=""
               />
-              <div class="sm:ml-10">
-                <h3 class="text-4xl">Sales of Cutting-Edge Products</h3>
-                <p class="mt-6 text-base text-gray-500">
+              <div className="sm:ml-10">
+                <h3 className="text-4xl">Sales of Cutting-Edge Products</h3>
+                <p className="mt-6 text-base text-gray-500">
                   Explore our extensive range of IoT products designed to cater
                   to a variety of applications. Whether you're looking for smart
                   home devices, industrial automation solutions, or innovative
                   consumer electronics, Mapwala has something for everyone.
                 </p>
-                {/* <button class="mt-4 rounded-lg bg-blue-700 px-6 py-2 text-white transition hover:translate-y-1">
+                {/* <button className="mt-4 rounded-lg bg-blue-700 px-6 py-2 text-white transition hover:translate-y-1">
                   Learn more
                 </button> */}
               </div>
             </div>
 
-            <div class="flex flex-col items-center justify-center md:flex-row">
+            <div className="flex flex-col items-center justify-center md:flex-row">
               <img
-                class="ml-10 h-56 object-contain md:order-2 md:object-left"
+                className="ml-10 h-56 object-contain md:order-2 md:object-left"
                 src={weoffer3}
                 alt=""
               />
-              <div class="">
-                <h3 class="text-4xl">Comprehensive Service and Support</h3>
-                <p class="mt-6 text-base text-gray-500">
+              <div className="">
+                <h3 className="text-4xl">Comprehensive Service and Support</h3>
+                <p className="mt-6 text-base text-gray-500">
                   At Mapwala, our commitment to you doesn't end at the point of
                   sale. We offer comprehensive after-sales service and support
                   to ensure your devices continue to operate at their best. Our
                   dedicated customer service team is always ready to assist you
                   with any questions or technical issues.
                 </p>
-                {/* <button class="mt-4 rounded-lg bg-blue-700 px-6 py-2 text-white transition hover:translate-y-1">
+                {/* <button className="mt-4 rounded-lg bg-blue-700 px-6 py-2 text-white transition hover:translate-y-1">
                   Learn more
                 </button> */}
               </div>
@@ -146,26 +146,26 @@ const Services = () => {
         </div>
       </section>
 
-      {/* <section class="bg-[#f7dbc0] text-blue-800  py-10 sm:py-16 lg:py-24">
-        <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
-          <div class="sm:text-center">
-            <h2 class="text-3xl font-medium leading-7 text-blue-800 sm:text-4xl xl:text-5xl">
-              Why Choose <br class="sm:hidden" />
+      {/* <section className="bg-[#f7dbc0] text-blue-800  py-10 sm:py-16 lg:py-24">
+        <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+          <div className="sm:text-center">
+            <h2 className="text-3xl font-medium leading-7 text-blue-800 sm:text-4xl xl:text-5xl">
+              Why Choose <br className="sm:hidden" />
               Mapwala?
             </h2>
-            <hr class="mt-4 h-1 w-32 border-none bg-blue-600 sm:mx-auto sm:mt-8" />
+            <hr className="mt-4 h-1 w-32 border-none bg-blue-600 sm:mx-auto sm:mt-8" />
           </div>
 
-          <div class="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 md:gap-8 lg:mt-16">
-            <div class="relative overflow-hidden bg-white">
-              <div class="px-6 py-10">
-                <div class="flex items-center">
-                  <h3 class="relative inline-block text-3xl font-bold leading-none">
-                    <span class="bg-[#99d7d4] absolute -top-4 h-2 w-full"></span>
+          <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 md:gap-8 lg:mt-16">
+            <div className="relative overflow-hidden bg-white">
+              <div className="px-6 py-10">
+                <div className="flex items-center">
+                  <h3 className="relative inline-block text-3xl font-bold leading-none">
+                    <span className="bg-[#99d7d4] absolute -top-4 h-2 w-full"></span>
                     Innovative Solutions
                   </h3>
                 </div>
-                <p class="mt-6 text-base md:max-w-xs">
+                <p className="mt-6 text-base md:max-w-xs">
                   Our focus on continuous research and development ensures that
                   we stay ahead of the curve, bringing you the latest in IoT
                   technology.
@@ -173,45 +173,45 @@ const Services = () => {
               </div>
             </div>
 
-            <div class="relative overflow-hidden bg-white">
-              <div class="px-6 py-10">
-                <div class="flex items-center">
-                  <h3 class="relative inline-block text-3xl font-bold leading-none">
-                    <span class="bg-[#99d7d4] absolute -top-4 h-2 w-full"></span>
+            <div className="relative overflow-hidden bg-white">
+              <div className="px-6 py-10">
+                <div className="flex items-center">
+                  <h3 className="relative inline-block text-3xl font-bold leading-none">
+                    <span className="bg-[#99d7d4] absolute -top-4 h-2 w-full"></span>
                     Quality Assurance
                   </h3>
                 </div>
-                <p class="mt-6 text-base md:max-w-xs">
+                <p className="mt-6 text-base md:max-w-xs">
                   We adhere to the highest standards of quality and reliability,
                   ensuring that our products meet and exceed your expectations.
                 </p>
               </div>
             </div>
 
-            <div class="relative overflow-hidden bg-white">
-              <div class="px-6 py-10">
-                <div class="flex items-center">
-                  <h3 class="relative inline-block text-3xl font-bold leading-none">
-                    <span class="bg-[#99d7d4] absolute -top-4 h-2 w-full"></span>
+            <div className="relative overflow-hidden bg-white">
+              <div className="px-6 py-10">
+                <div className="flex items-center">
+                  <h3 className="relative inline-block text-3xl font-bold leading-none">
+                    <span className="bg-[#99d7d4] absolute -top-4 h-2 w-full"></span>
                     Customer-Centric Approach
                   </h3>
                 </div>
-                <p class="mt-6 text-base md:max-w-xs">
+                <p className="mt-6 text-base md:max-w-xs">
                   Your satisfaction is our top priority. We listen to your needs
                   and provide solutions that are tailored to enhance your
                   experience.
                 </p>
               </div>
             </div>
-            <div class="relative overflow-hidden bg-white">
-              <div class="px-6 py-10">
-                <div class="flex items-center">
-                  <h3 class="relative inline-block text-3xl font-bold leading-none">
-                    <span class="bg-[#99d7d4] absolute -top-4 h-2 w-full"></span>
+            <div className="relative overflow-hidden bg-white">
+              <div className="px-6 py-10">
+                <div className="flex items-center">
+                  <h3 className="relative inline-block text-3xl font-bold leading-none">
+                    <span className="bg-[#99d7d4] absolute -top-4 h-2 w-full"></span>
                     Expert Team
                   </h3>
                 </div>
-                <p class="mt-6 text-base md:max-w-xs">
+                <p className="mt-6 text-base md:max-w-xs">
                   Our in-house electronics design team is composed of seasoned
                   professionals with a passion for innovation and a track record
                   of delivering successful projects.
@@ -222,83 +222,83 @@ const Services = () => {
         </div>
       </section> */}
 
-      <section class="mx-auto max-w-screen-xl py-12 text-blue-700 sm:py-16 lg:py-20">
-        <div class="mx-auto px-4 sm:px-6 lg:px-8">
-          <div class="mx-auto max-w-2xl text-center">
-            {/* <p class="text-sm font-medium text-blue-800">INTRODUCING</p> */}
-            <h2 class="mt-2 text-3xl font-bold sm:text-4xl xl:text-5xl">
+      <section className="mx-auto max-w-screen-xl py-12 text-blue-700 sm:py-16 lg:py-20">
+        <div className="mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="mx-auto max-w-2xl text-center">
+            {/* <p className="text-sm font-medium text-blue-800">INTRODUCING</p> */}
+            <h2 className="mt-2 text-3xl font-bold sm:text-4xl xl:text-5xl">
               Why Choose Mapwala?
             </h2>
-            <hr class="mx-auto mt-4 h-2 w-32 border-none bg-blue-700" />
+            <hr className="mx-auto mt-4 h-2 w-32 border-none bg-blue-700" />
           </div>
 
-          <div class="agrid-rows-[repeat(2,_minmax(1px,fit-content))] mt-10 grid grid-cols-1 gap-10 text-center sm:mx-auto sm:max-w-sm md:mt-20 md:h-[68rem] md:max-w-full md:grid-cols-2 md:grid-rows-5 md:text-left">
-            <div class="row-span-3 bg-blue-200 md:px-8">
+          <div className="agrid-rows-[repeat(2,_minmax(1px,fit-content))] mt-10 grid grid-cols-1 gap-10 text-center sm:mx-auto sm:max-w-sm md:mt-20 md:h-[68rem] md:max-w-full md:grid-cols-2 md:grid-rows-5 md:text-left">
+            <div className="row-span-3 bg-blue-200 md:px-8">
               <img
-                class="h mx-auto object-contain md:ml-0 mt-10"
+                className="h mx-auto object-contain md:ml-0 mt-10"
                 src={chooosemmw1}
                 alt=""
               />
-              <div class="mt-10">
-                <h3 class="text-4xl">Innovative Solutions</h3>
-                <p class="mt-6 text-base">
+              <div className="mt-10">
+                <h3 className="text-4xl">Innovative Solutions</h3>
+                <p className="mt-6 text-base">
                   Our focus on continuous research and development ensures that
                   we stay ahead of the curve, bringing you the latest in IoT
                   technology.
                 </p>
-                {/* <button class="mt-4 rounded-lg bg-blue-700 px-6 py-2 text-white transition hover:translate-y-1">Learn more</button> */}
+                {/* <button className="mt-4 rounded-lg bg-blue-700 px-6 py-2 text-white transition hover:translate-y-1">Learn more</button> */}
               </div>
             </div>
 
-            <div class="row-span-2 bg-blue-200 md:flex md:flex-col md:justify-center md:px-8">
-              <div class="">
-                <h3 class="text-4xl">Quality Assurance</h3>
-                <p class="mt-6 text-base">
+            <div className="row-span-2 bg-blue-200 md:flex md:flex-col md:justify-center md:px-8">
+              <div className="">
+                <h3 className="text-4xl">Quality Assurance</h3>
+                <p className="mt-6 text-base">
                   We adhere to the highest standards of quality and reliability,
                   ensuring that our products meet and exceed your expectations.
                 </p>
-                {/* <button class="mt-4 rounded-lg bg-blue-700 px-6 py-2 text-white transition hover:translate-y-1">Learn more</button> */}
+                {/* <button className="mt-4 rounded-lg bg-blue-700 px-6 py-2 text-white transition hover:translate-y-1">Learn more</button> */}
               </div>
             </div>
 
-            <div class="row-span-3 bg-blue-200 md:flex md:flex-col md:justify-center md:px-8">
+            <div className="row-span-3 bg-blue-200 md:flex md:flex-col md:justify-center md:px-8">
               <img
-                class="mx-auto object-contain md:ml-0"
+                className="mx-auto object-contain md:ml-0"
                 src={chooosemmw2}
                 alt=""
               />
-              <div class="mt-10">
-                <h3 class="text-4xl">Customer-Centric Approach</h3>
-                <p class="mt-6 text-base">
+              <div className="mt-10">
+                <h3 className="text-4xl">Customer-Centric Approach</h3>
+                <p className="mt-6 text-base">
                   Your satisfaction is our top priority. We listen to your needs
                   and provide solutions that are tailored to enhance your
                   experience.
                 </p>
-                {/* <button class="mt-4 rounded-lg bg-blue-700 px-6 py-2 text-white transition hover:translate-y-1">Learn more</button> */}
+                {/* <button className="mt-4 rounded-lg bg-blue-700 px-6 py-2 text-white transition hover:translate-y-1">Learn more</button> */}
               </div>
             </div>
 
-            <div class="row-span-2 bg-blue-200 md:flex md:flex-col md:justify-center md:px-8">
-              <div class="">
-                <h3 class="text-4xl">Expert Team</h3>
-                <p class="mt-6 text-base">
+            <div className="row-span-2 bg-blue-200 md:flex md:flex-col md:justify-center md:px-8">
+              <div className="">
+                <h3 className="text-4xl">Expert Team</h3>
+                <p className="mt-6 text-base">
                   Our in-house electronics design team is composed of seasoned
                   professionals with a passion for innovation and a track record
                   of delivering successful projects.
                 </p>
-                {/* <button class="mt-4 rounded-lg bg-blue-700 px-6 py-2 text-white transition hover:translate-y-1">Learn more</button> */}
+                {/* <button className="mt-4 rounded-lg bg-blue-700 px-6 py-2 text-white transition hover:translate-y-1">Learn more</button> */}
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* <section class="relative bg-[#f7dbc0] py-10 text-blue-900 sm:py-16 lg:py-24"> */}
-      <section class="relative bg-white py-10 text-blue-900 sm:py-16 lg:py-24">
+      {/* <section className="relative bg-[#f7dbc0] py-10 text-blue-900 sm:py-16 lg:py-24"> */}
+      <section className="relative bg-white py-10 text-blue-900 sm:py-16 lg:py-24">
         <div className=" mb-36">
-          <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div class="text-center">
-              <div class="mb-4 inline-flex h-12 w-12 text-blue-800">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div className="text-center">
+              <div className="mb-4 inline-flex h-12 w-12 text-blue-800">
                 <svg
                   viewBox="0 0 136 217"
                   fill="none"
@@ -310,30 +310,30 @@ const Services = () => {
                   />
                 </svg>
               </div>
-              <h2 class="text-3xl font-bold leading-tight sm:text-4xl lg:text-5xl">
+              <h2 className="text-3xl font-bold leading-tight sm:text-4xl lg:text-5xl">
                 Join the IoT Revolution with Mapwala
               </h2>
-              <p class="mt-4 text-xl font-medium">
+              <p className="mt-4 text-xl font-medium">
                 Discover how Mapwala can transform your world with smart,
                 connected solutions. Whether you are a business looking to
                 streamline operations or a tech enthusiast eager to embrace the
                 future, we have the perfect IoT products and services for you.
               </p>
 
-              <div class="sm mt-8 flex flex-col items-center justify-center sm:flex-row sm:space-x-4 sm:px-0 lg:mt-12">
-                <Link to='/contact' class="mt-4 rounded-lg border-2 border-blue-800 bg-blue-600 px-6 py-2 font-medium text-white transition hover:translate-y-1">
+              <div className="sm mt-8 flex flex-col items-center justify-center sm:flex-row sm:space-x-4 sm:px-0 lg:mt-12">
+                <Link to='/contact' className="mt-4 rounded-lg border-2 border-blue-800 bg-blue-600 px-6 py-2 font-medium text-white transition hover:translate-y-1">
                   Try Now
                 </Link>
-                {/* <button class="mt-4 rounded-lg border-2 border-blue-800 px-6 py-2 font-medium text-blue-800 transition hover:translate-y-1">
+                {/* <button className="mt-4 rounded-lg border-2 border-blue-800 px-6 py-2 font-medium text-blue-800 transition hover:translate-y-1">
                 Choose a Plan
               </button> */}
               </div>
 
-              <p class="mt-6 text-base ">
+              <p className="mt-6 text-base ">
                 Already have an account?{" "}
                 <Link
                   to="/"
-                  class="text-blue-600 transition-all duration-200 hover:text-blue-800 hover:underline focus:text-blue-800"
+                  className="text-blue-600 transition-all duration-200 hover:text-blue-800 hover:underline focus:text-blue-800"
                 >
                   Log in
                 </Link>
