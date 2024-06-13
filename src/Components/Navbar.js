@@ -36,12 +36,13 @@ const Navbar = ({ page }) => {
             <li class={`${page == "home" ? "font-bold" : ""} md:mr-12`}>
               <Link to="/">Home</Link>
             </li>
-            <li class={`${page == "services" ? "font-bold" : ""} md:mr-12`}>
-              <Link to="/services">Products & Services</Link>
-            </li>
             <li class={`${page == "about" ? "font-bold" : ""} md:mr-12`}>
               <Link to="/about">About Us</Link>
             </li>
+            <li class={`${page == "services" ? "font-bold" : ""} md:mr-12`}>
+              <Link to="/services">Products & Services</Link>
+            </li>
+            
             <li class={`${page == "contact" ? "font-bold" : ""} md:mr-12`}>
               <Link to="/contact">Contact</Link>
             </li>
