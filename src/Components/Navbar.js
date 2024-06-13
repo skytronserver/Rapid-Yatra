@@ -40,7 +40,7 @@ const Navbar = ({ page }) => {
               <Link to="/services">Products & Services</Link>
             </li>
             <li class={`${page == "about" ? "font-bold" : ""} md:mr-12`}>
-              <Link to="/about">About</Link>
+              <Link to="/about">About Us</Link>
             </li>
             <li class={`${page == "contact" ? "font-bold" : ""} md:mr-12`}>
               <Link to="/contact">Contact</Link>
