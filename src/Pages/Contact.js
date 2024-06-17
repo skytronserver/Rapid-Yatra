@@ -62,13 +62,13 @@ const Contact = () => {
             </div>
             <div className="flex items-center">
               <div className="flex-1"></div>
-              <button
+              <div
               onClick={()=>{alert(("Server Error. Please try  again later."))}}
-                className="rounded-xl bg-blue-600 px-4 py-3 text-center font-bold text-white hover:bg-blue-700"
+                className="rounded-xl bg-blue-600 px-4 py-3 text-center font-bold text-white hover:bg-blue-700 cursor-pointer"
               
               >
                 Send message
-              </button>
+              </div>
             </div>
           </form>
           <div className="mt-10 bg-blue-600 px-10 py-8 text-gray-100 md:mt-0 md:ml-auto">
