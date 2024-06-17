@@ -13,7 +13,7 @@ import { Link } from "react-router-dom";
 const Services = () => {
   return (
     // <div style={{ backgroundImage: `url(${background})`, opacity: 0.3}}>
-    <div>
+    <div className="bg-slate-200">
       <Navbar page={"services"} />
       {/* <section className=" py-12 sm:py-16 lg:py-20 bg-[#f7dbc0]">
         <div className="mx-auto px-4 sm:px-6 lg:px-8">
@@ -83,7 +83,7 @@ const Services = () => {
           </div>
 
           <div className="mt-10 grid grid-cols-1 gap-20 text-center sm:mx-auto sm:max-w-sm md:mt-20 md:max-w-full md:text-left">
-            <div className=" bg-blue-200">
+            <div className=" ">
               <div className="m-5 flex flex-col items-center justify-center md:flex-row">
                 <img
                   className="h-56 object-contain md:order-2 md:object-left"
@@ -102,7 +102,7 @@ const Services = () => {
                 </div>
               </div>
             </div>
-            <div className=" bg-blue-200">
+            <div className=" ">
               <div className="m-5 flex flex-col items-center justify-center md:flex-row ">
                 <img
                   className="h-56 object-contain md:ml-0 md:object-left"
@@ -121,8 +121,8 @@ const Services = () => {
                 </div>
               </div>
             </div>
-            <div className=" bg-blue-200">
-              <div className="m-5 flex flex-col items-center justify-center md:flex-row bg-blue-200 ">
+            <div className=" ">
+              <div className="m-5 flex flex-col items-center justify-center md:flex-row ">
                 <img
                   className="ml-10 h-56 object-contain md:order-2 md:object-left"
                   src={weoffer3}

@@ -1,12 +1,12 @@
 import React from "react";
-import logo2 from "../Images/logo2.png";
+import logo from "../Images/logo.png";
 import { Link } from "react-router-dom";
 
 const Navbar = ({ page }) => {
   return (
-    <div className="bg-white">
-      <header class="relative flex max-w-screen-xl flex-col overflow-hidden px-4 py-4 text-slate-700 md:mx-auto md:flex-row md:items-center">
-        <img className="h-14 w-64" src={logo2} alt={"Mapwala"} />
+    <div className="bg-slate-800">
+      <header class="relative flex max-w-screen-xl flex-col overflow-hidden px-4 py-4 text-white md:mx-auto md:flex-row md:items-center">
+        <img className="h-16" src={logo} alt={"Mapwala"} />
         <input type="checkbox" class="peer hidden" id="navbar-open" />
         <label
           class="absolute top-5 right-7 cursor-pointer md:hidden"

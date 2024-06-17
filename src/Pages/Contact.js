@@ -4,7 +4,7 @@ import Footer from "../Components/Footer";
 
 const Contact = () => {
   return (
-    <div>
+    <div className="bg-slate-200">
       <Navbar page={"contact"} />
       <div className="font-sans text-base text-blue-700 sm:px-10  pb-14">
         <div className="text-base text-gray-700">

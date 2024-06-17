@@ -6,7 +6,7 @@ import Footer from "../Components/Footer";
 
 const About = () => {
   return (
-    <div>
+    <div className="bg-slate-200">
       <Navbar page={"about"} />
       <div>
         <div className="py-6 sm:py-8 lg:py-12 ">
