@@ -9,10 +9,10 @@ const About = () => {
     <div>
       <Navbar page={"about"} />
       <div>
-        <div className="py-6 sm:py-8 lg:py-12 bg-white">
+        <div className="py-6 sm:py-8 lg:py-12 ">
           <div className="mx-auto max-w-screen-xl px-4 md:px-8 mb-20 ">
-            <div className="grid gap-8 md:grid-cols-2 lg:gap-12">
-              <div className="md:pt-8 lg:flex lg:flex-col lg:justify-center">
+            <div className="grid gap-8 md:grid-cols-2 lg:gap-12 ">
+              <div className="md:pt-8 lg:flex lg:flex-col lg:justify-center ">
                 <p className="text-center font-bold text-blue-500 md:text-left">
                   Who we are
                 </p>
@@ -37,7 +37,7 @@ const About = () => {
                     // src="https://images.unsplash.com/photo-1554743365-a80c1243316e?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80"
                     src={aboutimg}
                     loading="lazy"
-                    alt="Photo by Martin Sanchez"
+                    alt="Photo by Mapwala"
                     className="h-full w-full object-cover object-center"
                   />
                 </div>

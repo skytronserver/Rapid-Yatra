@@ -1,12 +1,15 @@
 import React from "react";
-import login2 from "../Images/login2.jpg";
+import login2 from "../Images/login2.png";
 import phon_image from "../Images/phon_image.jpg";
-import login1 from "../Images/login1.jpg";
+import login1 from "../Images/login1.jpeg";
+// import login4 from "../Images/login4.png"
+import login3 from "../Images/login3.jpg"
+import login5 from "../Images/login5.png"
 import Slider from "../Components/Slider";
 import Footer from "../Components/Footer";
 import Navbar from "../Components/Navbar";
 import Screensize from "../Components/Hooks/Screensize";
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
 
 const Login = () => {
   const screenSize = Screensize();
@@ -19,6 +22,18 @@ const Login = () => {
       imgURL: login2,
       imgAlt: "img-2",
     },
+    {
+      imgURL: login3,
+      imgAlt: "img-3",
+    },
+    {
+      imgURL: login5,
+      imgAlt: "img-4",
+    },
+    // {
+    //   imgURL: login5,
+    //   imgAlt: "img-5",
+    // },
   ];
   return (
     <div className="">
@@ -50,13 +65,13 @@ const Login = () => {
           <div className="relative mx-auto overflow-hidden px-4 py-16 sm:max-w-xl md:max-w-full md:px-24 lg:max-w-screen-xl lg:px-8 lg:py-20">
             <div className="flex flex-col items-center justify-between xl:flex-row">
               <div className="mb-12 w-full max-w-xl xl:mb-0 xl:w-7/12 xl:pr-16">
-                <h2 className="mb-6 max-w-lg font-sans text-3xl font-bold tracking-tight text-white sm:text-7xl sm:leading-none">
+                {/* <h2 className="mb-6 max-w-lg font-sans text-3xl font-bold tracking-tight text-white sm:text-7xl sm:leading-none">
                 Welcome to Mapwala
-                </h2>
-                <p className="mb-4 max-w-xl text-base text-gray-200 md:text-lg">
+                </h2> */}
+                {/* <p className="mb-4 max-w-xl text-base text-gray-200 md:text-lg">
                   Your Trusted Partner in Innovative IoT Solutions
-                </p>
-                <Link
+                </p> */}
+                {/* <Link
                   to="/services"
                   aria-label=""
                   className="inline-flex items-center font-semibold tracking-wider text-blue-700 transition-colors duration-200 hover:text-blue-600"
@@ -69,7 +84,7 @@ const Login = () => {
                   >
                     <path d="M9.707,5.293l-5-5A1,1,0,0,0,3.293,1.707L7.586,6,3.293,10.293a1,1,0,1,0,1.414,1.414l5-5A1,1,0,0,0,9.707,5.293Z"></path>
                   </svg>
-                </Link>
+                </Link> */}
               </div>
               <div className="w-full  max-w-xl xl:w-5/12 xl:px-8">
                 <div className="h-auto bg-opacity-40 overflow-hidden rounded-xl border-t-4 border-blue-600 bg-white p-7 shadow-2xl shadow-blue-300 sm:p-10">

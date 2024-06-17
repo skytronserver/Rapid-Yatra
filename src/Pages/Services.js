@@ -6,11 +6,13 @@ import weoffer2 from "../Images/weoffer2.jpeg";
 import weoffer3 from "../Images/weoffer3.jpeg";
 import chooosemmw1 from "../Images/choosemw1.jpeg";
 import chooosemmw2 from "../Images/choosemw2.jpeg";
+import background from "../Images/background.png";
 import Footer from "../Components/Footer";
 import { Link } from "react-router-dom";
 
 const Services = () => {
   return (
+    // <div style={{ backgroundImage: `url(${background})`, opacity: 0.3}}>
     <div>
       <Navbar page={"services"} />
       {/* <section className=" py-12 sm:py-16 lg:py-20 bg-[#f7dbc0]">
@@ -81,146 +83,68 @@ const Services = () => {
           </div>
 
           <div className="mt-10 grid grid-cols-1 gap-20 text-center sm:mx-auto sm:max-w-sm md:mt-20 md:max-w-full md:text-left">
-            <div className="flex flex-col items-center justify-center md:flex-row">
-              <img
-                className="h-56 object-contain md:order-2 md:object-left"
-                src={weoffer1}
-                alt=""
-              />
-              <div className="">
-                <h3 className="text-4xl">Custom IoT Design</h3>
-                <p className="mt-6 text-base text-gray-500">
-                  Our team of experienced engineers and designers specialize in
-                  developing bespoke IoT solutions tailored to meet your
-                  specific needs. From initial concept to final product, we
-                  ensure that every detail is meticulously crafted to deliver
-                  optimal performance and reliability.
-                </p>
-                {/* <button className="mt-4 rounded-lg bg-blue-700 px-6 py-2 text-white transition hover:translate-y-1">
-                  Learn more
-                </button> */}
+            <div className=" bg-blue-200">
+              <div className="m-5 flex flex-col items-center justify-center md:flex-row">
+                <img
+                  className="h-56 object-contain md:order-2 md:object-left"
+                  src={weoffer1}
+                  alt=""
+                />
+                <div className="">
+                  <h3 className="text-4xl">Custom IoT Design</h3>
+                  <p className="mt-6 text-base text-gray-500">
+                    Our team of experienced engineers and designers specialize
+                    in developing bespoke IoT solutions tailored to meet your
+                    specific needs. From initial concept to final product, we
+                    ensure that every detail is meticulously crafted to deliver
+                    optimal performance and reliability.
+                  </p>
+                </div>
               </div>
             </div>
-
-            <div className="flex flex-col items-center justify-center md:flex-row">
-              <img
-                className="h-56 object-contain md:ml-0 md:object-left"
-                src={weoffer2}
-                alt=""
-              />
-              <div className="sm:ml-10">
-                <h3 className="text-4xl">Sales of Cutting-Edge Products</h3>
-                <p className="mt-6 text-base text-gray-500">
-                  Explore our extensive range of IoT products designed to cater
-                  to a variety of applications. Whether you're looking for smart
-                  home devices, industrial automation solutions, or innovative
-                  consumer electronics, Mapwala has something for everyone.
-                </p>
-                {/* <button className="mt-4 rounded-lg bg-blue-700 px-6 py-2 text-white transition hover:translate-y-1">
-                  Learn more
-                </button> */}
+            <div className=" bg-blue-200">
+              <div className="m-5 flex flex-col items-center justify-center md:flex-row ">
+                <img
+                  className="h-56 object-contain md:ml-0 md:object-left"
+                  src={weoffer2}
+                  alt=""
+                />
+                <div className="sm:ml-10">
+                  <h3 className="text-4xl">Sales of Cutting-Edge Products</h3>
+                  <p className="mt-6 text-base text-gray-500">
+                    Explore our extensive range of IoT products designed to
+                    cater to a variety of applications. Whether you're looking
+                    for smart home devices, industrial automation solutions, or
+                    innovative consumer electronics, Mapwala has something for
+                    everyone.
+                  </p>
+                </div>
               </div>
             </div>
-
-            <div className="flex flex-col items-center justify-center md:flex-row">
-              <img
-                className="ml-10 h-56 object-contain md:order-2 md:object-left"
-                src={weoffer3}
-                alt=""
-              />
-              <div className="">
-                <h3 className="text-4xl">Comprehensive Service and Support</h3>
-                <p className="mt-6 text-base text-gray-500">
-                  At Mapwala, our commitment to you doesn't end at the point of
-                  sale. We offer comprehensive after-sales service and support
-                  to ensure your devices continue to operate at their best. Our
-                  dedicated customer service team is always ready to assist you
-                  with any questions or technical issues.
-                </p>
-                {/* <button className="mt-4 rounded-lg bg-blue-700 px-6 py-2 text-white transition hover:translate-y-1">
-                  Learn more
-                </button> */}
+            <div className=" bg-blue-200">
+              <div className="m-5 flex flex-col items-center justify-center md:flex-row bg-blue-200 ">
+                <img
+                  className="ml-10 h-56 object-contain md:order-2 md:object-left"
+                  src={weoffer3}
+                  alt=""
+                />
+                <div className="">
+                  <h3 className="text-4xl">
+                    Comprehensive Service and Support
+                  </h3>
+                  <p className="mt-6 text-base text-gray-500">
+                    At Mapwala, our commitment to you doesn't end at the point
+                    of sale. We offer comprehensive after-sales service and
+                    support to ensure your devices continue to operate at their
+                    best. Our dedicated customer service team is always ready to
+                    assist you with any questions or technical issues.
+                  </p>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </section>
-
-      {/* <section className="bg-[#f7dbc0] text-blue-800  py-10 sm:py-16 lg:py-24">
-        <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
-          <div className="sm:text-center">
-            <h2 className="text-3xl font-medium leading-7 text-blue-800 sm:text-4xl xl:text-5xl">
-              Why Choose <br className="sm:hidden" />
-              Mapwala?
-            </h2>
-            <hr className="mt-4 h-1 w-32 border-none bg-blue-600 sm:mx-auto sm:mt-8" />
-          </div>
-
-          <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 md:gap-8 lg:mt-16">
-            <div className="relative overflow-hidden bg-white">
-              <div className="px-6 py-10">
-                <div className="flex items-center">
-                  <h3 className="relative inline-block text-3xl font-bold leading-none">
-                    <span className="bg-[#99d7d4] absolute -top-4 h-2 w-full"></span>
-                    Innovative Solutions
-                  </h3>
-                </div>
-                <p className="mt-6 text-base md:max-w-xs">
-                  Our focus on continuous research and development ensures that
-                  we stay ahead of the curve, bringing you the latest in IoT
-                  technology.
-                </p>
-              </div>
-            </div>
-
-            <div className="relative overflow-hidden bg-white">
-              <div className="px-6 py-10">
-                <div className="flex items-center">
-                  <h3 className="relative inline-block text-3xl font-bold leading-none">
-                    <span className="bg-[#99d7d4] absolute -top-4 h-2 w-full"></span>
-                    Quality Assurance
-                  </h3>
-                </div>
-                <p className="mt-6 text-base md:max-w-xs">
-                  We adhere to the highest standards of quality and reliability,
-                  ensuring that our products meet and exceed your expectations.
-                </p>
-              </div>
-            </div>
-
-            <div className="relative overflow-hidden bg-white">
-              <div className="px-6 py-10">
-                <div className="flex items-center">
-                  <h3 className="relative inline-block text-3xl font-bold leading-none">
-                    <span className="bg-[#99d7d4] absolute -top-4 h-2 w-full"></span>
-                    Customer-Centric Approach
-                  </h3>
-                </div>
-                <p className="mt-6 text-base md:max-w-xs">
-                  Your satisfaction is our top priority. We listen to your needs
-                  and provide solutions that are tailored to enhance your
-                  experience.
-                </p>
-              </div>
-            </div>
-            <div className="relative overflow-hidden bg-white">
-              <div className="px-6 py-10">
-                <div className="flex items-center">
-                  <h3 className="relative inline-block text-3xl font-bold leading-none">
-                    <span className="bg-[#99d7d4] absolute -top-4 h-2 w-full"></span>
-                    Expert Team
-                  </h3>
-                </div>
-                <p className="mt-6 text-base md:max-w-xs">
-                  Our in-house electronics design team is composed of seasoned
-                  professionals with a passion for innovation and a track record
-                  of delivering successful projects.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section> */}
 
       <section className="mx-auto max-w-screen-xl py-12 text-blue-700 sm:py-16 lg:py-20">
         <div className="mx-auto px-4 sm:px-6 lg:px-8">
@@ -294,11 +218,11 @@ const Services = () => {
       </section>
 
       {/* <section className="relative bg-[#f7dbc0] py-10 text-blue-900 sm:py-16 lg:py-24"> */}
-      <section className="relative bg-white py-10 text-blue-900 sm:py-16 lg:py-24">
-        <div className=" mb-36">
+      <section className="relative  py-10 text-blue-900 sm:py-16 lg:py-24">
+        <div className=" mb-36  ">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div className="text-center">
-              <div className="mb-4 inline-flex h-12 w-12 text-blue-800">
+            <div className="text-center ">
+              <div className="mb-4 inline-flex h-12 w-12 text-blue-800 m-8">
                 <svg
                   viewBox="0 0 136 217"
                   fill="none"
@@ -321,7 +245,10 @@ const Services = () => {
               </p>
 
               <div className="sm mt-8 flex flex-col items-center justify-center sm:flex-row sm:space-x-4 sm:px-0 lg:mt-12">
-                <Link to='/contact' className="mt-4 rounded-lg border-2 border-blue-800 bg-blue-600 px-6 py-2 font-medium text-white transition hover:translate-y-1">
+                <Link
+                  to="/contact"
+                  className="mt-4 rounded-lg border-2 border-blue-800 bg-blue-600 px-6 py-2 font-medium text-white transition hover:translate-y-1"
+                >
                   Try Now
                 </Link>
                 {/* <button className="mt-4 rounded-lg border-2 border-blue-800 px-6 py-2 font-medium text-blue-800 transition hover:translate-y-1">
