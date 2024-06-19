@@ -1,7 +1,7 @@
 import React from "react";
-import login2 from "../Images/login2.png";
+import login2 from "../Images/login2.jpg";
 import phon_image from "../Images/phon_image.jpg";
-import login1 from "../Images/login1.png"
+import login1 from "../Images/login1.jpg"
 // import login4 from "../Images/login4.png"
 import login3 from "../Images/login3.jpg"
 import login5 from "../Images/login5.png"
