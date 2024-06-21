@@ -1,12 +1,10 @@
 import React from "react";
 import Navbar from "../Components/Navbar";
-import aboutimg from "../Images/aboutimg.jpg";
-import weoffer1 from "../Images/weoffer1.jpeg";
-import weoffer2 from "../Images/weoffer2.jpeg";
-import weoffer3 from "../Images/weoffer3.jpeg";
-import chooosemmw1 from "../Images/choosemw1.jpeg";
-import chooosemmw2 from "../Images/choosemw2.jpeg";
-import background from "../Images/background.png";
+import weoffer1 from "../Images/weoffer1.jpg";
+import weoffer2 from "../Images/weoffer2.jpg";
+import weoffer3 from "../Images/weoffer3.jpg";
+import chooosemmw1 from "../Images/choosemw1.jpg";
+import chooosemmw2 from "../Images/choosemw2.jpg";
 import Footer from "../Components/Footer";
 import { Link } from "react-router-dom";
 

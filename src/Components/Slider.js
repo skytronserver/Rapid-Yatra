@@ -45,6 +45,24 @@ function Slider({ children }) {
           </div>
         );
       })}
+      <div className="container__slider__links">
+        {children.map((item, index) => {
+          return (
+            <button
+              key={index}
+              className={
+                activeIndex === index
+                  ? "container__slider__links-small container__slider__links-small-active"
+                  : "container__slider__links-small"
+              }
+              onClick={(e) => {
+                e.preventDefault();
+                setActiveIndex(index);
+              }}
+            ></button>
+          );
+        })}
+      </div>
     </div>
   );
 }

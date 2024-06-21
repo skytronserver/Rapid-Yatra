@@ -36,16 +36,16 @@
   }
   
   .container__slider__links {
-    position: absolute;
-    bottom: 5%;
+    position: fixed;
+    bottom: 9%;
     left: 50%;
     transform: translateX(-50%);
   }
   
   .container__slider__links-small {
     position: relative;
-    width: 8px;
-    height: 8px;
+    width: 9px;
+    height: 9px;
     padding: 0;
     border-radius: 50%;
     outline: none;
@@ -53,7 +53,7 @@
     background-color: white;
     border: 1px solid grey;
     transition: background-color 1s linear;
-    margin: 0 2px;
+    margin: 0 8px;
   }
   
   .container__slider__links-small-active {

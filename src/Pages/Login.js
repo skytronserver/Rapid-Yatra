@@ -4,7 +4,7 @@ import phon_image from "../Images/phon_image.jpg";
 import login1 from "../Images/login1.jpg"
 // import login4 from "../Images/login4.png"
 import login3 from "../Images/login3.jpg"
-import login5 from "../Images/login5.png"
+import login5 from "../Images/login5.jpg"
 import Slider from "../Components/Slider";
 import Footer from "../Components/Footer";
 import Navbar from "../Components/Navbar";
@@ -148,7 +148,7 @@ const Login = () => {
           </div>
         </div>
       </div>
-      <Footer />
+      <Footer />  
     </div>
   );
 };
