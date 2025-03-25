@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import login2 from "../Images/login2.jpg";
 import phon_image from "../Images/phon_image.jpg";
 import login1 from "../Images/login1.jpg"
@@ -8,11 +8,90 @@ import login5 from "../Images/login5.jpg"
 import Slider from "../Components/Slider";
 import Footer from "../Components/Footer";
 import Navbar from "../Components/Navbar";
-import Screensize from "../Components/Hooks/Screensize";
-// import { Link } from "react-router-dom";
+import Screensize from "../Hooks/Screensize";
+import { useNavigate } from 'react-router-dom';
+import { useLoginMutation } from "../store/services/loginService";
+import { useGenerateCaptchaQuery, useVerifyCaptchaMutation } from "../store/services/captchaService";
+import { toast } from 'react-hot-toast';
 
 const Login = () => {
+  const navigate = useNavigate();
   const screenSize = Screensize();
+  const [login, { isLoading }] = useLoginMutation();
+  const { data: captchaData, refetch: refetchCaptcha } = useGenerateCaptchaQuery();
+  const [verifyCaptcha] = useVerifyCaptchaMutation();
+  const [formData, setFormData] = useState({
+    phoneNumber: '',
+    password: '',
+    captchaReply: ''
+  });
+  const [captcha, setCaptcha] = useState({
+    isLoaded: false,
+    text: '',
+    value: '',
+    captchaId: null
+  });
+  const [showPassword, setShowPassword] = useState(false);
+  const [termsAccepted, setTermsAccepted] = useState(false);
+
+  useEffect(() => {
+    if (captchaData) {
+      setCaptcha({
+        isLoaded: true,
+        text: `data:image/png;base64,${captchaData.captcha}`,
+        value: '',
+        captchaId: captchaData.key
+      });
+    }
+  }, [captchaData]);
+
+  const fetchCaptcha = () => {
+    refetchCaptcha();
+  };
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (!termsAccepted) {
+      toast.error('Please accept the terms and conditions to continue');
+      return;
+    }
+
+    try {
+      const response = await login({
+        username: formData.phoneNumber,
+        password: formData.password,
+        captcha_key: captcha.captchaId,
+        captcha_reply: formData.captchaReply
+      });
+      
+      if ('data' in response && response.data.token) {
+        toast.success(response.data.status || 'Login successful!');
+        navigate('/dashboard');
+      } else {
+        const errorMessage = response.error?.data?.error || 'Login failed';
+        toast.error(errorMessage);
+        fetchCaptcha();
+      }
+    } catch (error) {
+      console.error('Login error:', error);
+      toast.error('An error occurred during login');
+      fetchCaptcha();
+    }
+  };
+
+  const handleTermsChange = (e) => {
+    setTermsAccepted(e.target.checked);
+  };
+
   const images = [
     {
       imgURL: login1,
@@ -30,11 +109,12 @@ const Login = () => {
       imgURL: login5,
       imgAlt: "img-4",
     },
-    // {
-    //   imgURL: login5,
-    //   imgAlt: "img-5",
-    // },
+    {
+      imgURL: login5,
+      imgAlt: "img-5",
+    },
   ];
+
   return (
     <div className="">
       <Navbar page={"home"} />
@@ -72,46 +152,91 @@ const Login = () => {
                   <h3 className="mb-4 text-xl font-bold text-blue-900 sm:mb-4 sm:text-center sm:text-2xl">
                     Login to your Account
                   </h3>
-                  <form>
+                  <form onSubmit={handleSubmit}>
                     <div className="mb-4 sm:mb-4">
                       <label
-                        for="email"
+                        htmlFor="phoneNumber"
                         className="mb-1 inline-block font-medium text-blue-900"
                       >
-                        E-mail
+                        Phone Number
                       </label>
                       <input
-                        placeholder="Your Email"
-                        required=""
-                        type="text"
+                        placeholder="Your Phone Number"
+                        required
+                        type="tel"
                         className="mb-2 h-12 w-full flex-grow appearance-none rounded border border-gray-300 bg-white px-4 shadow-sm ring-blue-200 transition duration-200 focus:border-blue-400 focus:outline-none focus:ring"
-                        id="email"
-                        name="email"
+                        id="phoneNumber"
+                        name="phoneNumber"
+                        value={formData.phoneNumber}
+                        onChange={handleInputChange}
                       />
                     </div>
                     <div className="mb-4 sm:mb-4">
                       <label
-                        for="password"
+                        htmlFor="password"
                         className="mb-1 inline-block font-medium text-blue-900"
                       >
                         Password
                       </label>
+                      <div className="relative">
+                        <input
+                          placeholder="Your Password"
+                          required
+                          type={showPassword ? "text" : "password"}
+                          className="mb-2 h-12 w-full flex-grow appearance-none rounded border border-gray-300 bg-white px-4 pr-12 shadow-sm ring-blue-200 transition duration-200 focus:border-blue-400 focus:outline-none focus:ring"
+                          id="password"
+                          name="password"
+                          value={formData.password}
+                          onChange={handleInputChange}
+                        />
+                        <button
+                          type="button"
+                          className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500"
+                          onClick={() => setShowPassword(!showPassword)}
+                        >
+                          {showPassword ? "Hide" : "Show"}
+                        </button>
+                      </div>
+                    </div>
+                    
+                    <div className="mb-4 sm:mb-4">
+                      <div className="flex items-center gap-4 mb-2">
+                        <div className="bg-gray-100 p-3 rounded min-h-[60px] flex items-center justify-center">
+                          {captcha.isLoaded ? (
+                            <img src={captcha.text} alt="captcha" className="h-10" />
+                          ) : (
+                            <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-600"></div>
+                          )}
+                        </div>
+                        <button
+                          type="button"
+                          onClick={fetchCaptcha}
+                          className="p-2 bg-blue-100 rounded hover:bg-blue-200 disabled:opacity-50"
+                          disabled={!captcha.isLoaded}
+                        >
+                          ↻ Refresh
+                        </button>
+                      </div>
                       <input
-                        placeholder="Your Password"
-                        required=""
-                        type="password"
+                        placeholder="Enter captcha"
+                        required
+                        type="text"
                         className="mb-2 h-12 w-full flex-grow appearance-none rounded border border-gray-300 bg-white px-4 shadow-sm ring-blue-200 transition duration-200 focus:border-blue-400 focus:outline-none focus:ring"
-                        id="password"
-                        name="password"
+                        name="captchaReply"
+                        value={formData.captchaReply}
+                        onChange={handleInputChange}
+                        disabled={!captcha.isLoaded}
                       />
                     </div>
+
                     <div className="mb-6">
                       <label className="mb-2 flex text-sm">
                         <input
                           type="checkbox"
                           name="accept"
                           className="mr-2"
-                          required=""
+                          checked={termsAccepted}
+                          onChange={handleTermsChange}
                         />
                         <div className="text-gray-800">
                           <p className="">
