@@ -20,6 +20,7 @@ import VehicleOwnerForm from './Pages/forms/VehicleOwnerForm';
 import VehicleOwnerReport from './Pages/reports/VehicleOwnerReport';
 import StockReport from './Pages/reports/StockReport';
 import { Toaster } from 'react-hot-toast';
+import OtpVerification from './Pages/OtpVerification';
 const theme = createTheme({
 
   palette: {
@@ -57,6 +58,7 @@ function App() {
             <Route path="/vehicle-owner" element={<VehicleOwnerForm />} />
             <Route path="/vehicle-owner-report" element={<VehicleOwnerReport />} />
             <Route path="/stock-report" element={<StockReport />} />
+            <Route path="/verify-otp" element={<OtpVerification />} />
           </Route>
         </Routes>
       </BrowserRouter>

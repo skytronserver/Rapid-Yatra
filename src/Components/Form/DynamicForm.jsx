@@ -1,5 +1,5 @@
 import React from 'react';
-import { TextField, Button, MenuItem, Grid, Typography } from '@mui/material';
+import { TextField, Button, MenuItem, Grid, Typography, Chip, Checkbox, ListItemText } from '@mui/material';
 
 const DynamicForm = ({ fields, values = {}, onChange, onSubmit, submitText = 'Submit', title }) => {
   const handleSubmit = (e) => {
@@ -30,8 +30,18 @@ const DynamicForm = ({ fields, values = {}, onChange, onSubmit, submitText = 'Su
   };
 
   const handleChange = (field, value) => {
-    const sanitizedValue = field.type === 'file' ? value : sanitizeInput(value, field.type);
-    onChange({ ...values, [field.name]: sanitizedValue });
+    if (field.type === 'file') {
+      // Fix: Handle FileList object correctly
+      const fileInput = value.target ? value.target.files[0] : value;
+      if (fileInput && validateFileType(fileInput, field.accept)) {
+        onChange({ ...values, [field.name]: fileInput });
+      } else {
+        console.error('File was invalid or blocked');
+      }
+    } else {
+      const sanitizedValue = sanitizeInput(value, field.type);
+      onChange({ ...values, [field.name]: sanitizedValue });
+    }
   };
 
   const validateFileType = (file, acceptedTypes) => {
@@ -86,43 +96,53 @@ const DynamicForm = ({ fields, values = {}, onChange, onSubmit, submitText = 'Su
             label={field.label}
             placeholder={field.placeholder}
             required={field.required}
-            variant="outlined"
-            InputLabelProps={{ shrink: true }}
+            disabled={field.disabled}
             InputProps={{
+              readOnly: field.readOnly,
               inputProps: { 
                 min: field.type === 'date' ? "1900-01-01" : undefined,
                 pattern: field.type === 'tel' ? "[0-9]{3}-[0-9]{3}-[0-9]{4}" : undefined
               }
             }}
+            variant="outlined"
+            InputLabelProps={{ shrink: true }}
           />
         );
       case 'file':
         return (
-          <TextField
-            fullWidth
-            type="file"
-            id={field.name}
-            name={field.name}
-            onChange={(e) => {
-              const file = e.target.files[0];
-              if (file && validateFileType(file, field.accept)) {
-                handleChange(field.name, file);
-              } else {
-                // Clear the file input
-                e.target.value = '';
-                // You might want to show an error message here
-                console.error('Invalid file type or blocked executable file');
-              }
-            }}
-            label={field.label}
-            required={field.required}
-            variant="outlined"
-            InputLabelProps={{ shrink: true }}
-            inputProps={{
-              accept: field.accept || '*/*',
-              multiple: field.multiple || false
-            }}
-          />
+          <div style={{ marginTop: "16px" }}>
+            <input
+              type="file"
+              id={field.name}
+              name={field.name}
+              onChange={(e) => handleChange(field, e)}
+              accept={field.accept || '*/*'}
+              style={{ display: "none" }}
+            />
+            <label htmlFor={field.name}>
+              <Button
+                variant="outlined"
+                component="span"
+                sx={{
+                  width: "100%",
+                  height: "50px",
+                  borderRadius: "10px",
+                  justifyContent: "flex-start",
+                }}
+              >
+                {field.label}
+                {" : "}
+                <span style={{ color: "#2196f3", fontStyle: "italic" }}>
+                  {values[field.name]?.name || ""}
+                </span>
+              </Button>
+            </label>
+            {field.helperText && (
+              <div style={{ fontSize: "12px", color: "gray", marginTop: "4px" }}>
+                {field.helperText}
+              </div>
+            )}
+          </div>
         );
       case 'textarea':
         return (
@@ -168,20 +188,41 @@ const DynamicForm = ({ fields, values = {}, onChange, onSubmit, submitText = 'Su
             }}
             SelectProps={{
               multiple: field.type === 'multiselect',
-              renderValue: field.type === 'multiselect' 
+              renderValue: field.type === 'multiselect'
                 ? (selected) => (
-                    Array.isArray(selected) 
-                      ? selected
-                          .map(value => field.options?.find(opt => opt.value === value)?.label)
-                          .filter(Boolean)
-                          .join(', ')
-                      : ''
+                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '5px' }}>
+                      {selected.map((value) => (
+                        <Chip
+                          key={value}
+                          label={field.options?.find(opt => opt.value === value)?.label}
+                          onDelete={() => {
+                            const newValue = values[field.name].filter(v => v !== value);
+                            handleChange(field, newValue);
+                          }}
+                          size="small"
+                        />
+                      ))}
+                    </div>
                   )
-                : (selected) => field.options?.find(opt => opt.value === selected)?.label || selected
+                : (selected) => field.options?.find(opt => opt.value === selected)?.label || selected,
+              MenuProps: {
+                PaperProps: {
+                  style: {
+                    maxHeight: 250,
+                    width: 'auto',
+                    minWidth: '200px'
+                  }
+                }
+              }
             }}
             sx={{
               '& .MuiSelect-select': {
-                minHeight: field.type === 'multiselect' ? '1.4375em' : 'auto',
+                minHeight: '1.4375em',
+                padding: '12px 14px',
+                display: 'flex',
+                alignItems: 'center',
+                flexWrap: 'wrap',
+                gap: '4px'
               },
               '& .Mui-disabled': {
                 backgroundColor: 'rgba(0, 0, 0, 0.04)',
@@ -200,10 +241,18 @@ const DynamicForm = ({ fields, values = {}, onChange, onSubmit, submitText = 'Su
                 value={option.value}
                 sx={{
                   whiteSpace: 'normal',
-                  wordBreak: 'break-word'
+                  wordBreak: 'break-word',
+                  padding: '8px 16px',
+                  minHeight: '40px'
                 }}
               >
-                {option.label}
+                {field.type === 'multiselect' && (
+                  <>
+                    <Checkbox checked={values[field.name]?.includes(option.value)} />
+                    <ListItemText primary={option.label} />
+                  </>
+                )}
+                {field.type !== 'multiselect' && option.label}
               </MenuItem>
             ))}
           </TextField>

@@ -72,12 +72,14 @@ const Login = () => {
         captcha_key: captcha.captchaId,
         captcha_reply: formData.captchaReply
       });
-      
+
       if ('data' in response && response.data.token) {
-        toast.success(response.data.status || 'Login successful!');
-        navigate('/dashboard');
+        toast.success('OTP sent to your phone number');
+        sessionStorage.setItem('tempToken', response.data.token);
+        sessionStorage.setItem('phoneNumber', formData.phoneNumber);
+        navigate('/verify-otp');
       } else {
-        const errorMessage = response.error?.data?.error || 'Login failed';
+        const errorMessage = response?.data?.error || response?.error?.data?.error || 'An error occurred during login';
         toast.error(errorMessage);
         fetchCaptcha();
       }
@@ -145,7 +147,7 @@ const Login = () => {
           <div className="relative mx-auto overflow-hidden px-4 py-16 sm:max-w-xl md:max-w-full md:px-24 lg:max-w-screen-xl lg:px-8 lg:py-20">
             <div className="flex flex-col items-center justify-between xl:flex-row">
               <div className="mb-12 w-full max-w-xl xl:mb-0 xl:w-7/12 xl:pr-16">
-     
+
               </div>
               <div className="w-full  max-w-xl xl:w-5/12 xl:px-8">
                 <div className="h-auto bg-opacity-40 overflow-hidden rounded-xl border-t-4 border-blue-600 bg-white p-7 shadow-2xl shadow-blue-300 sm:p-10">
@@ -198,7 +200,7 @@ const Login = () => {
                         </button>
                       </div>
                     </div>
-                    
+
                     <div className="mb-4 sm:mb-4">
                       <div className="flex items-center gap-4 mb-2">
                         <div className="bg-gray-100 p-3 rounded min-h-[60px] flex items-center justify-center">
@@ -273,7 +275,7 @@ const Login = () => {
           </div>
         </div>
       </div>
-      <Footer />  
+      <Footer />
     </div>
   );
 };

@@ -2,9 +2,9 @@ import { deviceInitials, deviceFormField } from '../../Components/formfeilds/dev
 import * as Yup from 'yup';
 import DynamicForm from '../../Components/Form/DynamicForm';
 import { Card, CardContent } from '@mui/material';
+import { useGetModelListQuery } from '../../store/services/dropDownService';
 
 const DeviceStock = () => {
-  // Create validation schema from deviceFormField
   const validationSchema = Yup.object().shape(
     Object.keys(deviceFormField).reduce((acc, key) => {
       if (deviceFormField[key].validation) {
@@ -13,17 +13,27 @@ const DeviceStock = () => {
       return acc;
     }, {})
   );
-
+  const { data: modelList, isLoading } = useGetModelListQuery();
+  console.log(modelList, 'modelList');
+  
   const handleSubmit = (values, { setSubmitting }) => {
     console.log('Form values:', values);
     setSubmitting(false);
   };
-
-  // Convert deviceFormField object to array
-  const formFields = Object.entries(deviceFormField).map(([name, field]) => ({
-    ...field,
-    name
-  }));
+  const formFields = Object.values(deviceFormField).map(field => {
+    if (field.name === 'deviceModel') {
+      return {
+        ...field,
+        options: modelList || [{ label: 'Loading...', value: '' }],
+        required: true
+      };
+    }
+    return {
+      ...field,
+      required: true
+    };
+  });
+  
 
   return (
     <div className="p-4">
