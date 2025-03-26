@@ -35,7 +35,21 @@ export const dropDownService = api.injectEndpoints({
             }),
             providesTags: ['Model'],
         }),
+        getDealerList: builder.query({
+            query: () => ({
+                url: '/api/dealer/filter_dealer/',
+                method: 'POST'
+            }),
+            providesTags: ['DealerList'],
+        }),
+        getDeviceStockList: builder.query({
+            query: () => ({
+                url: '/api/devicestock/deviceStockFilter/',
+                method: 'POST'
+            }),
+            providesTags: ['DeviceStockList'],
+        }),
     }),
 });
 
-export const { useGetEsimListQuery, useGetModelListQuery, useGetModelQuery } = dropDownService;
+export const { useGetEsimListQuery, useGetModelListQuery, useGetModelQuery, useGetDealerListQuery, useGetDeviceStockListQuery } = dropDownService;

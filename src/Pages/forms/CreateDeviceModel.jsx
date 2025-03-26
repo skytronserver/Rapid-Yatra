@@ -3,12 +3,18 @@ import { Card, CardContent, Typography } from '@mui/material';
 import DynamicForm from '../../Components/Form/DynamicForm';
 import { deviceModelFormField, deviceModelInitials } from '../../Components/formfeilds/createDeviceModel';
 import { useGetEsimListQuery } from '../../store/services/dropDownService';
-import { useCreateDeviceMutation } from '../../store/services/formsService';
+import { useCreateDeviceMutation, useDeviceModelOTPVerifyMutation } from '../../store/services/formsService';
 import toast from 'react-hot-toast';
+import OTPComponent from '../../Components/OTPComponent';
+
 const CreateDeviceModel = () => {
   const [formValues, setFormValues] = useState(deviceModelInitials);
   const { data: esimList, isLoading } = useGetEsimListQuery();
   const [createDeviceModel, { isLoading: isCreating }] = useCreateDeviceMutation();
+  const [showOTP, setShowOTP] = useState(false);
+  const [otp, setOtp] = useState('');
+  const [deviceId, setDeviceId] = useState('');
+  const [DeviceModelOTPVerify] = useDeviceModelOTPVerifyMutation();
 
   const formFields = Object.values(deviceModelFormField).map(field => {
     if (field.name === 'eSimProviders') {
@@ -23,6 +29,29 @@ const CreateDeviceModel = () => {
       required: true
     };
   });
+
+  const handleOtpChange = (value) => {
+    setOtp(value);
+  };
+
+  const handleOtpSubmit = async () => {
+    try {
+        const response = await DeviceModelOTPVerify({
+        otp: otp,
+        device_model_id: deviceId
+      });
+      
+      if (response.data) {
+        toast.success('OTP verified successfully');
+        setShowOTP(false);
+        setFormValues(deviceModelInitials);
+      }
+    } catch (error) {
+      console.error('OTP verification error:', error);
+      toast.error('OTP verification failed');
+    }
+  };
+
   const handleSubmit = async (values) => {
     const formData = new FormData();
     
@@ -50,8 +79,9 @@ const CreateDeviceModel = () => {
         toast.error(response.error.data.detail);
         console.error('Error creating device model:', response.error);
       } else {
-        toast.success('Device model created successfully');
-        setFormValues(deviceModelInitials);
+        setDeviceId(response.data.id);
+        setShowOTP(true);
+        toast.success('Form submitted successfully. Please verify OTP.');
       }
     } catch (error) {
       console.error('Error:', error);
@@ -63,14 +93,22 @@ const CreateDeviceModel = () => {
     <div className="p-4">
       <Card sx={{ padding: 3, borderRadius: 3 }}>
         <CardContent>
-          <DynamicForm
-            fields={formFields}
-            values={formValues}
-            onChange={setFormValues}
-            onSubmit={handleSubmit}
-            submitText="Create Device Model"
-            title="Create Device Model"
-          />
+          {!showOTP ? (
+            <DynamicForm
+              fields={formFields}
+              values={formValues}
+              onChange={setFormValues}
+              onSubmit={handleSubmit}
+              submitText="Create Device Model"
+              title="Create Device Model"
+            />
+          ) : (
+            <OTPComponent
+              otp={otp}
+              handleChange={handleOtpChange}
+              handleOTPSubmit={handleOtpSubmit}
+            />
+          )}
         </CardContent>
       </Card>
     </div>

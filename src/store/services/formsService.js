@@ -44,7 +44,21 @@ export const manufacturerService = api.injectEndpoints({
                 body: data,
             }),
         }),
+        CreateDeviceStock: builder.mutation({
+            query: (data) => ({
+                url: "api/devicestock/deviceStockCreate/",
+                method: 'POST',
+                body: data
+            }),
+        }),
+        BulkDeviceStock: builder.mutation({
+            query: (data) => ({
+                url: "/api/devicestock/deviceStockCreateBulk/",
+                method: 'POST',
+                body: data
+            }),
+        }),
     }),
 });
 
-export const { useCreateDealerMutation, useCreateDeviceMutation, useTACExtensionMutation, useCopVerifyMutation } = manufacturerService;
+export const { useCreateDealerMutation, useCreateDeviceMutation, useTACExtensionMutation, useDeviceModelOTPVerifyMutation, useCopVerifyMutation, useCreateDeviceStockMutation, useBulkDeviceStockMutation } = manufacturerService;
