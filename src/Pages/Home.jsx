@@ -145,7 +145,7 @@ const Home = () => {
     }
 
     switch(user.role) {
-      case "manufacturer":
+      case "devicemanufacture":
         return (
           <Grid container spacing={3}>
             {/* eSIM Status */}

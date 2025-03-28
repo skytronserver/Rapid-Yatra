@@ -34,6 +34,11 @@ const Login = () => {
   });
   const [showPassword, setShowPassword] = useState(false);
   const [termsAccepted, setTermsAccepted] = useState(false);
+  const [errors, setErrors] = useState({
+    phoneNumber: '',
+    password: '',
+    captchaReply: ''
+  });
 
   useEffect(() => {
     if (captchaData) {
@@ -50,16 +55,58 @@ const Login = () => {
     refetchCaptcha();
   };
 
+  const validateForm = () => {
+    let isValid = true;
+    const newErrors = {
+      phoneNumber: '',
+      password: '',
+      captchaReply: ''
+    };
+    
+    // Phone number validation
+    if (!/^\d{10}$/.test(formData.phoneNumber)) {
+      newErrors.phoneNumber = 'Phone number must be 10 digits';
+      isValid = false;
+    }
+    
+    // Password validation
+    if (formData.password.length < 6) {
+      newErrors.password = 'Password must be at least 6 characters';
+      isValid = false;
+    }
+    
+    // Captcha validation
+    if (!formData.captchaReply.trim()) {
+      newErrors.captchaReply = 'Captcha is required';
+      isValid = false;
+    }
+    
+    setErrors(newErrors);
+    return isValid;
+  };
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({
       ...prev,
       [name]: value
     }));
+    
+    // Clear error when user types
+    if (errors[name]) {
+      setErrors(prev => ({
+        ...prev,
+        [name]: ''
+      }));
+    }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!validateForm()) {
+      return;
+    }
 
     if (!termsAccepted) {
       toast.error('Please accept the terms and conditions to continue');
@@ -126,13 +173,13 @@ const Login = () => {
     <div className="">
       <Navbar page={"home"} />
 
-      <div className="relative">
+      <div className="relative min-h-screen">
         {screenSize.width > 1100 ? (
-          <Slider className="">
+          <Slider className="absolute inset-0">
             {images.map((image, index) => {
               return (
                 <img
-                  className=" "
+                  className="h-full w-full object-cover"
                   key={index}
                   src={image.imgURL}
                   alt={image.imgAlt}
@@ -148,13 +195,13 @@ const Login = () => {
           />
         )}
 
-        <div className="">
-          <div className="relative mx-auto overflow-hidden px-4 py-16 sm:max-w-xl md:max-w-full md:px-24 lg:max-w-screen-xl lg:px-8 lg:py-20">
-            <div className="flex flex-col items-center justify-between xl:flex-row">
-              <div className="mb-12 w-full max-w-xl xl:mb-0 xl:w-7/12 xl:pr-16">
-
+        <div className="relative h-full">
+          <div className="mx-auto h-full py-16 px-4 sm:max-w-xl md:max-w-full md:px-24 lg:max-w-screen-xl lg:px-8 lg:py-20">
+            <div className="flex flex-col items-center md:flex-row md:justify-end h-full">
+              <div className="mb-12 w-full max-w-xl xl:mb-0 xl:w-7/12 xl:pr-16 hidden md:block">
+                {/* Left side content - intentionally empty for desktop */}
               </div>
-              <div className="w-full  max-w-xl xl:w-5/12 xl:px-8">
+              <div className="w-full max-w-xl md:w-5/12 md:px-8">
                 <div className="h-auto bg-opacity-40 overflow-hidden rounded-xl border-t-4 border-blue-600 bg-white p-7 shadow-2xl shadow-blue-300 sm:p-10">
                   <h3 className="mb-4 text-xl font-bold text-blue-900 sm:mb-4 sm:text-center sm:text-2xl">
                     Login to your Account
@@ -171,12 +218,17 @@ const Login = () => {
                         placeholder="Your Phone Number"
                         required
                         type="tel"
-                        className="mb-2 h-12 w-full flex-grow appearance-none rounded border border-gray-300 bg-white px-4 shadow-sm ring-blue-200 transition duration-200 focus:border-blue-400 focus:outline-none focus:ring"
+                        className={`mb-1 h-12 w-full flex-grow appearance-none rounded border ${
+                          errors.phoneNumber ? 'border-red-500' : 'border-gray-300'
+                        } bg-white px-4 shadow-sm ring-blue-200 transition duration-200 focus:border-blue-400 focus:outline-none focus:ring`}
                         id="phoneNumber"
                         name="phoneNumber"
                         value={formData.phoneNumber}
                         onChange={handleInputChange}
                       />
+                      {errors.phoneNumber && (
+                        <p className="text-red-500 text-xs mb-1">{errors.phoneNumber}</p>
+                      )}
                     </div>
                     <div className="mb-4 sm:mb-4">
                       <label
@@ -190,7 +242,9 @@ const Login = () => {
                           placeholder="Your Password"
                           required
                           type={showPassword ? "text" : "password"}
-                          className="mb-2 h-12 w-full flex-grow appearance-none rounded border border-gray-300 bg-white px-4 pr-12 shadow-sm ring-blue-200 transition duration-200 focus:border-blue-400 focus:outline-none focus:ring"
+                          className={`mb-1 h-12 w-full flex-grow appearance-none rounded border ${
+                            errors.password ? 'border-red-500' : 'border-gray-300'
+                          } bg-white px-4 pr-12 shadow-sm ring-blue-200 transition duration-200 focus:border-blue-400 focus:outline-none focus:ring`}
                           id="password"
                           name="password"
                           value={formData.password}
@@ -204,6 +258,9 @@ const Login = () => {
                           {showPassword ? "Hide" : "Show"}
                         </button>
                       </div>
+                      {errors.password && (
+                        <p className="text-red-500 text-xs mb-1">{errors.password}</p>
+                      )}
                     </div>
 
                     <div className="mb-4 sm:mb-4">
@@ -228,12 +285,17 @@ const Login = () => {
                         placeholder="Enter captcha"
                         required
                         type="text"
-                        className="mb-2 h-12 w-full flex-grow appearance-none rounded border border-gray-300 bg-white px-4 shadow-sm ring-blue-200 transition duration-200 focus:border-blue-400 focus:outline-none focus:ring"
+                        className={`mb-1 h-12 w-full flex-grow appearance-none rounded border ${
+                          errors.captchaReply ? 'border-red-500' : 'border-gray-300'
+                        } bg-white px-4 shadow-sm ring-blue-200 transition duration-200 focus:border-blue-400 focus:outline-none focus:ring`}
                         name="captchaReply"
                         value={formData.captchaReply}
                         onChange={handleInputChange}
                         disabled={!captcha.isLoaded}
                       />
+                      {errors.captchaReply && (
+                        <p className="text-red-500 text-xs mb-1">{errors.captchaReply}</p>
+                      )}
                     </div>
 
                     <div className="mb-6">
