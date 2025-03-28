@@ -16,6 +16,7 @@ import SettingsIcon from '@mui/icons-material/Settings';
 import logo from '../Images/logo.png';
 import profile from '../Images/profile.png';
 import { useNavigate } from 'react-router-dom';
+import { getUserInfo } from '../helper';
 const LogoSection = styled(Box)(({ theme }) => ({
   padding: '20px 24px',
   display: 'flex',
@@ -32,6 +33,7 @@ const StyledAppBar = styled(AppBar)(({ theme }) => ({
 
 const Header = ({ open, toggleDrawer }) => {
   const navigate = useNavigate();
+  const user = getUserInfo();
   const [anchorEl, setAnchorEl] = useState(null);
   const openMenu = Boolean(anchorEl);
 
@@ -41,6 +43,12 @@ const Header = ({ open, toggleDrawer }) => {
 
   const handleClose = () => {
     setAnchorEl(null);
+  };
+
+  const handleLogout = () => {
+    sessionStorage.clear();
+    localStorage.removeItem('skytrackCookiesData');
+    navigate('/');
   };
 
   return (
@@ -83,7 +91,7 @@ const Header = ({ open, toggleDrawer }) => {
                 display: { xs: 'none', sm: 'block' }
               }}
             >
-              John Doe
+              {user.name}
             </Typography>
             <Box
               component="img"
@@ -113,7 +121,7 @@ const Header = ({ open, toggleDrawer }) => {
             <MenuItem sx={{ gap: 2 }}>
               <SettingsIcon /> Settings
             </MenuItem>
-            <MenuItem sx={{ gap: 2 }}>
+            <MenuItem sx={{ gap: 2 }} onClick={() => handleLogout()}>
               <LogoutIcon /> Logout
             </MenuItem>
           </Menu>

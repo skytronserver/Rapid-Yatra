@@ -138,7 +138,7 @@ const CustomToolbar = () => {
 };
 
 const DynamicTable = ({
-  columns,
+  columns: providedColumns,
   rows,
   loading = false,
   pageSize = 10,
@@ -155,6 +155,24 @@ const DynamicTable = ({
   title,
 }) => {
   const theme = useTheme();
+
+  // Generate columns from data if not provided
+  const columns = React.useMemo(() => {
+    if (providedColumns?.length > 0) return providedColumns;
+    
+    if (!rows || rows.length === 0) return [];
+
+    // Get the first row to extract fields
+    const firstRow = rows[0];
+    return Object.keys(firstRow).map(field => ({
+      field,
+      headerName: field
+        .split('_')
+        .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(' '),
+      type: typeof firstRow[field] === 'number' ? 'number' : 'string',
+    }));
+  }, [providedColumns, rows]);
 
   const processedColumns = React.useMemo(() => {
     let filteredColumns = visibleFields

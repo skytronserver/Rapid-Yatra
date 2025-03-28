@@ -1,41 +1,43 @@
 import React from 'react';
 import DynamicTable from '../../Components/Table/DynamicTable';
+import { useGetDealersListQuery } from '../../store/services/reportsService';
 
 const DealerReport = () => {
+  const { data, isLoading, error } = useGetDealersListQuery();
+
+  if (error) {
+    return <div className="p-4 text-red-600">Error loading dealer data: {error.message}</div>;
+  }
+
+  if (isLoading) {
+    return <div className="p-4">Loading dealer data...</div>;
+  }
+
+  const transformedData = data?.map((dealer) => ({
+    id: dealer.id,
+    company_name: dealer.company_name,
+    dealer_name: dealer.users?.[0]?.name || '-',
+    email: dealer.users?.[0]?.email || '-',
+    mobile: dealer.users?.[0]?.mobile || '-',
+    created_by: dealer.users?.[0]?.created_by_name || '-',
+  }));
+
   const columns = [
     { field: 'company_name', header: 'Company Name' },
-    { field: 'mobile', header: 'Mobile' },
+    { field: 'dealer_name', header: 'Dealer Name' },
     { field: 'email', header: 'Email' },
-    { field: 'gst_no', header: 'GST No.' },
+    { field: 'mobile', header: 'Mobile' },
     { field: 'created_by', header: 'Created By' }
   ];
 
-  const data = [
-    {
-      id: 1,
-      company_name: 'TN dealer',
-      mobile: '2234567895',
-      email: 'b.sujal+TNdealer@gmail.com',
-      gst_no: '01092024',
-      created_by: 'TN STATE ADMIN'
-    },
-    {
-      id: 2,
-      company_name: 'Gobind PVT LTD',
-      mobile: '9999999999',
-      email: 'a65471280+dealer2@gmail.com',
-      gst_no: '56785678',
-      created_by: 'TN STATE ADMIN'
-    }
-  ];
-
   return (
-    <div>
-      <DynamicTable 
+    <div className="p-4">
+      <DynamicTable
         columns={columns}
-        rows={data}
+        rows={transformedData || []}
         getRowId={(row) => row.id}
         title="Dealer Report"
+        rowCount={data?.totalCount || 0}
       />
     </div>
   );

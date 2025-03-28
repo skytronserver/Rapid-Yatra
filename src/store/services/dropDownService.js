@@ -43,9 +43,10 @@ export const dropDownService = api.injectEndpoints({
             providesTags: ['DealerList'],
         }),
         getDeviceStockList: builder.query({
-            query: () => ({
+            query: (data) => ({
                 url: '/api/devicestock/deviceStockFilter/',
-                method: 'POST'
+                method: 'POST',
+                body: data
             }),
             providesTags: ['DeviceStockList'],
         }),

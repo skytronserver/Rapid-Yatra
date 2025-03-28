@@ -13,6 +13,7 @@ import { useNavigate } from 'react-router-dom';
 import { useLoginMutation } from "../store/services/loginService";
 import { useGenerateCaptchaQuery, useVerifyCaptchaMutation } from "../store/services/captchaService";
 import { toast } from 'react-hot-toast';
+import { cipherEncryption } from "../helper";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -72,9 +73,13 @@ const Login = () => {
         captcha_key: captcha.captchaId,
         captcha_reply: formData.captchaReply
       });
-
+      const myCipher = cipherEncryption('skytrack');
       if ('data' in response && response.data.token) {
         toast.success('OTP sent to your phone number');
+        const cookiesData = `${myCipher(response.data?.user?.name)}-${myCipher(response.data?.user?.role)}-${myCipher(response.data?.user?.mobile)}`
+        const skytrack_cookiesData = `${myCipher(response.data?.user?.email)}-${myCipher(response.data?.user?.role)}-${myCipher(response.data?.user?.date_joined)}-${myCipher(response.data?.user?.mobile)}`
+        sessionStorage.setItem('cookiesData', cookiesData + '-' + response.data?.user?.id);
+        localStorage.setItem('skytrackCookiesData', skytrack_cookiesData);
         sessionStorage.setItem('tempToken', response.data.token);
         sessionStorage.setItem('phoneNumber', formData.phoneNumber);
         navigate('/verify-otp');

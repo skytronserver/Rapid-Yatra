@@ -3,6 +3,15 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
 import { useVerifyOtpMutation, useResendOtpMutation } from "../store/services/loginService";
 import { cipherEncryption } from '../helper';
+import {
+  Box,
+  Card,
+  CardContent,
+  TextField,
+  Button,
+  Typography,
+  CircularProgress
+} from '@mui/material';
 
 const OtpVerification = () => {
   const navigate = useNavigate();
@@ -10,6 +19,7 @@ const OtpVerification = () => {
   const [resendOtp] = useResendOtpMutation();
   const [otp, setOtp] = useState('');
   const [remainingTime, setRemainingTime] = useState(180);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -21,6 +31,8 @@ const OtpVerification = () => {
 
   const handleVerifyOtp = async (e) => {
     e.preventDefault();
+    setIsSubmitting(true);
+    
     try {
       const response = await verifyOtp({
         phone_number: sessionStorage.getItem('phoneNumber'),
@@ -55,6 +67,8 @@ const OtpVerification = () => {
     } catch (error) {
       console.error('OTP verification error:', error);
       toast.error('Error verifying OTP');
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -74,45 +88,94 @@ const OtpVerification = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 flex items-center justify-center">
-      <div className="bg-white p-8 rounded-lg shadow-md w-96">
-        <h2 className="text-2xl font-bold text-center mb-6">Verify OTP</h2>
-        <form onSubmit={handleVerifyOtp}>
-          <div className="mb-4">
-            <input
+    <Box
+      sx={{
+        minHeight: '100vh',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: '#f5f5f5',
+        p: { xs: 2, sm: 3 }
+      }}
+    >
+      <Card sx={{ maxWidth: 400, width: '100%', borderRadius: 3 }}>
+        <CardContent sx={{ p: 4 }}>
+          <Typography 
+            variant="h5" 
+            component="h2" 
+            sx={{ 
+              mb: 3, 
+              textAlign: 'center',
+              fontWeight: 500
+            }}
+          >
+            Verify OTP
+          </Typography>
+
+          <form onSubmit={handleVerifyOtp}>
+            <TextField
+              fullWidth
               type="text"
-              maxLength="6"
-              className="w-full p-2 border rounded"
+              inputProps={{ maxLength: 6 }}
               placeholder="Enter 6-digit OTP"
               value={otp}
               onChange={(e) => setOtp(e.target.value)}
+              sx={{
+                mb: 3,
+                '& .MuiOutlinedInput-root': {
+                  borderRadius: 2,
+                  fontSize: '0.95rem',
+                }
+              }}
             />
-          </div>
-          <button
-            type="submit"
-            className="w-full bg-blue-600 text-white p-2 rounded hover:bg-blue-700"
-          >
-            Verify OTP
-          </button>
-        </form>
-        
-        <div className="mt-4 text-center">
-          <p className="text-gray-600">
-            Time remaining: {Math.floor(remainingTime / 60)}:
-            {String(remainingTime % 60).padStart(2, '0')}
-          </p>
-          <button
-            onClick={handleResendOtp}
-            disabled={remainingTime > 0}
-            className={`mt-2 text-blue-600 ${
-              remainingTime > 0 ? 'opacity-50 cursor-not-allowed' : ''
-            }`}
-          >
-            Resend OTP
-          </button>
-        </div>
-      </div>
-    </div>
+
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              disabled={isSubmitting}
+              sx={{
+                py: 1.25,
+                textTransform: 'none',
+                fontSize: '1rem',
+                fontWeight: 400,
+                borderRadius: 2,
+                boxShadow: 'none',
+                '&:hover': {
+                  boxShadow: 1
+                }
+              }}
+            >
+              {isSubmitting ? (
+                <CircularProgress size={24} color="inherit" />
+              ) : (
+                'Verify OTP'
+              )}
+            </Button>
+          </form>
+
+          <Box sx={{ mt: 3, textAlign: 'center' }}>
+            <Typography color="text.secondary">
+              Time remaining: {Math.floor(remainingTime / 60)}:
+              {String(remainingTime % 60).padStart(2, '0')}
+            </Typography>
+            
+            <Button
+              onClick={handleResendOtp}
+              disabled={remainingTime > 0}
+              sx={{
+                mt: 1,
+                textTransform: 'none',
+                opacity: remainingTime > 0 ? 0.5 : 1,
+                cursor: remainingTime > 0 ? 'not-allowed' : 'pointer'
+              }}
+            >
+              Resend OTP
+            </Button>
+          </Box>
+        </CardContent>
+      </Card>
+    </Box>
   );
 };
 

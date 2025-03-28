@@ -1,49 +1,63 @@
 import React from 'react';
 import DynamicTable from '../../Components/Table/DynamicTable';
+import { useGetStockListQuery } from '../../store/services/reportsService';
 
 const StockReport = () => {
-  const columns = [
-    { field: 'model', header: 'Model' },
-    { field: 'esn', header: 'ESN' },
-    { field: 'iccid', header: 'ICCID' },
-    { field: 'imei', header: 'IMEI' },
-    { field: 'telecom1', header: 'Telecom 1' },
-    { field: 'telecom2', header: 'Telecom 2' },
-    { field: 'msisdn1', header: 'MSISDN 1' },
-    { field: 'status', header: 'Status' },
-    { field: 'esim_validity', header: 'ESIM Validity' },
-    { field: 'esim_provider', header: 'ESIM Provider' },
-    { field: 'remarks', header: 'Remarks' },
-    { field: 'created', header: 'Created' },
-    { field: 'created_by', header: 'Created By' }
-  ];
+  const { data, isLoading, error } = useGetStockListQuery();
 
-  const data = [
-    {
-      id: 1,
-      model: 'TN MODEL 1',
-      esn: 'GEM1205',
-      iccid: '01092024',
-      imei: '868960065504918',
-      telecom1: 'BSNL',
-      telecom2: 'AIRTEL',
-      msisdn1: '9773300556',
-      status: 'Assigned',
-      esim_validity: '09-11-2026',
-      esim_provider: 'TN M2M',
-      remarks: '',
-      created: '10-11-2024',
-      created_by: 'TN maker'
-    }
+  if (error) {
+    return <div className="p-4 text-red-600">Error loading stock data: {error.message}</div>;
+  }
+
+  if (isLoading) {
+    return <div className="p-4">Loading stock data...</div>;
+  }
+
+  const transformedData = data?.data?.map(item => ({
+    id: item.id,
+    model: item.model?.model_name || '-',
+    device_esn: item.device_esn,
+    iccid: item.iccid,
+    imei: item.imei,
+    telecom1: item.telecom_provider1,
+    telecom2: item.telecom_provider2,
+    msisdn1: item.msisdn1,
+    msisdn2: item.msisdn2,
+    status: item.stock_status,
+    esim_status: item.esim_status,
+    esim_validity: new Date(item.esim_validity).toLocaleDateString(),
+    dealer_name: item.dealer?.company_name || '-',
+    created: new Date(item.created).toLocaleDateString(),
+    created_by: item.created_by?.name || '-',
+    remarks: item.remarks || '-'
+  }));
+
+  const columns = [
+    { field: 'model', headerName: 'Model', flex: 1, minWidth: 150 },
+    { field: 'device_esn', headerName: 'ESN', flex: 1, minWidth: 120 },
+    { field: 'dealer_name', headerName: 'Dealer', flex: 1, minWidth: 150 },
+    { field: 'iccid', headerName: 'ICCID', flex: 1, minWidth: 120 },
+    { field: 'imei', headerName: 'IMEI', flex: 1, minWidth: 120 },
+    { field: 'telecom1', headerName: 'Telecom 1', flex: 1, minWidth: 120 },
+    { field: 'telecom2', headerName: 'Telecom 2', flex: 1, minWidth: 120 },
+    { field: 'msisdn1', headerName: 'MSISDN 1', flex: 1, minWidth: 120 },
+    { field: 'msisdn2', headerName: 'MSISDN 2', flex: 1, minWidth: 120 },
+    { field: 'status', headerName: 'Status', flex: 1, minWidth: 100 },
+    { field: 'esim_status', headerName: 'ESIM Status', flex: 1, minWidth: 150 },
+    { field: 'esim_validity', headerName: 'ESIM Validity', flex: 1, minWidth: 120 },
+    { field: 'remarks', headerName: 'Remarks', flex: 1, minWidth: 150 },
+    { field: 'created', headerName: 'Created', flex: 1, minWidth: 100 },
+    { field: 'created_by', headerName: 'Created By', flex: 1, minWidth: 150 }
   ];
 
   return (
-    <div>
+    <div className="p-4">
       <DynamicTable 
         columns={columns}
-        rows={data}
+        rows={transformedData || []}
         getRowId={(row) => row.id}
         title="Stock Report"
+        rowCount={transformedData?.length || 0}
       />
     </div>
   );

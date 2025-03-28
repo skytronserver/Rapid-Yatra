@@ -16,156 +16,54 @@ const MapComponent = ({ gpsData, width = "100%", height = "400px" }) => {
   const [map, setMap] = useState(null);
   const [vectorLayer, setVectorLayer] = useState(null);
   const [dynamicOverlay, setDynamicOverlay] = useState(null);
-
   const logoOverlays = useRef([]);
-
-
 
   // Icon styles based on the packet type and conditions
   const iconStyles = {
     red: new Style({
       image: new Icon({
         anchor: [0.5, 1],
-        src: `${process.env.REACT_APP_BASE_URL}static/logo/red-skytron-transparent.png`,
+        src: `${process.env.REACT_APP_API_URL}/static/logo/red-skytron-transparent.png`,
         scale: 0.06,
       }),
     }),
     orange: new Style({
       image: new Icon({
         anchor: [0.5, 1],
-        src: `${process.env.REACT_APP_BASE_URL}static/logo/orange-skytron-transparent.png`,
+        src: `${process.env.REACT_APP_API_URL}/static/logo/orange-skytron-transparent.png`,
         scale: 0.06,
       }),
     }),
     blue: new Style({
       image: new Icon({
         anchor: [0.5, 1],
-        src: `${process.env.REACT_APP_BASE_URL}static/logo/blue-skytron-transparent.png`,
+        src: `${process.env.REACT_APP_API_URL}/static/logo/blue-skytron-transparent.png`,
         scale: 0.06,
       }),
     }),
     green: new Style({
       image: new Icon({
         anchor: [0.5, 1],
-        src: `${process.env.REACT_APP_BASE_URL}static/logo/green-skytron-transparent.png`,
+        src: `${process.env.REACT_APP_API_URL}/static/logo/green-skytron-transparent.png`,
         scale: 0.06,
       }),
     }),
     grey: new Style({
       image: new Icon({
         anchor: [0.5, 1],
-        src: `${process.env.REACT_APP_BASE_URL}static/logo/grey-skytron-transparent.png`,
+        src: `${process.env.REACT_APP_API_URL}/static/logo/grey-skytron-transparent.png`,
         scale: 0.06,
       }),
     }),
     default: new Style({
       image: new Icon({
         anchor: [0.5, 1],
-        src: `${process.env.REACT_APP_BASE_URL}static/track.png`,
+        src: `${process.env.REACT_APP_API_URL}/static/track.png`,
         scale: 0.06,
       }),
     }),
   };
 
-
-
-
-
-
-
-
-
-
-
-
-  /*
-    new ol.Map({
-      target: 'map',
-      layers: [
-       new ol.layer.Tile({
-            source: new ol.source.TileWMS({
-                url: '',
-                params: {
-                    'LAYERS': 'india3',
-                    'TILED': true,
-                    'VERSION': '1.1.1',
-                    'FORMAT': 'image/png',
-                    'TRANSPARENT': 'true',
-                    'SRS': 'EPSG:4326',
-                    'WIDTH': 256,   // Set the tile width to 256 pixels
-                    'HEIGHT': 256,   // Set the tile height to 256 pixels
-                    'pixelRatio': 1,
-  
-                },
-                serverType: 'geoserver',
-                projection: 'EPSG:4326', // Ensure the projection is set:' 
-  
-  
-  
-            })
-        }),
-  
-        new ol.layer.Tile({
-          source: new ol.source.OSM()
-        }),
-        //indiabasemap 
-        new ol.layer.Tile({
-          source: new ol.source.TileWMS({
-            url:https://bhuvan-vec1.nrsc.gov.in/bhuvan/gwc/service/wms,
-            params: {
-              'LAYERS': 'basemap%3Aadmin_group',
-              'TILED': true,
-              'VERSION': '1.1.1',
-              'FORMAT': 'image/png',
-              'TRANSPARENT': 'true',
-              'SRS': 'EPSG:4326',
-              'WIDTH': 256,   // Set the tile width to 256 pixels
-              'HEIGHT': 256,   // Set the tile height to 256 pixels
-              'pixelRatio': 1,
-  
-            },
-            serverType: 'geoserver',
-            projection: 'EPSG:4326', // Ensure the projection is set:' 
-  
-  
-  
-          })
-        }),
-        //Road etc 
-         new ol.layer.Tile({
-            source: new ol.source.TileWMS({
-                url:https://bhuvan-vec1.nrsc.gov.in/bhuvan/gwc/service/wms,
-                params: {
-                    'LAYERS': 'mmi:mmi_india',
-                    'TILED': true,
-                    'VERSION': '1.1.1',
-                    'FORMAT': 'image/png',
-                    'TRANSPARENT': 'true',
-                    'SRS': 'EPSG:4326',
-                    'WIDTH': 256,   // Set the tile width to 256 pixels
-                    'HEIGHT': 256,   // Set the tile height to 256 pixels
-                    'pixelRatio': 1,
-  
-                },
-                serverType: 'geoserver',
-                projection: 'EPSG:4326', // Ensure the projection is set:' 
-  
-  
-  
-            })
-        }), 
-  
-  
-  
-      ],
-      view: new ol.View({
-        center: ol.proj.fromLonLat([91.829437, 26.131644]),
-        zoom: 7,
-      }),
-  
-      pixelRatio: 1,
-    });
-  */
   useEffect(() => {
     // Initialize the map on first render
     const initialMap = new Map({
@@ -184,26 +82,19 @@ const MapComponent = ({ gpsData, width = "100%", height = "400px" }) => {
               'FORMAT': 'image/png',
               'TRANSPARENT': 'true',
               'SRS': 'EPSG:4326',
-              'WIDTH': 256,   // Set the tile width to 256 pixels
-              'HEIGHT': 256,   // Set the tile height to 256 pixels
+              'WIDTH': 256,
+              'HEIGHT': 256,
               'pixelRatio': 1,
-
             },
             serverType: 'geoserver',
-            projection: 'EPSG:4326', // Ensure the projection is set:' 
-
-
-
+            projection: 'EPSG:4326',
           })
         }),
       ],
-
-
       view: new View({
-        center: fromLonLat([91.829437, 26.131644]), // Initial center of the map
+        center: fromLonLat([91.829437, 26.131644]),
         zoom: 7,
       }),
-
       pixelRatio: 1,
     });
 
@@ -212,10 +103,7 @@ const MapComponent = ({ gpsData, width = "100%", height = "400px" }) => {
       source: new VectorSource(),
     });
 
-    // Add vector layer to map
     initialMap.addLayer(initialVectorLayer);
-
-    //initialMap.addLayer(administrativeLayer);
 
     // Create dynamic overlay
     const initialOverlay = new Overlay({
@@ -223,27 +111,18 @@ const MapComponent = ({ gpsData, width = "100%", height = "400px" }) => {
     });
     initialMap.addOverlay(initialOverlay);
 
-
-
-    // Create overlays for each logo
-    /* logos.forEach(logo => {
-       const element = document.createElement('img');
-       element.src = logo.src;
-       element.style.width = '50px'; // Adjust size as necessary
-       const logoOverlay = new Overlay({
-         element: element,
-         position: fromLonLat(logo.coordinates),
-         positioning: `${logo.position.includes('top') ? 'top' : 'bottom'}-${logo.position.includes('left') ? 'left' : 'right'}`
-       });
-       initialMap.addOverlay(logoOverlay);
-       logoOverlays.current.push(logoOverlay);
-     });
-     */
-
     setMap(initialMap);
     setVectorLayer(initialVectorLayer);
     setDynamicOverlay(initialOverlay);
-  }, []);
+
+    // Cleanup function
+    return () => {
+      if (initialMap) {
+        initialMap.setTarget(null);
+        initialMap.dispose();
+      }
+    };
+  }, []); // Empty dependency array since we only want to initialize once
 
   // Helper to calculate time difference in minutes
   const calculateTimeDifference = (startTime, endTime) => {
@@ -312,7 +191,6 @@ const MapComponent = ({ gpsData, width = "100%", height = "400px" }) => {
           const coordinates = feature.getGeometry().getCoordinates();
           const entryData = feature.get("entryData");
 
-
           // Set overlay content
           document.getElementById("overlay-content").innerHTML =
             "<strong>" + entryData.vehicle_registration_number + "</strong> <br>" + ""
@@ -340,13 +218,11 @@ const MapComponent = ({ gpsData, width = "100%", height = "400px" }) => {
   return (
     <div>
       {/* Map container */}
-
       <div ref={mapElement} style={{ width, height, position: 'relative' }}>
         {/* Position logos using absolute positioning within the map container */}
-        <img src={`${process.env.REACT_APP_BASE_URL}static/logo/inspace.png`} style={{ position: 'absolute', bottom: 0, left: 0, width: '120px', zIndex: 1000 }} />
-        <img src={`${process.env.REACT_APP_BASE_URL}static/logo/isro.png`} style={{ position: 'absolute', top: 0, right: 0, width: '70px', zIndex: 1000 }} />
-        <img src={`${process.env.REACT_APP_BASE_URL}static/logo/skytron.png`} style={{ position: 'absolute', bottom: "20px", right: 0, width: '200px', zIndex: 1000, backgroundColor: 'transparent' }} />
-
+        <img src={`${process.env.REACT_APP_API_URL}/static/logo/inspace.png`} style={{ position: 'absolute', bottom: 0, left: 0, width: '120px', zIndex: 1000 }} />
+        <img src={`${process.env.REACT_APP_API_URL}/static/logo/isro.png`} style={{ position: 'absolute', top: 0, right: 0, width: '70px', zIndex: 1000 }} />
+        <img src={`${process.env.REACT_APP_API_URL}/static/logo/skytron.png`} style={{ position: 'absolute', bottom: "20px", right: 0, width: '200px', zIndex: 1000, backgroundColor: 'transparent' }} />
       </div>
 
       {/* Overlay for displaying marker details */}

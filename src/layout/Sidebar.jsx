@@ -17,6 +17,7 @@ import {
 } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
+import { getUserInfo } from '../helper';
 
 import { useNavigate, useLocation } from 'react-router-dom';
 
@@ -86,13 +87,27 @@ const StyledListItem = styled(ListItem)(({ theme, active }) => ({
 const Sidebar = ({ open, mobileOpen, onMobileClose, isDesktop }) => {
   const navigate = useNavigate();
   const location = useLocation();
+  const user = getUserInfo();
+  console.log(user)
   const [expandedCategories, setExpandedCategories] = useState({
     main: true,
     create: true,
     device: true,
     reports: true,
-    account: true,
+    account: false,
+    Vehicle: true,
+    esim: true,
+    TaggingAndActivation: true,
+    settings: false,
   });
+
+  const filterMenuItems = (items) => {
+    if (!items) return [];
+    return items.filter(item => {
+      if (!item.roles) return true;
+      return item.roles.includes(user.role);
+    });
+  };
 
   const toggleCategory = (category) => {
     setExpandedCategories(prev => ({
@@ -101,38 +116,43 @@ const Sidebar = ({ open, mobileOpen, onMobileClose, isDesktop }) => {
     }));
   };
 
-  const renderCategory = (title, items, category) => (
-    <>
-      <CategoryHeader onClick={() => toggleCategory(category)}>
-        <CategoryTitle sx={{ p: 0 }}>{title}</CategoryTitle>
-        <IconButton size="small" sx={{ p: 0 }}>
-          {expandedCategories[category] ? <ExpandLessIcon /> : <ExpandMoreIcon />}
-        </IconButton>
-      </CategoryHeader>
-      <Collapse in={expandedCategories[category]} timeout="auto">
-        <List>
-          {items.map((item) => (
-            <StyledListItem
-              button
-              key={item.text}
-              onClick={() => navigate(item.path)}
-              active={location.pathname === item.path ? 1 : 0}
-            >
-              <ListItemIcon sx={{ minWidth: 40 }}>{item.icon}</ListItemIcon>
-              <ListItemText 
-                primary={item.text}
-                sx={{
-                  '& .MuiListItemText-primary': {
-                    fontWeight: location.pathname === item.path ? 600 : 400,
-                  },
-                }}
-              />
-            </StyledListItem>
-          ))}
-        </List>
-      </Collapse>
-    </>
-  );
+  const renderCategory = (title, items, category) => {
+    const filteredItems = filterMenuItems(items);
+    if (filteredItems.length === 0) return null;
+
+    return (
+      <>
+        <CategoryHeader onClick={() => toggleCategory(category)}>
+          <CategoryTitle sx={{ p: 0 }}>{title}</CategoryTitle>
+          <IconButton size="small" sx={{ p: 0 }}>
+            {expandedCategories[category] ? <ExpandLessIcon /> : <ExpandMoreIcon />}
+          </IconButton>
+        </CategoryHeader>
+        <Collapse in={expandedCategories[category]} timeout="auto">
+          <List>
+            {filteredItems.map((item) => (
+              <StyledListItem
+                button
+                key={item.text}
+                onClick={() => navigate(item.path)}
+                active={location.pathname === item.path ? 1 : 0}
+              >
+                <ListItemIcon sx={{ minWidth: 40 }}>{item.icon}</ListItemIcon>
+                <ListItemText 
+                  primary={item.text}
+                  sx={{
+                    '& .MuiListItemText-primary': {
+                      fontWeight: location.pathname === item.path ? 600 : 400,
+                    },
+                  }}
+                />
+              </StyledListItem>
+            ))}
+          </List>
+        </Collapse>
+      </>
+    );
+  };
 
   const drawer = (
     <>
@@ -154,16 +174,44 @@ const Sidebar = ({ open, mobileOpen, onMobileClose, isDesktop }) => {
         overflowX: 'hidden'
       }}>
         {renderCategory('Main', menuItems.main, 'main')}
-        <Divider sx={{ my: 2, opacity: 0.5 }} />
+        {filterMenuItems(menuItems.main).length > 0 && (
+          <Divider sx={{ my: 2, opacity: 0.5 }} />
+        )}
+
+        {renderCategory('Vehicle', menuItems.Vehicle, 'Vehicle')}
+        {filterMenuItems(menuItems.Vehicle).length > 0 && (
+          <Divider sx={{ my: 2, opacity: 0.5 }} />
+        )}
+
+        {renderCategory('ESIM', menuItems.esim, 'esim')}
+        {filterMenuItems(menuItems.esim).length > 0 && (
+          <Divider sx={{ my: 2, opacity: 0.5 }} />
+        )}
+
+        {renderCategory('Tagging&Activation', menuItems.TaggingAndActivation, 'TaggingAndActivation')}
+        {filterMenuItems(menuItems.TaggingAndActivation).length > 0 && (
+          <Divider sx={{ my: 2, opacity: 0.5 }} />
+        )}
         
         {renderCategory('Create', menuItems.create, 'create')}
-        <Divider sx={{ my: 2, opacity: 0.5 }} />
+        {filterMenuItems(menuItems.create).length > 0 && (
+          <Divider sx={{ my: 2, opacity: 0.5 }} />
+        )}
 
         {renderCategory('Device', menuItems.device, 'device')}
-        <Divider sx={{ my: 2, opacity: 0.5 }} />
+        {filterMenuItems(menuItems.device).length > 0 && (
+          <Divider sx={{ my: 2, opacity: 0.5 }} />
+        )}
         
         {renderCategory('Reports', menuItems.reports, 'reports')}
-        <Divider sx={{ my: 2, opacity: 0.5 }} />
+        {filterMenuItems(menuItems.reports).length > 0 && (
+          <Divider sx={{ my: 2, opacity: 0.5 }} />
+        )}
+
+        {renderCategory('Settings', menuItems.settings, 'settings')}
+        {filterMenuItems(menuItems.settings).length > 0 && (
+          <Divider sx={{ my: 2, opacity: 0.5 }} />
+        )}
         
         {renderCategory('Account', menuItems.account, 'account')}
       </Box>

@@ -3,37 +3,64 @@ import { Card, CardContent } from '@mui/material';
 import DynamicForm from '../../Components/Form/DynamicForm';
 import { assignDeviceFormFields, assignDeviceInitials } from '../../Components/formfeilds/assignDevice';
 import { useGetDealerListQuery, useGetDeviceStockListQuery } from '../../store/services/dropDownService';
+import { useAssignDeviceMutation } from '../../store/services/formsService';
+import { toast } from 'react-hot-toast';
 
 const AssignDevice = () => {
   const [formValues, setFormValues] = useState(assignDeviceInitials);
 
-  const {data:dealerList}=useGetDealerListQuery();
-  const {data:modelList}=useGetDeviceStockListQuery({stock_status:"NotAssigned"});
+  const { data: dealerList, isLoading: isDealerLoading, error: dealerError } = useGetDealerListQuery();
+  const { data: modelListResponse, isLoading: isModelLoading, error: modelError } = useGetDeviceStockListQuery({
+    stock_status: "NotAssigned"
+  });
+  const [assignDevice] = useAssignDeviceMutation();
 
+  const modelList = modelListResponse?.data || [];
 
-  const formFields = Object.values(assignDeviceFormFields).map(field => ({
-    ...field,
-    required: field.validation?.spec?.presence === 'required',
-    ...(field.name === 'dealer_id' && {
-      options: dealerList?.map(dealer => ({
-        value: dealer.id,
-        label: dealer.company_name
-      })) || []
-    }),
-    ...(field.name === 'model_id' && {
-      options: modelList?.map(device => ({
-        value: device.model.id,
-        label: device.model.model_name
-      })) || []
-    })
-  }));
+  const formFields = Object.values(assignDeviceFormFields).map(field => {
+    if (field.name === 'device') {
+      return {
+        ...field,
+        options: modelList.length > 0 && !isModelLoading 
+          ? modelList.map(model => ({
+              value: model.id,
+              label: model.imei
+            }))
+          : [{ label: isModelLoading ? 'Loading...' : 'No devices available', value: '' }],
+        required: true,
+        disabled: isModelLoading || !!modelError,
+      };
+    }
+    if (field.name === 'dealer') {
+      return {
+        ...field,
+        options: dealerList && !isDealerLoading
+          ? dealerList.map(dealer => ({
+              value: dealer.id,
+              label: dealer.company_name
+            }))
+          : [{ label: isDealerLoading ? 'Loading...' : 'No dealers available', value: '' }],
+        required: true,
+        disabled: isDealerLoading || !!dealerError,
+      };
+    }
+    return field;
+  });
 
-  console.log(modelList);
-  console.log(dealerList);
-
-  const handleSubmit = (values) => {
-    // TODO: Implement your submit logic here
-    console.log('Form submitted:', values);
+  const handleSubmit = async (values) => {
+    try {
+      const data = {
+        "dealer":values.dealer,
+        "device":values.device,
+        "shipping_remark":values.shipping_remark
+      }
+      const response = await assignDevice(data).unwrap();
+      console.log(response,"response");
+      toast.success('Device assigned successfully');
+    } catch (error) {
+      console.error('Error assigning device:', error);
+      toast.error(error.data?.message || 'Failed to assign device');
+    }
   };
 
   return (

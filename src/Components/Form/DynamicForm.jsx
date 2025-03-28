@@ -31,12 +31,26 @@ const DynamicForm = ({ fields, values = {}, onChange, onSubmit, submitText = 'Su
 
   const handleChange = (field, value) => {
     if (field.type === 'file') {
-      // Fix: Handle FileList object correctly
       const fileInput = value.target ? value.target.files[0] : value;
-      if (fileInput && validateFileType(fileInput, field.accept)) {
-        onChange({ ...values, [field.name]: fileInput });
-      } else {
-        console.error('File was invalid or blocked');
+      if (fileInput) {
+        const isValidSize = field.maxSize ? fileInput.size <= field.maxSize : true;
+        const isValidFormat = field.formats ? field.formats.includes(fileInput.type) : true;
+        
+        if (!isValidSize) {
+          console.error(`File size exceeds the maximum allowed size (${field.maxSize/1024} KB)`);
+          return;
+        }
+        
+        if (!isValidFormat) {
+          console.error(`File format not supported. Allowed formats: ${field.formats?.join(', ')}`);
+          return;
+        }
+        
+        if (validateFileType(fileInput, field.accept)) {
+          onChange({ ...values, [field.name]: fileInput });
+        } else {
+          console.error('File was invalid or blocked');
+        }
       }
     } else {
       const sanitizedValue = sanitizeInput(value, field.type);
@@ -47,9 +61,7 @@ const DynamicForm = ({ fields, values = {}, onChange, onSubmit, submitText = 'Su
   const validateFileType = (file, acceptedTypes) => {
     if (!file) return false;
     
-    // Convert accept string to array of mime types
     const mimeTypes = acceptedTypes.split(',').map(type => {
-      // Convert file extensions to mime types
       const mimeTypeMap = {
         '.pdf': 'application/pdf',
         '.jpg': 'image/jpeg',
@@ -58,10 +70,9 @@ const DynamicForm = ({ fields, values = {}, onChange, onSubmit, submitText = 'Su
         '.xlsx': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
         '.xls': 'application/vnd.ms-excel'
       };
-      return mimeTypeMap[type] || type;
+      return mimeTypeMap[type.trim()] || type.trim();
     });
 
-    // Block executable files
     const blockedTypes = [
       'application/x-msdownload',
       'application/x-executable',
@@ -71,10 +82,24 @@ const DynamicForm = ({ fields, values = {}, onChange, onSubmit, submitText = 'Su
     ];
 
     if (blockedTypes.includes(file.type)) {
+      console.error('Blocked file type:', file.type);
       return false;
     }
 
-    return mimeTypes.includes(file.type);
+    if (mimeTypes.length === 0 || mimeTypes.includes('*/*')) {
+      return true;
+    }
+
+    console.log('File type:', file.type);
+    console.log('Accepted types:', mimeTypes);
+    
+    return mimeTypes.some(type => {
+      if (type.endsWith('/*')) {
+        const category = type.split('/')[0];
+        return file.type.startsWith(category + '/');
+      }
+      return file.type === type;
+    });
   };
 
   const renderField = (field) => {
@@ -101,7 +126,7 @@ const DynamicForm = ({ fields, values = {}, onChange, onSubmit, submitText = 'Su
               readOnly: field.readOnly,
               inputProps: { 
                 min: field.type === 'date' ? "1900-01-01" : undefined,
-                pattern: field.type === 'tel' ? "[0-9]{3}-[0-9]{3}-[0-9]{4}" : undefined
+                pattern: field.type === 'tel' ? "[0-9]{10}" : undefined
               }
             }}
             variant="outlined"
@@ -137,9 +162,9 @@ const DynamicForm = ({ fields, values = {}, onChange, onSubmit, submitText = 'Su
                 </span>
               </Button>
             </label>
-            {field.helperText && (
+            {field.message && (
               <div style={{ fontSize: "12px", color: "gray", marginTop: "4px" }}>
-                {field.helperText}
+                {field.message}
               </div>
             )}
           </div>

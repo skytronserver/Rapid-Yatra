@@ -12,16 +12,18 @@ import {
   Paper,
   Typography,
   Box,
+  InputAdornment,
 } from "@mui/material";
 import MainCard from "../../ui-component/cards/MainCard";
-import HomePageService from "../../services/HomePage";
 import MapComponent from "./LiveMap";
-import { none } from "ol/centerconstraint";
 import SearchIcon from "@mui/icons-material/Search"; // Import the search icon
-import { keyMapping, iconData, iconStyles,fullText,isoDatePattern } from "../../store/constant";
+import { keyMapping, iconData, iconStyles,fullText,isoDatePattern } from "../../helper";
 import {formatDateTime} from "../../helper"
 import CircularProgress from '@mui/material/CircularProgress';
 import "./tabstyle.css";
+import { useGetLiveTrackingMutation, useGetLiveTrackingQuery } from "../../store/services/locationservices";
+import { DirectionsCar } from "@mui/icons-material";
+
 const LiveTracking = () => {
   const [load, setLoad] = useState(false);
   const [htmlContent, setHtmlContent] = useState("");
@@ -42,20 +44,22 @@ const LiveTracking = () => {
     }
   };
 
+  const { data: liveTrackingData, isLoading } = useGetLiveTrackingQuery();
+
   const retriveMapData = async (data) => {
     try {
-      const retriveData_table = await HomePageService.getLiveTracking_data(
-        data
-      );
-      if (Array.isArray(retriveData_table.data.data)) {
-        setTableDataTop(retriveData_table.data.data);
-        setFilteredData(retriveData_table.data.data);
+      if (liveTrackingData?.data && Array.isArray(liveTrackingData.data)) {
+        setTableDataTop(liveTrackingData.data);
+        setFilteredData(liveTrackingData.data);
       }
       setLoad(true);
     } catch (error) {
-      console.log(error);
+      console.error('Error retrieving map data:', error);
+      setLoad(false);
     }
   };
+
+  console.log("liveTrackingData",tableDataTop,filteredData)
 
   // Triggered on form submit to fetch new data
   const handleSubmit = (event) => {
@@ -68,10 +72,12 @@ const LiveTracking = () => {
     setSelectedId(null);
   };
 
+  // Update useEffect to use RTK Query data
   useEffect(() => {
-    // Automatically load the data when the page initially loads
-    retriveMapData({});
-  }, []);
+    if (liveTrackingData) {
+      retriveMapData({});
+    }
+  }, [liveTrackingData]);
 
   // Handle button click, update selectedId and filtered data
   const handleButtonClick = (id) => {
@@ -152,25 +158,27 @@ const LiveTracking = () => {
   };
   return (
     <MainCard>
-      <Typography variant="h4">Live Tracking</Typography>
+      {/* Modern header section */}
+      <Box sx={{ mb: 4 }}>
+        <Typography variant="h3" sx={{ 
+          fontSize: '1.75rem', 
+          fontWeight: 600,
+          color: 'primary.main' 
+        }}>
+          Live Vehicle Tracking
+        </Typography>
+        <Typography variant="body2" sx={{ color: 'text.secondary', mt: 1 }}>
+          Monitor your vehicles in real-time
+        </Typography>
+      </Box>
 
-      {/* Scrollable Table (First Table) */}
-      <div className="container">
-        <div
-          className={
-            selectedId
-              ? "first-div first-div-small"
-              : "first-div first-div-large"
-          }
-        >
-          <form onSubmit={handleSubmit}>
-            <Grid container spacing={2} className="form-grid-container">
-              <Grid item className="grid-item">
-                <Box
-                  display="flex"
-                  alignItems="center"
-                  justifyContent="space-between"
-                >
+      <div className="container" style={{ gap: '24px' }}>
+        <div className={selectedId ? "first-div first-div-small" : "first-div first-div-large"}>
+          {/* Search section */}
+          <Paper sx={{ p: 3, mb: 3, borderRadius: 2 }}>
+            <form onSubmit={handleSubmit}>
+              <Grid container spacing={2}>
+                <Grid item xs={12}>
                   <TextField
                     fullWidth
                     label="Vehicle Registration No"
@@ -179,132 +187,190 @@ const LiveTracking = () => {
                     name="vehicleNo"
                     onChange={handleInput}
                     variant="outlined"
-                    InputProps={{ sx: { borderRadius: 0 } }}
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <DirectionsCar color="action" />
+                        </InputAdornment>
+                      ),
+                      endAdornment: (
+                        <Button
+                          type="submit"
+                          variant="contained"
+                          sx={{ borderRadius: '8px' }}
+                        >
+                          <SearchIcon />
+                        </Button>
+                      )
+                    }}
                   />
-                  <Button
-                    type="submit"
-                    variant="contained"
-                    color="primary"
-                    className="submit-button"
-                  >
-                    <SearchIcon className="submit-button-icon" />
-                  </Button>
-                </Box>
+                </Grid>
               </Grid>
+            </form>
+          </Paper>
+
+          {/* Vehicle status icons */}
+          <Paper sx={{ p: 2, mb: 3, borderRadius: 2 }}>
+            <Grid container spacing={2}>
+              {iconData && iconData.map((item, index) => (
+                <Grid item xs={4} key={index}>
+                  <Box
+                    onClick={() => filterByType(item.key)}
+                    sx={{
+                      display: 'flex',
+                      flexDirection: 'column',
+                      alignItems: 'center',
+                      cursor: 'pointer',
+                      p: 1,
+                      borderRadius: 1,
+                      transition: 'all 0.2s',
+                      '&:hover': {
+                        bgcolor: 'action.hover',
+                      },
+                      ...(typeFilter === item.key && {
+                        bgcolor: 'primary.lighter',
+                      })
+                    }}
+                  >
+                    <img 
+                      src={item.iconUrl} 
+                      alt={item.text} 
+                      style={{ width: '24px', height: '24px' }}
+                    />
+                    <Typography 
+                      variant="caption" 
+                      sx={{ mt: 1, textAlign: 'center' }}
+                    >
+                      {item.text}
+                    </Typography>
+                  </Box>
+                </Grid>
+              ))}
             </Grid>
-          </form>
-          <TableContainer component={Paper} className="table-container">
-            <Table>
-              {iconData && <TableHead>
-                <TableRow>
-                  {iconData.slice(0, 3).map((item, index) => (
-                    <TableCell
-                      key={index}
-                      onClick={() => filterByType(item.key)}
-                      className="tracking-icon"
-                    >
-                      <img src={item.iconUrl} alt={item.text} />
-                      <Typography variant="caption" className="icon-text">
-                        {item.text}
-                      </Typography>
-                    </TableCell>
-                  ))}
-                </TableRow>
-                <TableRow>
-                  {iconData.slice(3, 6).map((item, index) => (
-                    <TableCell
-                      key={index}
-                      onClick={() => filterByType(item.key)}
-                      className="tracking-icon"
-                    >
-                      <img src={item.iconUrl} alt={item.text} />
-                      <Typography variant="caption" className="icon-text">
-                        {item.text}
-                      </Typography>
-                    </TableCell>
-                  ))}
-                </TableRow>
-              </TableHead>
-              }
-              <TableBody>
-                {tableDataTop.length > 0 ? (
-                  tableDataTop.map(
-                    (row) =>
+          </Paper>
+
+          {/* Vehicle list */}
+          <Paper 
+            sx={{ 
+              borderRadius: 2,
+              overflow: 'hidden',
+              flex: 1
+            }}
+          >
+            <TableContainer sx={{ maxHeight: selectedId ? '300px' : '500px' }}>
+              <Table stickyHeader>
+                <TableBody>
+                  {tableDataTop.length > 0 ? (
+                    tableDataTop.map((row) =>
                       checkType(typeFilter, row) && (
-                        <TableRow key={row.id} className="table-row">
-                          <TableCell
-                            colSpan={6}
-                            onClick={() => handleButtonClick(row.id)}
-                            className={`table-cell ${
-                              selectedId === row.id ? "table-cell-selected" : ""
-                            }`}
-                          >
-                            <img src={getIconStyle(row)} />
-                            <span>{row.vehicle_registration_number}</span>
+                        <TableRow 
+                          key={row.id}
+                          onClick={() => handleButtonClick(row.id)}
+                          sx={{
+                            cursor: 'pointer',
+                            transition: 'all 0.2s',
+                            '&:hover': {
+                              bgcolor: 'action.hover',
+                            },
+                            ...(selectedId === row.id && {
+                              bgcolor: 'primary.lighter',
+                            })
+                          }}
+                        >
+                          <TableCell sx={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: 2,
+                            border: 'none',
+                            py: 2
+                          }}>
+                            <img 
+                              src={getIconStyle(row)} 
+                              style={{ width: '24px', height: '24px' }}
+                            />
+                            <Typography>{row.vehicle_registration_number}</Typography>
                           </TableCell>
                         </TableRow>
                       )
-                  )
-                ) : (
-                  <TableRow>
-                    <TableCell colSpan={6} style={{textAlign:'center'}}><CircularProgress size="30px" /></TableCell>
-                  </TableRow>
-                )}
-              </TableBody>
-            </Table>
-          </TableContainer>
+                    )
+                  ) : (
+                    <TableRow>
+                      <TableCell sx={{ textAlign: 'center', py: 4 }}>
+                        <CircularProgress size={30} />
+                      </TableCell>
+                    </TableRow>
+                  )}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </Paper>
         </div>
 
-        {/* HTML Content (iframe) */}
-        <div style={{ width: "80%", height: "100%" }}>
+        {/* Map section */}
+        <Paper 
+          sx={{ 
+            width: "80%", 
+            height: "100%",
+            borderRadius: 2,
+            overflow: 'hidden'
+          }}
+        >
           <MapComponent
             gpsData={filteredData}
             width="100%"
             height={selectedId ? "400px" : "600px"}
           />
-        </div>
+        </Paper>
       </div>
 
+      {/* Details table */}
       {selectedId && (
-        <TableContainer component={Paper} className="skytron-table-container">
-          
-          <Table className="skytron-table">
-      <TableHead>
-        <TableRow>
-          {/* Dynamically generate headers based on keyMapping order */}
-          {filteredData.length > 0 &&
-            Object.keys(keyMapping).map((key) => (
-              <TableCell key={key} className="skytron-table-header-cell">
-                {keyMapping[key]}
-              </TableCell>
-            ))}
-        </TableRow>
-      </TableHead>
-      <TableBody>
-        {filteredData.length > 0 ? (
-          filteredData.map((row, rowIndex) => (
-            <TableRow key={rowIndex} className="skytron-table-row">
-              {/* Dynamically generate table cells based on keyMapping order */}
-              {Object.keys(keyMapping).map((key, cellIndex) => (
-                <TableCell key={cellIndex} className="skytron-table-cell">
-                  {fullText?.[row[key]] || (isoDatePattern.test(row[key]) && formatDateTime(row[key])) || row[key] || ""}
-                </TableCell>
-              ))}
-            </TableRow>
-          ))
-        ) : (
-          <TableRow>
-            <TableCell
-              colSpan={Object.keys(keyMapping).length}
-              className="skytron-no-data-cell"
-            >
-              No data available
-            </TableCell>
-          </TableRow>
-        )}
-      </TableBody>
-    </Table>
-        </TableContainer>
+        <Paper sx={{ mt: 3, borderRadius: 2, overflow: 'hidden' }}>
+          <TableContainer>
+            <Table>
+              <TableHead>
+                <TableRow>
+                  {filteredData.length > 0 &&
+                    Object.keys(keyMapping).map((key) => (
+                      <TableCell 
+                        key={key}
+                        sx={{
+                          bgcolor: 'primary.lighter',
+                          fontWeight: 600
+                        }}
+                      >
+                        {keyMapping[key]}
+                      </TableCell>
+                    ))}
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {filteredData.length > 0 ? (
+                  filteredData.map((row, rowIndex) => (
+                    <TableRow key={rowIndex}>
+                      {Object.keys(keyMapping).map((key, cellIndex) => (
+                        <TableCell key={cellIndex}>
+                          {fullText?.[row[key]] || 
+                           (isoDatePattern.test(row[key]) && formatDateTime(row[key])) || 
+                           row[key] || ""}
+                        </TableCell>
+                      ))}
+                    </TableRow>
+                  ))
+                ) : (
+                  <TableRow>
+                    <TableCell
+                      colSpan={Object.keys(keyMapping).length}
+                      sx={{ textAlign: 'center', py: 3 }}
+                    >
+                      No data available
+                    </TableCell>
+                  </TableRow>
+                )}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </Paper>
       )}
     </MainCard>
   );

@@ -40,8 +40,8 @@ export const vehicleOwnerField = {
     type: "tel",
     label: "Mobile",
     validation: Yup.string()
-      .matches(/^[6-9]\d{9}$/, "Mobile Number must start with 6-9 and be 10 digits")
-      .required("Mobile Number is required"),
+      .matches(/^\d{10}$/, "Mobile number must be exactly 10 digits")
+      .required("Mobile number is required"),
   },
   dob: {
     name: "dob",
@@ -81,15 +81,6 @@ export const vehicleOwnerField = {
     type: "file",
     label: "ID Proof",
     message: 'Only JPG, PDF, PNG files are allowed and must be below 512KB.',
-    validation: Yup.mixed()
-      .required("ID Proof is required")
-      .test("fileSize", "File size must be less than 512KB", value => {
-        if (!value) return false;
-        return value.size <= FILE_SIZE;
-      })
-      .test("fileFormat", "Unsupported file format. Only JPG, PDF, and PNG are allowed", value => {
-        if (!value) return false;
-        return SUPPORTED_FORMATS.includes(value.type);
-      }),
+    validation: Yup.mixed().required("ID Proof is required"),
   }
 };

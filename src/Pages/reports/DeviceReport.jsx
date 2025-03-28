@@ -1,33 +1,41 @@
 import React from 'react';
 import DynamicTable from '../../Components/Table/DynamicTable';
+import { useGetDealerDeviceListQuery } from '../../store/services/reportsService';
 
 const DeviceReport = () => {
-  const columns = [
-    { field: 'esn', header: 'ESN' },
-    { field: 'iccid', header: 'ICCID' },
-    { field: 'imei', header: 'IMEI No.' },
-    { field: 'assigned_date', header: 'Assigned Date' },
-    { field: 'status', header: 'Status' },
-    { field: 'remarks', header: 'Remarks' }
-  ];
+  const { data, isLoading, error } = useGetDealerDeviceListQuery();
 
-  const data = [
-    {
-      id: 1,
-      esn: 'ABC00000012',
-      iccid: '5754210038999',
-      imei: '861850060252547',
-      assigned_date: '03-03-2025',
-      status: 'Available',
-      remarks: ''
-    }
+  console.log(data,"data");
+
+  if (error) {
+    return <div className="p-4 text-red-600">Error loading device data: {error.message}</div>;
+  }
+
+  if (isLoading) {
+    return <div className="p-4">Loading device data...</div>;
+  }
+
+  const columns = [
+    { field: 'device_esn', headerName: 'Device ESN' },
+    { field: 'imei', headerName: 'IMEI' },
+    { field: 'iccid', headerName: 'ICCID' },
+    { field: 'telecom_provider1', headerName: 'Telecom Provider 1' },
+    { field: 'telecom_provider2', headerName: 'Telecom Provider 2' },
+    { field: 'msisdn1', headerName: 'MSISDN 1' },
+    { field: 'msisdn2', headerName: 'MSISDN 2' },
+    { field: 'esim_status', headerName: 'ESIM Status' },
+    { field: 'esim_validity', headerName: 'ESIM Validity' },
+    { field: 'stock_status', headerName: 'Stock Status' },
+    { field: 'remarks', headerName: 'Remarks' },
+    { field: 'created', headerName: 'Created' },
+    { field: 'assigned', headerName: 'Assigned' }
   ];
 
   return (
-    <div>
+    <div className="p-4">
       <DynamicTable 
         columns={columns}
-        rows={data}
+        rows={data?.data || []}
         getRowId={(row) => row.id}
         title="Device Report"
       />
