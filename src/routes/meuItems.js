@@ -34,6 +34,7 @@ export const menuItems = {
       { text: 'Create Device Model', icon: <People />, path: '/create-device-model', roles: ['devicemanufacture'] },
       { text: 'TAC Extension', icon: <Assignment />, path: '/tac-extension', roles: ['devicemanufacture'] },
       { text: 'Vehicle Owner', icon: <DirectionsCar />, path: '/vehicle-owner', roles: ['dealer'] },
+      { text: 'Create Dealer', icon: <Assignment />, path: '/create-dealer', roles: ['devicemanufacture'] },
     ],
     device: [
       { text: 'Device Stock', icon: <Description />, path: '/device-stock', roles: ['devicemanufacture'] },

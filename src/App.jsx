@@ -29,6 +29,7 @@ import RequestEsimActivition from './Pages/dealer/RequestEsimActivition';
 import UntagDevice from './Pages/tagging/UntagDevice';
 import ProtectedRoute from './Hooks/ProtectedRoute'
 import StateDistrictManagement from './Pages/StateDistrictManagement';
+import DealerForm from './Pages/forms/DealerForm';
 const theme = createTheme({
 
   palette: {
@@ -148,6 +149,11 @@ function App() {
             <Route path="/state-district-management" element={
               <ProtectedRoute allowedRoles={['devicemanufacture']}>
                 <StateDistrictManagement />
+              </ProtectedRoute>
+            } />
+            <Route path="/create-dealer" element={
+              <ProtectedRoute allowedRoles={['devicemanufacture']}>
+                <DealerForm />
               </ProtectedRoute>
             } />
           </Route>
