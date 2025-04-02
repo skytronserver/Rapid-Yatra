@@ -1,10 +1,64 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { TextField, Button, MenuItem, Grid, Typography, Chip, Checkbox, ListItemText } from '@mui/material';
 
 const DynamicForm = ({ fields, values = {}, onChange, onSubmit, submitText = 'Submit', title }) => {
-  const handleSubmit = (e) => {
+  const [errors, setErrors] = useState({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const validateField = (field, value) => {
+    try {
+      if (field.validation) {
+        field.validation.validateSync(value);
+      } else if (field.required && (!value || (Array.isArray(value) && value.length === 0))) {
+        throw new Error(`${field.label} is required`);
+      }
+      return null;
+    } catch (error) {
+      return error.message;
+    }
+  };
+
+  const validateForm = () => {
+    const newErrors = {};
+    fields.forEach(field => {
+      // Get current value for the field
+      const value = values[field.name];
+      const error = validateField(field, value);
+      if (error) {
+        newErrors[field.name] = error;
+      }
+    });
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    onSubmit(values);
+    
+    // Always validate and show all errors
+    const isValid = validateForm();
+    
+    if (!isValid) {
+      // If there are validation errors, scroll to the first error
+      const firstErrorField = document.querySelector('.Mui-error');
+      if (firstErrorField) {
+        firstErrorField.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+      return;
+    }
+
+    try {
+      setIsSubmitting(true);
+      await onSubmit(values);
+    } catch (error) {
+      console.error('Form submission error:', error);
+      setErrors(prev => ({
+        ...prev,
+        submit: error.message || 'An error occurred while submitting the form'
+      }));
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const sanitizeInput = (value, type) => {
@@ -30,30 +84,35 @@ const DynamicForm = ({ fields, values = {}, onChange, onSubmit, submitText = 'Su
   };
 
   const handleChange = (field, value) => {
+    // Clear existing error for this field
+    setErrors(prev => {
+      const newErrors = { ...prev };
+      delete newErrors[field.name];
+      return newErrors;
+    });
+
     if (field.type === 'file') {
       const fileInput = value.target ? value.target.files[0] : value;
       if (fileInput) {
-        const isValidSize = field.maxSize ? fileInput.size <= field.maxSize : true;
-        const isValidFormat = field.formats ? field.formats.includes(fileInput.type) : true;
-        
-        if (!isValidSize) {
-          console.error(`File size exceeds the maximum allowed size (${field.maxSize/1024} KB)`);
+        const error = validateField(field, fileInput);
+        if (error) {
+          setErrors(prev => ({
+            ...prev,
+            [field.name]: error
+          }));
           return;
         }
-        
-        if (!isValidFormat) {
-          console.error(`File format not supported. Allowed formats: ${field.formats?.join(', ')}`);
-          return;
-        }
-        
-        if (validateFileType(fileInput, field.accept)) {
-          onChange({ ...values, [field.name]: fileInput });
-        } else {
-          console.error('File was invalid or blocked');
-        }
+        onChange({ ...values, [field.name]: fileInput });
       }
     } else {
       const sanitizedValue = sanitizeInput(value, field.type);
+      const error = validateField(field, sanitizedValue);
+      if (error) {
+        setErrors(prev => ({
+          ...prev,
+          [field.name]: error
+        }));
+      }
       onChange({ ...values, [field.name]: sanitizedValue });
     }
   };
@@ -61,48 +120,63 @@ const DynamicForm = ({ fields, values = {}, onChange, onSubmit, submitText = 'Su
   const validateFileType = (file, acceptedTypes) => {
     if (!file) return false;
     
-    const mimeTypes = acceptedTypes.split(',').map(type => {
-      const mimeTypeMap = {
-        '.pdf': 'application/pdf',
-        '.jpg': 'image/jpeg',
-        '.jpeg': 'image/jpeg',
-        '.png': 'image/png',
-        '.xlsx': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-        '.xls': 'application/vnd.ms-excel'
-      };
-      return mimeTypeMap[type.trim()] || type.trim();
-    });
+    // Define allowed MIME types and their corresponding extensions
+    const allowedTypes = {
+      'image/jpeg': ['.jpg', '.jpeg'],
+      'image/png': ['.png'],
+      'application/pdf': ['.pdf'],
+      'application/vnd.ms-excel': ['.xls'],
+      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet': ['.xlsx']
+    };
 
+    // List of explicitly blocked MIME types
     const blockedTypes = [
       'application/x-msdownload',
       'application/x-executable',
       'application/x-msdos-program',
       'application/x-msdos-windows',
-      'application/octet-stream'
+      'application/octet-stream',
+      'application/x-javascript',
+      'text/javascript',
+      'application/javascript'
     ];
 
+    // Check if file type is blocked
     if (blockedTypes.includes(file.type)) {
-      console.error('Blocked file type:', file.type);
+      console.error('Blocked file type detected:', file.type);
       return false;
     }
 
-    if (mimeTypes.length === 0 || mimeTypes.includes('*/*')) {
-      return true;
-    }
-
-    console.log('File type:', file.type);
-    console.log('Accepted types:', mimeTypes);
-    
-    return mimeTypes.some(type => {
-      if (type.endsWith('/*')) {
-        const category = type.split('/')[0];
-        return file.type.startsWith(category + '/');
-      }
-      return file.type === type;
-    });
+    // Check if file type is allowed
+    return Object.keys(allowedTypes).includes(file.type);
   };
 
   const renderField = (field) => {
+    const commonProps = {
+      error: !!errors[field.name],
+      helperText: errors[field.name],
+      required: field.required,
+      disabled: field.disabled,
+      fullWidth: true,
+      id: field.name,
+      name: field.name,
+      label: field.label,
+      placeholder: field.placeholder,
+      InputLabelProps: { 
+        shrink: true,
+        style: { color: field.disabled ? 'rgba(0, 0, 0, 0.38)' : undefined }
+      },
+      sx: {
+        '& .MuiOutlinedInput-root': {
+          borderRadius: 2,
+          fontSize: '0.95rem',
+        },
+        '& .MuiInputLabel-root': {
+          fontSize: '0.95rem',
+        }
+      }
+    };
+
     switch (field.type) {
       case 'text':
       case 'email':
@@ -112,16 +186,10 @@ const DynamicForm = ({ fields, values = {}, onChange, onSubmit, submitText = 'Su
       case 'tel':
         return (
           <TextField
-            fullWidth
+            {...commonProps}
             type={field.type}
-            id={field.name}
-            name={field.name}
             value={values[field.name] || ''}
             onChange={(e) => handleChange(field, e.target.value)}
-            label={field.label}
-            placeholder={field.placeholder}
-            required={field.required}
-            disabled={field.disabled}
             InputProps={{
               readOnly: field.readOnly,
               inputProps: { 
@@ -129,8 +197,6 @@ const DynamicForm = ({ fields, values = {}, onChange, onSubmit, submitText = 'Su
                 pattern: field.type === 'tel' ? "[0-9]{10}" : undefined
               }
             }}
-            variant="outlined"
-            InputLabelProps={{ shrink: true }}
           />
         );
       case 'file':
@@ -153,18 +219,37 @@ const DynamicForm = ({ fields, values = {}, onChange, onSubmit, submitText = 'Su
                   height: "50px",
                   borderRadius: "10px",
                   justifyContent: "flex-start",
+                  borderColor: errors[field.name] ? 'error.main' : undefined,
+                  color: errors[field.name] ? 'error.main' : undefined
                 }}
               >
                 {field.label}
+                {field.required && " *"}
                 {" : "}
-                <span style={{ color: "#2196f3", fontStyle: "italic" }}>
+                <span style={{ 
+                  color: errors[field.name] ? "#d32f2f" : "#2196f3", 
+                  fontStyle: "italic" 
+                }}>
                   {values[field.name]?.name || ""}
                 </span>
               </Button>
             </label>
             {field.message && (
-              <div style={{ fontSize: "12px", color: "gray", marginTop: "4px" }}>
+              <div style={{ 
+                fontSize: "12px", 
+                color: "gray", 
+                marginTop: "4px" 
+              }}>
                 {field.message}
+              </div>
+            )}
+            {errors[field.name] && (
+              <div style={{ 
+                fontSize: "12px", 
+                color: "#d32f2f", 
+                marginTop: "4px" 
+              }}>
+                {errors[field.name]}
               </div>
             )}
           </div>
@@ -172,27 +257,19 @@ const DynamicForm = ({ fields, values = {}, onChange, onSubmit, submitText = 'Su
       case 'textarea':
         return (
           <TextField
-            fullWidth
+            {...commonProps}
             multiline
             rows={4}
-            id={field.name}
-            name={field.name}
             value={values[field.name] || ''}
-            onChange={(e) => handleChange(field.name, e.target.value)}
-            label={field.label}
-            placeholder={field.placeholder}
-            required={field.required}
-            variant="outlined"
+            onChange={(e) => handleChange(field, e.target.value)}
           />
         );
       case 'select':
       case 'multiselect':
         return (
           <TextField
+            {...commonProps}
             select
-            fullWidth
-            id={field.name}
-            name={field.name}
             value={field.type === 'multiselect' ? (values[field.name] || []) : (values[field.name] || '')}
             onChange={(e) => {
               const value = field.type === 'multiselect' 
@@ -201,15 +278,6 @@ const DynamicForm = ({ fields, values = {}, onChange, onSubmit, submitText = 'Su
                   : e.target.value
                 : e.target.value;
               handleChange(field, value);
-            }}
-            label={field.label}
-            placeholder={field.placeholder}
-            required={field.required}
-            disabled={field.disabled}
-            variant="outlined"
-            InputLabelProps={{ 
-              shrink: true,
-              style: { color: field.disabled ? 'rgba(0, 0, 0, 0.38)' : undefined }
             }}
             SelectProps={{
               multiple: field.type === 'multiselect',
@@ -229,7 +297,7 @@ const DynamicForm = ({ fields, values = {}, onChange, onSubmit, submitText = 'Su
                       ))}
                     </div>
                   )
-                : (selected) => field.options?.find(opt => opt.value === selected)?.label || selected,
+                : undefined,
               MenuProps: {
                 PaperProps: {
                   style: {
@@ -238,20 +306,6 @@ const DynamicForm = ({ fields, values = {}, onChange, onSubmit, submitText = 'Su
                     minWidth: '200px'
                   }
                 }
-              }
-            }}
-            sx={{
-              '& .MuiSelect-select': {
-                minHeight: '1.4375em',
-                padding: '12px 14px',
-                display: 'flex',
-                alignItems: 'center',
-                flexWrap: 'wrap',
-                gap: '4px'
-              },
-              '& .Mui-disabled': {
-                backgroundColor: 'rgba(0, 0, 0, 0.04)',
-                cursor: 'not-allowed'
               }
             }}
           >
@@ -331,6 +385,13 @@ const DynamicForm = ({ fields, values = {}, onChange, onSubmit, submitText = 'Su
             {renderField(field)}
           </Grid>
         ))}
+        {errors.submit && (
+          <Grid item xs={12}>
+            <Typography color="error" sx={{ mt: 2 }}>
+              {errors.submit}
+            </Typography>
+          </Grid>
+        )}
         <Grid 
           item 
           xs={12} 
@@ -344,6 +405,7 @@ const DynamicForm = ({ fields, values = {}, onChange, onSubmit, submitText = 'Su
             type="submit"
             variant="contained"
             color="primary"
+            disabled={isSubmitting}
             size="large"
             sx={{
               minWidth: { xs: '100%', sm: '180px' },
@@ -358,7 +420,7 @@ const DynamicForm = ({ fields, values = {}, onChange, onSubmit, submitText = 'Su
               }
             }}
           >
-            {submitText}
+            {isSubmitting ? 'Submitting...' : submitText}
           </Button>
         </Grid>
       </Grid>

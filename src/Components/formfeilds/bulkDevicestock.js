@@ -35,8 +35,8 @@ export const bulkFormField = {
         ];
         return value && allowedTypes.includes(value.type);
       })
-      .test("fileSize", "File size must be less than 5MB", (value) => {
-        return value && value.size <= 5000000;
+      .test("fileSize", "File size must be less than 512KB", (value) => {
+        return value && value.size <= 5242880;
       }),
     accept: ".xlsx,.xls",
   }
