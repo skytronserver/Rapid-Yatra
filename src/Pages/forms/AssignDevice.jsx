@@ -5,6 +5,7 @@ import { assignDeviceFormFields, assignDeviceInitials } from '../../Components/f
 import { useGetDealerListQuery, useGetDeviceStockListQuery } from '../../store/services/dropDownService';
 import { useAssignDeviceMutation } from '../../store/services/formsService';
 import { toast } from 'react-hot-toast';
+import ElegantLoader from '../../Components/Loader';
 
 const AssignDevice = () => {
   const [formValues, setFormValues] = useState(assignDeviceInitials);
@@ -63,6 +64,14 @@ const AssignDevice = () => {
     }
   };
 
+  if(isDealerLoading || isModelLoading){
+    return <ElegantLoader
+     variant="circular"
+     text="Loading..."
+     fullScreen
+     transparent
+     />
+  }
   return (
     <div className="p-4">
       <Card sx={{ padding: 3, borderRadius: 3 }}>

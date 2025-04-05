@@ -1,6 +1,7 @@
 import React from 'react';
 import DynamicTable from '../../Components/Table/DynamicTable';
 import { useGetStockListQuery } from '../../store/services/reportsService';
+import ElegantLoader from '../../Components/Loader';
 
 const StockReport = () => {
   const { data, isLoading, error } = useGetStockListQuery();
@@ -10,7 +11,12 @@ const StockReport = () => {
   }
 
   if (isLoading) {
-    return <div className="p-4">Loading stock data...</div>;
+    return <ElegantLoader
+     variant="circular"
+     text="Loading..."
+     fullScreen
+     transparent
+     />
   }
 
   const transformedData = data?.data?.map(item => ({

@@ -7,6 +7,7 @@ import { useGetEsimListQuery, useGetModelListQuery } from '../../store/services/
 import React from 'react';
 import { useCreateDeviceStockMutation } from '../../store/services/formsService';
 import toast from 'react-hot-toast';
+import ElegantLoader from '../../Components/Loader';
 
 const DeviceStock = () => {
 
@@ -99,6 +100,14 @@ const DeviceStock = () => {
     };
   });
 
+  if(isLoading || esimLoading || isCreating){
+    return <ElegantLoader
+     variant="circular"
+     text="Loading..."
+     fullScreen
+     transparent
+     />
+  }
   return (
     <div className="p-4">
       <Card sx={{ padding: 3, borderRadius: 3 }}>

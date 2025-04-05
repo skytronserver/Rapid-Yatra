@@ -14,6 +14,14 @@ import {
   InputAdornment,
   FormControl,
   InputLabel,
+  CircularProgress,
+  useTheme,
+  useMediaQuery,
+  Divider,
+  Card,
+  CardContent,
+  IconButton,
+  Tooltip,
 } from "@mui/material";
 import "ol/ol.css";
 import { Map, View } from "ol";
@@ -37,10 +45,25 @@ import {
   useDeleteRouteMutation,
   useGetRouteMutation
 } from "../../store/services/locationservices";
-import { DirectionsCar, Search, Add, Delete, Route } from "@mui/icons-material";
+import { 
+  DirectionsCar, 
+  Search, 
+  Add, 
+  Delete, 
+  Route, 
+  Map as MapIcon,
+  Clear,
+  MyLocation
+} from "@mui/icons-material";
 
 const RouteFixing = () => {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const isTablet = useMediaQuery(theme.breakpoints.down('md'));
   const [load, setLoad] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
   const [routeContent, setRouteContent] = useState("");
   const [inputValue, setInputValue] = useState("");
   const [deviceList, setDeviceList] = useState([]);
@@ -80,7 +103,12 @@ const RouteFixing = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    retriveRouteData(deviceId);
+    setIsLoading(true);
+    try {
+      await retriveRouteData(deviceId);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const retriveRouteData = async (id) => {
@@ -337,8 +365,9 @@ const RouteFixing = () => {
       return;
     }
 
+    setIsSubmitting(true);
     try {
-      // First, get the route datawww
+      // First, get the route data
       const routeData = await getRouteMutation({ 
         points: newPoints,
         device_id: deviceId
@@ -369,7 +398,7 @@ const RouteFixing = () => {
         device_id: deviceId,
         route: coordinates,
         routepoints: newPoints,
-        hash: routeData.hash || '' // Ensure hash is always defined
+        hash: routeData.hash || ''
       }).unwrap();
       
       // Update UI only after successful addition
@@ -388,6 +417,8 @@ const RouteFixing = () => {
         message: error.message || "Failed to add route. Please try again.",
         type: "error"
       });
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -408,6 +439,7 @@ const RouteFixing = () => {
       return;
     }
 
+    setIsDeleting(true);
     const data = {
       id: selectedRoute.routeId,
       device_id: deviceId,
@@ -432,6 +464,8 @@ const RouteFixing = () => {
         message: "Failed to delete route. Please try again.",
         type: "error"
       });
+    } finally {
+      setIsDeleting(false);
     }
   };
   return (
@@ -443,12 +477,16 @@ const RouteFixing = () => {
         type={alert.type}
       />
       
-      <Box sx={{ mb: 4 }}>
-        <Typography variant="h3" component="h1" sx={{ 
-          fontSize: '1.75rem', 
+      <Box sx={{ mb: 3 }}>
+        <Typography variant="h4" component="h1" sx={{ 
+          fontSize: { xs: '1.5rem', sm: '1.75rem' }, 
           fontWeight: 600,
-          color: 'primary.main' 
+          color: 'text.primary',
+          display: 'flex',
+          alignItems: 'center',
+          gap: 1
         }}>
+          <MapIcon color="primary" />
           Route Management
         </Typography>
         <Typography variant="body2" sx={{ color: 'text.secondary', mt: 1 }}>
@@ -456,167 +494,208 @@ const RouteFixing = () => {
         </Typography>
       </Box>
 
-      <Paper sx={{ p: 3, mb: 4, borderRadius: 2 }}>
-        <form onSubmit={handleSubmit}>
-          <Grid container spacing={3} alignItems="center">
-            <Grid item md={6} sm={12} xs={12}>
-              <Autocomplete
-                value={deviceList.find((item) => item.device.id === deviceId) || null}
-                onChange={handleAutocompleteChange}
-                options={inputValue ? deviceList : []}
-                getOptionLabel={(option) => option.vehicle_reg_no || ""}
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    label="Vehicle Registration Number"
-                    variant="outlined"
-                    fullWidth
-                    onChange={(e) => setInputValue(e.target.value)}
-                    InputProps={{
-                      ...params.InputProps,
-                      startAdornment: (
-                        <InputAdornment position="start">
-                          <DirectionsCar />
-                        </InputAdornment>
-                      )
-                    }}
-                  />
-                )}
-                noOptionsText="Enter Vehicle Registration Number"
-                isOptionEqualToValue={(option, value) => option.device.id === value.device.id}
-                disableClearable
-              />
+      <Card elevation={0} sx={{ mb: 3, borderRadius: 2, border: '1px solid', borderColor: 'divider' }}>
+        <CardContent sx={{ p: { xs: 2, sm: 3 } }}>
+          <form onSubmit={handleSubmit}>
+            <Grid container spacing={2} alignItems="center">
+              <Grid item xs={12} md={isTablet ? 12 : 8}>
+                <Autocomplete
+                  value={deviceList.find((item) => item.device.id === deviceId) || null}
+                  onChange={handleAutocompleteChange}
+                  options={inputValue ? deviceList : []}
+                  getOptionLabel={(option) => option.vehicle_reg_no || ""}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      label="Vehicle Registration Number"
+                      variant="outlined"
+                      fullWidth
+                      onChange={(e) => setInputValue(e.target.value)}
+                      InputProps={{
+                        ...params.InputProps,
+                        startAdornment: (
+                          <InputAdornment position="start">
+                            <DirectionsCar color="primary" />
+                          </InputAdornment>
+                        )
+                      }}
+                    />
+                  )}
+                  noOptionsText="Enter Vehicle Registration Number"
+                  isOptionEqualToValue={(option, value) => option.device.id === value.device.id}
+                  disableClearable
+                />
+              </Grid>
+              <Grid item xs={12} md={isTablet ? 12 : 4}>
+                <Button
+                  type="submit"
+                  variant="contained"
+                  color="primary"
+                  fullWidth
+                  size="large"
+                  startIcon={isLoading ? <CircularProgress size={20} color="inherit" /> : <Search />}
+                  disabled={isLoading}
+                  sx={{ height: '56px' }}
+                >
+                  {isLoading ? 'Searching...' : 'Search'}
+                </Button>
+              </Grid>
             </Grid>
-            <Grid item md={2} sm={12} xs={12}>
-              <Button
-                type="submit"
-                variant="contained"
-                color="primary"
-                fullWidth
-                size="large"
-                startIcon={<Search />}
-              >
-                Search
-              </Button>
-            </Grid>
-          </Grid>
-        </form>
-      </Paper>
+          </form>
+        </CardContent>
+      </Card>
 
       {load && (
-        <Paper sx={{ p: 3, mb: 4, borderRadius: 2 }}>
-          <Grid container spacing={3}>
-            <Grid item xs={12}>
-              <FormControl fullWidth>
-                <InputLabel>Select Route</InputLabel>
-                <Select
-                  value={selectedRoute ? `${selectedRoute.routeId}|${selectedRoute.routeRout}` : ""}
-                  onChange={handleRouteSelect}
-                  label="Select Route"
-                >
-                  <MenuItem value="" disabled>
-                    Select a route
-                  </MenuItem>
-                  {routeData.map((route) => (
-                    <MenuItem value={`${route.id}|${route.route}`} key={route.id}>
-                      <Stack direction="row" alignItems="center" spacing={1}>
-                        <Route color="primary" />
-                        <Typography>Route #{route.id}</Typography>
-                      </Stack>
+        <Card elevation={0} sx={{ mb: 3, borderRadius: 2, border: '1px solid', borderColor: 'divider' }}>
+          <CardContent sx={{ p: { xs: 2, sm: 3 } }}>
+            <Grid container spacing={3}>
+              <Grid item xs={12}>
+                <FormControl fullWidth>
+                  <InputLabel>Select Route</InputLabel>
+                  <Select
+                    value={selectedRoute ? `${selectedRoute.routeId}|${selectedRoute.routeRout}` : ""}
+                    onChange={handleRouteSelect}
+                    label="Select Route"
+                    sx={{ mb: 2 }}
+                  >
+                    <MenuItem value="" disabled>
+                      Select a route
                     </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-            </Grid>
-            <Grid item xs={12}>
-              <Stack direction="row" spacing={2}>
-                <Button 
-                  onClick={addRoute} 
-                  variant="contained" 
-                  color="primary"
-                  startIcon={<Add />}
-                  sx={{ flex: 1 }}
+                    {routeData.map((route) => (
+                      <MenuItem value={`${route.id}|${route.route}`} key={route.id}>
+                        <Stack direction="row" alignItems="center" spacing={1}>
+                          <Route color="primary" />
+                          <Typography>Route #{route.id}</Typography>
+                        </Stack>
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+              </Grid>
+              <Grid item xs={12}>
+                <Stack 
+                  direction={{ xs: 'column', sm: 'row' }} 
+                  spacing={2}
+                  divider={isMobile ? <Divider flexItem /> : null}
                 >
-                  Add New Route
-                </Button>
-                <Button
-                  onClick={delRoute}
-                  variant="outlined"
-                  color="error"
-                  startIcon={<Delete />}
-                  sx={{ flex: 1 }}
-                  disabled={!selectedRoute}
-                >
-                  Delete Route
-                </Button>
-              </Stack>
+                  <Button 
+                    onClick={addRoute} 
+                    variant="contained" 
+                    color="primary"
+                    startIcon={isSubmitting ? <CircularProgress size={20} color="inherit" /> : <Add />}
+                    disabled={isSubmitting}
+                    sx={{ flex: 1, py: 1.5 }}
+                  >
+                    {isSubmitting ? 'Adding Route...' : 'Add New Route'}
+                  </Button>
+                  <Button
+                    onClick={delRoute}
+                    variant="outlined"
+                    color="error"
+                    startIcon={isDeleting ? <CircularProgress size={20} color="inherit" /> : <Delete />}
+                    disabled={!selectedRoute || isDeleting}
+                    sx={{ flex: 1, py: 1.5 }}
+                  >
+                    {isDeleting ? 'Deleting...' : 'Delete Route'}
+                  </Button>
+                </Stack>
+              </Grid>
             </Grid>
-          </Grid>
-        </Paper>
+          </CardContent>
+        </Card>
       )}
 
-      <Paper sx={{ 
+      <Card elevation={0} sx={{ 
         borderRadius: 2, 
         overflow: 'hidden',
-        position: 'relative' 
+        position: 'relative',
+        border: '1px solid', 
+        borderColor: 'divider',
+        height: { xs: '400px', sm: '500px', md: '600px' }
       }}>
+        <Box sx={{ 
+          position: 'absolute',
+          top: 10,
+          right: 10,
+          zIndex: 1000,
+          display: 'flex',
+          gap: 1
+        }}>
+          <Tooltip title="Clear Map">
+            <IconButton 
+              onClick={() => {
+                vectorSourceRef.current.clear();
+                setNewPoints([]);
+              }}
+              sx={{ 
+                bgcolor: 'background.paper',
+                boxShadow: 1,
+                '&:hover': { bgcolor: 'background.paper' }
+              }}
+            >
+              <Clear />
+            </IconButton>
+          </Tooltip>
+          <Tooltip title="Center Map">
+            <IconButton 
+              onClick={() => {
+                if (map.current) {
+                  map.current.getView().animate({
+                    center: fromLonLat([91.829437, 26.131644]),
+                    zoom: 7,
+                    duration: 1000
+                  });
+                }
+              }}
+              sx={{ 
+                bgcolor: 'background.paper',
+                boxShadow: 1,
+                '&:hover': { bgcolor: 'background.paper' }
+              }}
+            >
+              <MyLocation />
+            </IconButton>
+          </Tooltip>
+        </Box>
         <Box ref={mapRef} sx={{ 
           width: "100%", 
-          height: "600px",
+          height: "100%",
           position: 'relative' 
-        }}>
-          <img 
-            src={`${process.env.REACT_APP_API_URL}/static/logo/inspace.png`} 
-            style={{ 
-              position: 'absolute', 
-              bottom: 16, 
-              left: 16, 
-              width: '120px', 
-              zIndex: 1000,
-              filter: 'drop-shadow(0 0 4px rgba(0,0,0,0.2))'
-            }} 
-          />
-          <img 
-            src={`${process.env.REACT_APP_API_URL}/static/logo/isro.png`}
-            style={{ 
-              position: 'absolute', 
-              top: 16, 
-              right: 16, 
-              width: '70px', 
-              zIndex: 1000,
-              filter: 'drop-shadow(0 0 4px rgba(0,0,0,0.2))'
-            }} 
-          />
-          <img 
-            src={`${process.env.REACT_APP_API_URL}/static/logo/skytron.png`}
-            style={{ 
-              position: 'absolute', 
-              bottom: 36, 
-              right: 16, 
-              width: '200px', 
-              zIndex: 1000,
-              filter: 'drop-shadow(0 0 4px rgba(0,0,0,0.2))'
-            }} 
-          />
-        </Box>
-      </Paper>
+        }} />
+      </Card>
 
       <div
         ref={overlayRef}
         className="popup-container"
         style={{ display: "none", position: "absolute", zIndex: 1000 }}
       >
-        <div
-          className="popup-menu"
-          style={{
-            backgroundColor: "white",
-            border: "1px solid black",
-            padding: "5px",
+        <Paper
+          elevation={3}
+          sx={{
+            borderRadius: 1,
+            overflow: 'hidden'
           }}
         >
-          <div id="delete">Delete</div>
-          <div id="cancel">Cancel</div>
-        </div>
+          <Box sx={{ p: 1 }}>
+            <Button 
+              id="delete" 
+              size="small" 
+              color="error" 
+              fullWidth 
+              sx={{ justifyContent: 'flex-start', mb: 0.5 }}
+            >
+              <Delete fontSize="small" sx={{ mr: 1 }} /> Delete
+            </Button>
+            <Button 
+              id="cancel" 
+              size="small" 
+              fullWidth 
+              sx={{ justifyContent: 'flex-start' }}
+            >
+              <Clear fontSize="small" sx={{ mr: 1 }} /> Cancel
+            </Button>
+          </Box>
+        </Paper>
       </div>
     </MainCard>
   );

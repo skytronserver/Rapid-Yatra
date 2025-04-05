@@ -174,7 +174,7 @@ const Login = () => {
       <Navbar page={"home"} />
 
       <div className="relative min-h-screen">
-        {screenSize.width > 1100 ? (
+        {screenSize.width > 768 ? (
           <Slider className="absolute inset-0">
             {images.map((image, index) => {
               return (
@@ -196,18 +196,18 @@ const Login = () => {
         )}
 
         <div className="relative h-full">
-          <div className="mx-auto h-full py-16 px-4 sm:max-w-xl md:max-w-full md:px-24 lg:max-w-screen-xl lg:px-8 lg:py-20">
+          <div className="mx-auto h-full py-8 sm:py-12 px-4 sm:px-6 lg:px-8">
             <div className="flex flex-col items-center md:flex-row md:justify-end h-full">
               <div className="mb-12 w-full max-w-xl xl:mb-0 xl:w-7/12 xl:pr-16 hidden md:block">
                 {/* Left side content - intentionally empty for desktop */}
               </div>
-              <div className="w-full max-w-xl md:w-5/12 md:px-8">
-                <div className="h-auto bg-opacity-40 overflow-hidden rounded-xl border-t-4 border-blue-600 bg-white p-7 shadow-2xl shadow-blue-300 sm:p-10">
-                  <h3 className="mb-4 text-xl font-bold text-blue-900 sm:mb-4 sm:text-center sm:text-2xl">
+              <div className="w-full max-w-md sm:max-w-lg md:max-w-xl lg:max-w-2xl md:ml-auto">
+                <div className="h-auto bg-opacity-40 overflow-hidden rounded-xl border-t-4 border-blue-600 bg-white p-6 sm:p-8 shadow-2xl shadow-blue-300">
+                  <h3 className="mb-6 text-xl font-bold text-blue-900 text-center sm:text-2xl">
                     Login to your Account
                   </h3>
                   <form onSubmit={handleSubmit}>
-                    <div className="mb-4 sm:mb-4">
+                    <div className="mb-4">
                       <label
                         htmlFor="phoneNumber"
                         className="mb-1 inline-block font-medium text-blue-900"
@@ -230,7 +230,7 @@ const Login = () => {
                         <p className="text-red-500 text-xs mb-1">{errors.phoneNumber}</p>
                       )}
                     </div>
-                    <div className="mb-4 sm:mb-4">
+                    <div className="mb-4">
                       <label
                         htmlFor="password"
                         className="mb-1 inline-block font-medium text-blue-900"
@@ -263,22 +263,31 @@ const Login = () => {
                       )}
                     </div>
 
-                    <div className="mb-4 sm:mb-4">
-                      <div className="flex items-center gap-4 mb-2">
-                        <div className="bg-gray-100 p-3 rounded min-h-[60px] flex items-center justify-center">
+                    <div className="mb-4">
+                      <label
+                        htmlFor="captchaReply"
+                        className="mb-1 inline-block font-medium text-blue-900"
+                      >
+                        Captcha
+                      </label>
+                      <div className="flex flex-col sm:flex-row gap-3 mb-2">
+                        <div className="bg-gray-50 p-3 rounded-lg border border-gray-200 flex-1 flex items-center justify-center min-h-[60px]">
                           {captcha.isLoaded ? (
-                            <img src={captcha.text} alt="captcha" className="h-10" />
+                            <img src={captcha.text} alt="captcha" className="h-12 w-auto object-contain" />
                           ) : (
-                            <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-600"></div>
+                            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
                           )}
                         </div>
                         <button
                           type="button"
                           onClick={fetchCaptcha}
-                          className="p-2 bg-blue-100 rounded hover:bg-blue-200 disabled:opacity-50"
+                          className="px-4 py-2 bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-100 disabled:opacity-50 disabled:hover:bg-blue-50 transition-colors duration-200 whitespace-nowrap flex items-center justify-center gap-2"
                           disabled={!captcha.isLoaded}
                         >
-                          ↻ Refresh
+                          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                            <path fillRule="evenodd" d="M4 2a1 1 0 011 1v2.101a7.002 7.002 0 0111.601 2.566 1 1 0 11-1.885.666A5.002 5.002 0 005.999 7H9a1 1 0 010 2H4a1 1 0 01-1-1V3a1 1 0 011-1zm.008 9.057a1 1 0 011.276.61A5.002 5.002 0 0014.001 13H11a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0v-2.101a7.002 7.002 0 01-11.601-2.566 1 1 0 01.61-1.276z" clipRule="evenodd" />
+                          </svg>
+                          Refresh
                         </button>
                       </div>
                       <input
@@ -308,7 +317,7 @@ const Login = () => {
                           onChange={handleTermsChange}
                         />
                         <div className="text-gray-800">
-                          <p className="">
+                          <p className="text-sm sm:text-base">
                             I accept the{" "}
                             <a
                               href="#"
@@ -327,7 +336,7 @@ const Login = () => {
                         </div>
                       </label>
                     </div>
-                    <div className="mt-4 mb-2 sm:mb-4">
+                    <div className="mt-4 mb-2">
                       <button
                         type="submit"
                         className="inline-flex h-12 w-full items-center justify-center rounded-xl bg-blue-600 px-6 font-medium tracking-wide text-white shadow-md ring-blue-200 transition duration-200 hover:bg-blue-700 focus:outline-none focus:ring"

@@ -5,6 +5,7 @@ import { bulkInitials, bulkFormField } from '../../Components/formfeilds/bulkDev
 import { useGetEsimListQuery, useGetModelListQuery } from '../../store/services/dropDownService';
 import { useBulkDeviceStockMutation } from '../../store/services/formsService';
 import toast from 'react-hot-toast';
+import ElegantLoader from '../../Components/Loader';
 
 const BulkDeviceStock = () => {
   const [formValues, setFormValues] = useState(bulkInitials);
@@ -59,7 +60,14 @@ const BulkDeviceStock = () => {
       required: field.validation?.spec?.presence === 'required'
     };
   });
-
+  if(isCreating){
+    return <ElegantLoader
+     variant="circular"
+     text="Loading..."
+     fullScreen
+     transparent
+     />
+  }
   return (
     <div className="p-4">
       <Card sx={{ padding: 3, borderRadius: 3 }}>

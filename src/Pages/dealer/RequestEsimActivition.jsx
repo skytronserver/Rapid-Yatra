@@ -22,7 +22,7 @@ import {
 import SearchIcon from "@mui/icons-material/Search";
 import { Download, Print, ViewColumn } from "@mui/icons-material";
 import toast from "react-hot-toast";
-
+import ElegantLoader from "../../Components/Loader";
 const RequestEsimActivition = () => {
   const [requestEsimActivation, { isLoading: isLoadingData }] = useRequestEsimActivationMutation();
   const [sendActivationRequest, { isLoading: isSending }] = useSendActivationRequestMutation();
@@ -99,6 +99,15 @@ const RequestEsimActivition = () => {
       toast.error(error.data?.message || "Error sending activation request");
     }
   };
+
+  if(isLoadingData || isSending){
+    return <ElegantLoader
+     variant="circular"
+     text="Loading..."
+     fullScreen
+     transparent
+     />
+  }
 
   return (
     <MainCard sx={{ boxShadow: 'none', border: 'none' }}>

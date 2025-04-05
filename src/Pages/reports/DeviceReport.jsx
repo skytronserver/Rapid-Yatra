@@ -1,6 +1,7 @@
 import React from 'react';
 import DynamicTable from '../../Components/Table/DynamicTable';
 import { useGetDealerDeviceListQuery } from '../../store/services/reportsService';
+import ElegantLoader from '../../Components/Loader';
 
 const DeviceReport = () => {
   const { data, isLoading, error } = useGetDealerDeviceListQuery();
@@ -12,7 +13,12 @@ const DeviceReport = () => {
   }
 
   if (isLoading) {
-    return <div className="p-4">Loading device data...</div>;
+    return <ElegantLoader
+     variant="circular"
+     text="Loading..."
+     fullScreen
+     transparent
+     />
   }
 
   const columns = [

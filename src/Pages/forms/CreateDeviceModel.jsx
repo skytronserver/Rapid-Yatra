@@ -6,6 +6,7 @@ import { useGetEsimListQuery } from '../../store/services/dropDownService';
 import { useCreateDeviceMutation, useDeviceModelOTPVerifyMutation } from '../../store/services/formsService';
 import toast from 'react-hot-toast';
 import OTPComponent from '../../Components/OTPComponent';
+import ElegantLoader from '../../Components/Loader';
 
 const CreateDeviceModel = () => {
   const [formValues, setFormValues] = useState(deviceModelInitials);
@@ -88,7 +89,14 @@ const CreateDeviceModel = () => {
       toast.error('An error occurred while creating the device model');
     }
   };
-
+  if(isCreating){
+    return <ElegantLoader
+     variant="circular"
+     text="Loading..."
+     fullScreen
+     transparent
+     />
+  }
   return (
     <div className="p-4">
       <Card sx={{ padding: 3, borderRadius: 3 }}>

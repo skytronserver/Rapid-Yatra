@@ -21,6 +21,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import { Download, Print, ViewColumn } from "@mui/icons-material";
 import toast from "react-hot-toast";
 import { useGetDevicesMutation, useUntagDeviceMutation } from "../../store/services/taggingService";
+import ElegantLoader from "../../Components/Loader";
 
 const UntagDevice = () => {
   const [tableData, setTableData] = useState([]);
@@ -80,7 +81,14 @@ const UntagDevice = () => {
         value.toString().toLowerCase().includes(searchTerm.toLowerCase())
     )
   );
-
+  if(isLoadingDevices){
+    return <ElegantLoader
+     variant="circular"
+     text="Loading..."
+     fullScreen
+     transparent
+     />
+  }
   return (
     <MainCard sx={{ boxShadow: 'none', border: 'none' }}>
       <Box sx={{ mb: 4 }}>

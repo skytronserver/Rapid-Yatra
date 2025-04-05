@@ -4,6 +4,7 @@ import DynamicForm from '../../Components/Form/DynamicForm';
 import { dealerInitialValues, dealerFormField } from '../../Components/formfeilds/createDealer';
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
+import ElegantLoader from '../../Components/Loader';
 // import { useCreateDealerMutation } from '../../store/services/formsService';
 
 const DealerForm = () => {
@@ -45,7 +46,14 @@ const DealerForm = () => {
     
     return fieldConfig;
   });
-
+  if(isLoading){
+    return <ElegantLoader
+     variant="circular"
+     text="Loading..."
+     fullScreen
+     transparent
+     />
+  }
   return (
     <div className="p-4">
       <Card sx={{ padding: 3, borderRadius: 3 }}>

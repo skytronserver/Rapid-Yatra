@@ -135,10 +135,6 @@ const MapComponent = ({ gpsData, width = "100%", height = "400px" }) => {
     const entryTime = new Date(data.entry_time);
     const currentTime = new Date();
     const timeDifference = calculateTimeDifference(entryTime, currentTime);
-    console.log("timediff", timeDifference);
-    console.log("data.packet_type ", data.packet_type);
-    console.log("data.ignition_status ", data.ignition_status);
-    console.log("data.speed  ", data.speed);
 
     if (data.packet_type === "EA") {
       return iconStyles.red; // EA Packet - Red Icon
@@ -216,14 +212,9 @@ const MapComponent = ({ gpsData, width = "100%", height = "400px" }) => {
   }, [gpsData, map, vectorLayer, dynamicOverlay]);
 
   return (
-    <div>
+    <div style={{ width: '100%', height: '100%', position: 'relative' }}>
       {/* Map container */}
-      <div ref={mapElement} style={{ width, height, position: 'relative' }}>
-        {/* Position logos using absolute positioning within the map container */}
-        <img src={`${process.env.REACT_APP_API_URL}/static/logo/inspace.png`} style={{ position: 'absolute', bottom: 0, left: 0, width: '120px', zIndex: 1000 }} />
-        <img src={`${process.env.REACT_APP_API_URL}/static/logo/isro.png`} style={{ position: 'absolute', top: 0, right: 0, width: '70px', zIndex: 1000 }} />
-        <img src={`${process.env.REACT_APP_API_URL}/static/logo/skytron.png`} style={{ position: 'absolute', bottom: "20px", right: 0, width: '200px', zIndex: 1000, backgroundColor: 'transparent' }} />
-      </div>
+      <div ref={mapElement} style={{ width: '100%', height: '100%', position: 'absolute', top: 0, left: 0 }}></div>
 
       {/* Overlay for displaying marker details */}
       <div ref={overlayElement} className="dynamic-overlay">

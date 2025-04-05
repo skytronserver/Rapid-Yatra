@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { TextField, Button, Typography, Box } from '@mui/material';
+import { TextField, Button, Typography, Box, CircularProgress } from '@mui/material';
 import { useResendOtpMutation } from "../store/services/loginService";
 import { toast } from 'react-hot-toast';
 
 const OTPComponent = ({ otp, handleChange, handleOTPSubmit }) => {
   const [resendOtp] = useResendOtpMutation();
   const [remainingTime, setRemainingTime] = useState(180);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -15,20 +16,24 @@ const OTPComponent = ({ otp, handleChange, handleOTPSubmit }) => {
     return () => clearInterval(timer);
   }, []);
 
-  const handleResendOtp = async () => {
-    if (remainingTime > 0) return;
+const handleResendOtp = async () => {
+  if (remainingTime > 0) return;
 
-    try {
-      await resendOtp({
-        phone_number: sessionStorage.getItem('phoneNumber'),
-        token: sessionStorage.getItem('tempToken')
-      });
-      setRemainingTime(180);
-      toast.success('OTP resent successfully');
-    } catch (error) {
-      toast.error('Error resending OTP');
-    }
-  };
+  setIsLoading(true);
+  try {
+    await resendOtp({
+      phone_number: sessionStorage.getItem('phoneNumber'),
+      token: sessionStorage.getItem('tempToken')
+    });
+    setRemainingTime(180);
+    toast.success('OTP resent successfully');
+  } catch (error) {
+    toast.error('Error resending OTP');
+  } finally {
+    setIsLoading(false); 
+  }
+};
+
 
   return (
     <Box
@@ -76,8 +81,9 @@ const OTPComponent = ({ otp, handleChange, handleOTPSubmit }) => {
             boxShadow: 1
           }
         }}
+        disabled={isLoading}
       >
-        Verify OTP
+        {isLoading ? <CircularProgress size={24} /> : 'Verify OTP'}
       </Button>
 
       <Box sx={{ textAlign: 'center', mt: 2 }}>
