@@ -33,7 +33,7 @@ const StyledAppBar = styled(AppBar)(({ theme }) => ({
 
 const Header = ({ open, toggleDrawer }) => {
   const navigate = useNavigate();
-  const user = getUserInfo();
+  const user = getUserInfo() || { name: '' };
   const [anchorEl, setAnchorEl] = useState(null);
   const openMenu = Boolean(anchorEl);
 
@@ -91,7 +91,7 @@ const Header = ({ open, toggleDrawer }) => {
                 display: { xs: 'none', sm: 'block' }
               }}
             >
-              {user.name}
+              {user?.name}
             </Typography>
             <Box
               component="img"

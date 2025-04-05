@@ -15,75 +15,111 @@ import { alpha } from '@mui/material/styles';
 // Styled Components
 const StyledDataGrid = styled(DataGrid)(({ theme }) => ({
   border: 'none',
+  backgroundColor: '#ffffff',
+  borderRadius: '16px',
+  boxShadow: '0 4px 20px rgba(0, 0, 0, 0.08)',
+  overflow: 'hidden',
+  
+  // Cell styling
   '& .MuiDataGrid-cell': {
-    borderBottom: `1px solid ${theme.palette.divider}`,
-    padding: '12px 16px',
-    fontSize: '14px',
-    fontWeight: 400,
-    color: theme.palette.text.primary,
-    lineHeight: 1.5,
-    whiteSpace: 'normal',
-    wordWrap: 'break-word',
+    borderBottom: `1px solid ${alpha(theme.palette.divider, 0.08)}`,
+    padding: '14px 20px',
+    fontSize: '13px',
+    color: theme.palette.text.secondary,
+    fontWeight: 450,
+    transition: 'background-color 0.2s ease',
     '& .MuiDataGrid-cellContent': {
       overflow: 'visible',
-      whiteSpace: 'pre-wrap',
+      whiteSpace: 'normal',
+      lineHeight: '1.5',
+      width: '100%',
+      height: '100%',
+      display: 'flex',
+      alignItems: 'center',
     },
   },
+
+  // Header styling
   '& .MuiDataGrid-columnHeaders': {
-    backgroundColor: theme.palette.background.paper,
-    borderBottom: `2px solid ${theme.palette.primary.main}`,
+    backgroundColor: alpha(theme.palette.primary.main, 0.02),
+    borderBottom: `2px solid ${alpha(theme.palette.primary.main, 0.1)}`,
     '& .MuiDataGrid-columnHeader': {
-      padding: '16px',
-      fontWeight: 700,
-      fontSize: '15px',
-      color: theme.palette.text.primary,
-      letterSpacing: '0.5px',
-      textTransform: 'uppercase',
-    },
-  },
-  '& .MuiDataGrid-row': {
-    '&:nth-of-type(odd)': {
-      backgroundColor: alpha(theme.palette.primary.main, 0.03),
-    },
-    '&:hover': {
-      backgroundColor: alpha(theme.palette.primary.main, 0.1),
-    },
-    '&.Mui-selected': {
-      backgroundColor: alpha(theme.palette.primary.main, 0.15),
-      '&:hover': {
-        backgroundColor: alpha(theme.palette.primary.main, 0.2),
+      padding: '16px 20px',
+      '& .MuiDataGrid-columnHeaderTitle': {
+        fontSize: '12px',
+        fontWeight: 600,
+        color: theme.palette.text.primary,
+        letterSpacing: '0.6px',
+        textTransform: 'uppercase',
       },
     },
   },
-  '& .MuiDataGrid-root': {
-    borderRadius: '20px',
-    boxShadow: '0 8px 32px 0 rgba(0,0,0,0.1)',
-    overflow: 'hidden',
+
+  // Row styling
+  '& .MuiDataGrid-row': {
+    '&:hover': {
+      backgroundColor: alpha(theme.palette.primary.main, 0.02),
+    },
+    '&:nth-of-type(even)': {
+      backgroundColor: alpha(theme.palette.background.default, 0.3),
+    },
   },
+
+  // Footer styling
   '& .MuiDataGrid-footerContainer': {
-    borderTop: `1px solid ${theme.palette.divider}`,
-    backgroundColor: theme.palette.background.paper,
-    padding: '16px',
+    borderTop: `1px solid ${alpha(theme.palette.divider, 0.1)}`,
+    backgroundColor: alpha(theme.palette.background.paper, 0.8),
+    backdropFilter: 'blur(8px)',
   },
-  '& .MuiDataGrid-virtualScroller': {
-    backgroundColor: theme.palette.background.paper,
+
+  // Pagination styling
+  '& .MuiTablePagination-root': {
+    color: theme.palette.text.secondary,
+    '& .MuiTablePagination-select': {
+      borderRadius: '8px',
+    },
+  },
+
+  // Remove cell selection outline
+  '& .MuiDataGrid-cell:focus, & .MuiDataGrid-cell:focus-within': {
+    outline: 'none',
+  },
+
+  // Scrollbars
+  '& ::-webkit-scrollbar': {
+    width: '6px',
+    height: '6px',
+  },
+  '& ::-webkit-scrollbar-track': {
+    background: alpha(theme.palette.primary.main, 0.04),
+    borderRadius: '8px',
+  },
+  '& ::-webkit-scrollbar-thumb': {
+    background: alpha(theme.palette.primary.main, 0.2),
+    borderRadius: '8px',
+    '&:hover': {
+      background: alpha(theme.palette.primary.main, 0.3),
+    },
   },
 }));
 
+// Styled toolbar buttons
 const StyledToolbarButton = styled((props) => {
   const Component = props.component;
   return <Component {...props} />;
 })(({ theme }) => ({
-  backgroundColor: 'transparent',
-  color: theme.palette.text.primary,
-  border: `1px solid ${theme.palette.divider}`,
+  backgroundColor: alpha(theme.palette.background.paper, 0.8),
+  color: theme.palette.text.secondary,
+  border: `1px solid ${alpha(theme.palette.divider, 0.1)}`,
   borderRadius: '8px',
   padding: '8px 16px',
-  fontSize: '14px',
+  fontSize: '13px',
   fontWeight: 500,
-  '&:hover': { 
+  transition: 'all 0.2s ease',
+  '&:hover': {
     backgroundColor: alpha(theme.palette.primary.main, 0.08),
-    borderColor: theme.palette.primary.main,
+    color: theme.palette.primary.main,
+    borderColor: alpha(theme.palette.primary.main, 0.2),
   },
 }));
 
@@ -94,15 +130,14 @@ const CustomToolbar = () => {
   return (
     <GridToolbarContainer
       sx={{
-        p: 3,
-        bgcolor: theme.palette.background.paper,
-        borderBottom: `1px solid ${theme.palette.divider}`,
-        display: 'flex',
+        padding: '20px 24px',
+        backgroundColor: alpha(theme.palette.background.paper, 0.8),
+        backdropFilter: 'blur(8px)',
+        borderBottom: `1px solid ${alpha(theme.palette.divider, 0.1)}`,
         gap: 2,
-        flexWrap: 'wrap',
       }}
     >
-      <Box sx={{ display: 'flex', gap: 1.5 }}>
+      <Box sx={{ display: 'flex', gap: 1 }}>
         <StyledToolbarButton component={GridToolbarColumnsButton} />
         <StyledToolbarButton component={GridToolbarFilterButton} />
         <StyledToolbarButton component={GridToolbarExport} />
@@ -111,23 +146,23 @@ const CustomToolbar = () => {
       <GridToolbarQuickFilter
         debounceMs={500}
         sx={{
-          width: { xs: '100%', sm: 'auto', minWidth: '300px' },
           '& .MuiInputBase-root': {
-            height: '45px',
+            backgroundColor: alpha(theme.palette.background.paper, 0.8),
+            border: `1px solid ${alpha(theme.palette.divider, 0.15)}`,
             borderRadius: '8px',
-            border: `1px solid ${theme.palette.divider}`,
-            bgcolor: theme.palette.background.paper,
-            '&:hover': {
+            padding: '4px 16px',
+            transition: 'all 0.2s ease',
+            '&:hover, &:focus-within': {
               borderColor: theme.palette.primary.main,
+              backgroundColor: '#ffffff',
+              boxShadow: `0 0 0 3px ${alpha(theme.palette.primary.main, 0.1)}`,
             },
             '& .MuiInputBase-input': {
-              padding: '8px 16px',
-              fontSize: '14px',
-              fontWeight: 400,
-              color: theme.palette.text.primary,
+              fontSize: '13px',
+              padding: '8px 12px',
               '&::placeholder': {
                 color: theme.palette.text.secondary,
-                opacity: 0.8,
+                opacity: 0.7,
               },
             },
           },
@@ -135,6 +170,18 @@ const CustomToolbar = () => {
       />
     </GridToolbarContainer>
   );
+};
+
+// Update action buttons styling
+const actionButtonStyle = {
+  padding: '8px',
+  borderRadius: '8px',
+  backgroundColor: 'transparent',
+  transition: 'all 0.2s ease',
+  '&:hover': {
+    transform: 'translateY(-1px)',
+    boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+  },
 };
 
 const DynamicTable = ({
@@ -183,17 +230,34 @@ const DynamicTable = ({
       ...column,
       flex: 1,
       minWidth: 150,
-      renderCell: (params) => (
-        <div style={{ 
-          width: '100%',
-          height: '100%',
-          whiteSpace: 'pre-wrap',
-          overflow: 'visible',
-          lineHeight: '1.5'
-        }}>
-          {params.value}
-        </div>
-      )
+      renderCell: (params) => {
+        let displayValue = params.value;
+
+        if (typeof displayValue === 'string' && displayValue.match(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}/)) {
+          displayValue = new Date(displayValue).toLocaleString();
+        }
+
+        if (typeof displayValue === 'string') {
+          displayValue = displayValue.replace(/_/g, ' ');
+        }
+
+        return (
+          <Box sx={{ 
+            width: '100%',
+            height: '100%',
+            whiteSpace: 'normal',
+            wordBreak: 'break-word',
+            overflow: 'visible',
+            lineHeight: '1.5',
+            display: 'flex',
+            alignItems: 'center',
+            py: 1,
+            px: 0.5,
+          }}>
+            {displayValue}
+          </Box>
+        );
+      }
     }));
 
     if (onView || onEdit || onDelete) {
@@ -202,20 +266,11 @@ const DynamicTable = ({
         {
           field: 'actions',
           headerName: 'Actions',
-          sortable: false,
-          width: {
-            xs: 120, // smaller screens
-            sm: 150, // medium screens
-            md: 180, // larger screens
-          },
+          width: 140,
           renderCell: (params) => (
             <Box sx={{
               display: 'flex',
-              gap: { xs: 0.5, sm: 1, md: 1.5 },
-              opacity: 0.85,
-              transition: 'opacity 0.2s',
-              '&:hover': { opacity: 1 },
-              flexWrap: 'nowrap',
+              gap: 1,
               justifyContent: 'center',
               width: '100%'
             }}>
@@ -224,15 +279,15 @@ const DynamicTable = ({
                   size="small"
                   onClick={() => onView(params.row)}
                   sx={{
-                    color: 'primary.main',
-                    backgroundColor: alpha(theme.palette.primary.main, 0.1),
-                    '&:hover': { 
-                      backgroundColor: alpha(theme.palette.primary.main, 0.2),
+                    ...actionButtonStyle,
+                    color: theme.palette.primary.main,
+                    '&:hover': {
+                      ...actionButtonStyle['&:hover'],
+                      backgroundColor: alpha(theme.palette.primary.main, 0.08),
                     },
-                    padding: { xs: '4px', sm: '8px' }
                   }}
                 >
-                  <Visibility sx={{ fontSize: { xs: '1rem', sm: '1.25rem' } }} />
+                  <Visibility sx={{ fontSize: '1.1rem' }} />
                 </IconButton>
               )}
               {onEdit && (
@@ -240,15 +295,15 @@ const DynamicTable = ({
                   size="small"
                   onClick={() => onEdit(params.row)}
                   sx={{
-                    color: 'warning.main',
-                    backgroundColor: alpha(theme.palette.warning.main, 0.1),
-                    '&:hover': { 
-                      backgroundColor: alpha(theme.palette.warning.main, 0.2),
+                    ...actionButtonStyle,
+                    color: theme.palette.warning.main,
+                    '&:hover': {
+                      ...actionButtonStyle['&:hover'],
+                      backgroundColor: alpha(theme.palette.warning.main, 0.08),
                     },
-                    padding: { xs: '4px', sm: '8px' }
                   }}
                 >
-                  <Edit sx={{ fontSize: { xs: '1rem', sm: '1.25rem' } }} />
+                  <Edit sx={{ fontSize: '1.1rem' }} />
                 </IconButton>
               )}
               {onDelete && (
@@ -256,15 +311,15 @@ const DynamicTable = ({
                   size="small"
                   onClick={() => onDelete(params.row)}
                   sx={{
-                    color: 'error.main',
-                    backgroundColor: alpha(theme.palette.error.main, 0.1),
-                    '&:hover': { 
-                      backgroundColor: alpha(theme.palette.error.main, 0.2),
+                    ...actionButtonStyle,
+                    color: theme.palette.error.main,
+                    '&:hover': {
+                      ...actionButtonStyle['&:hover'],
+                      backgroundColor: alpha(theme.palette.error.main, 0.08),
                     },
-                    padding: { xs: '4px', sm: '8px' }
                   }}
                 >
-                  <Delete sx={{ fontSize: { xs: '1rem', sm: '1.25rem' } }} />
+                  <Delete sx={{ fontSize: '1.1rem' }} />
                 </IconButton>
               )}
             </Box>
@@ -279,7 +334,7 @@ const DynamicTable = ({
     <Box sx={{
       height: '100%',
       width: '100%',
-      p: { xs: 0.5, sm: 1, md: 2 }, // Responsive padding
+      p: { xs: 0.5, sm: 1, md: 2 },
       bgcolor: 'background.default',
     }}>
       {title && (
@@ -327,16 +382,20 @@ const DynamicTable = ({
           }
         }}
         getRowHeight={() => 'auto'}
-        getEstimatedRowHeight={() => 100}
+        getEstimatedRowHeight={() => 60}
+        disableRowSelectionOnClick
+        autoHeight
         sx={{
-          // Add responsive styles for the grid
           '& .MuiDataGrid-cell': {
             padding: { xs: '8px', sm: '12px 16px' },
-            fontSize: { xs: '12px', sm: '14px' }
+            fontSize: { xs: '12px', sm: '13px' }
           },
           '& .MuiDataGrid-columnHeader': {
             padding: { xs: '8px', sm: '16px' },
-            fontSize: { xs: '13px', sm: '15px' }
+            fontSize: { xs: '12px', sm: '13px' }
+          },
+          '& .MuiDataGrid-main': {
+            overflow: 'hidden'
           }
         }}
       />
