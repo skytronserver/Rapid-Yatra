@@ -22,6 +22,7 @@ import {
   CardContent,
   IconButton,
   Tooltip,
+  Avatar,
 } from "@mui/material";
 import "ol/ol.css";
 import { Map, View } from "ol";
@@ -91,11 +92,49 @@ const RouteFixing = () => {
 
   useEffect(() => {
     const fetchDeviceList = async () => {
+      // Check if user is authenticated
+      const token = sessionStorage.getItem('oAuthToken');
+      if (!token) {
+        setAlert({
+          open: true,
+          message: "You are not logged in. Please log in to access this feature.",
+          type: "error"
+        });
+        return;
+      }
+
       try {
         const response = await tagOwnerList();
-        setDeviceList(response.data);
+        if (response && response.data) {
+          setDeviceList(response.data);
+        } else {
+          console.error("Invalid response format from tagOwnerList API");
+          setDeviceList([]);
+        }
       } catch (error) {
         console.error("Error fetching device list:", error);
+        setDeviceList([]);
+        
+        // Handle specific error cases
+        if (error.status === 403) {
+          setAlert({
+            open: true,
+            message: "You don't have permission to access this feature. Please contact your administrator.",
+            type: "error"
+          });
+        } else if (error.status === 401) {
+          setAlert({
+            open: true,
+            message: "Your session has expired. Please log in again.",
+            type: "error"
+          });
+        } else {
+          setAlert({
+            open: true,
+            message: "Failed to load vehicle list. Please try again later.",
+            type: "error"
+          });
+        }
       }
     };
     fetchDeviceList();
@@ -486,7 +525,15 @@ const RouteFixing = () => {
           alignItems: 'center',
           gap: 1
         }}>
-          <MapIcon color="primary" />
+        <Avatar 
+            sx={{ 
+              bgcolor: theme.palette.primary.main,
+              width: 48,
+              height: 48
+            }}
+          >
+            <MapIcon fontSize="large" />
+          </Avatar>
           Route Management
         </Typography>
         <Typography variant="body2" sx={{ color: 'text.secondary', mt: 1 }}>
@@ -500,9 +547,9 @@ const RouteFixing = () => {
             <Grid container spacing={2} alignItems="center">
               <Grid item xs={12} md={isTablet ? 12 : 8}>
                 <Autocomplete
-                  value={deviceList.find((item) => item.device.id === deviceId) || null}
+                  value={deviceList && deviceList.length > 0 ? deviceList.find((item) => item.device && item.device.id === deviceId) || null : null}
                   onChange={handleAutocompleteChange}
-                  options={inputValue ? deviceList : []}
+                  options={inputValue && deviceList && deviceList.length > 0 ? deviceList : []}
                   getOptionLabel={(option) => option.vehicle_reg_no || ""}
                   renderInput={(params) => (
                     <TextField

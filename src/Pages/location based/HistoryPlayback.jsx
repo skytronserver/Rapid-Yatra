@@ -12,13 +12,15 @@ import {
   Typography, 
   Paper,
   InputAdornment,
-  Stack 
+  Stack, 
+  Avatar
 } from '@mui/material';
 import { 
   DirectionsCar, 
   CalendarToday, 
   Search,
-  History 
+  History,
+  Map as MapIcon
 } from '@mui/icons-material';
 import { useGetVehiclesQuery } from '../../store/services/locationservices';
 
@@ -76,8 +78,20 @@ const HistoryPlayback = () => {
         <Typography variant="h3" sx={{ 
           fontSize: '1.75rem', 
           fontWeight: 600,
-          color: 'primary.main' 
+          color: 'text.primary', 
+          display: 'flex',
+          alignItems: 'center',
+          gap: 1
         }}>
+           <Avatar 
+            sx={{ 
+              bgcolor: 'primary.main',
+              width: 48,
+              height: 48
+            }}
+          >
+            <MapIcon fontSize="large" />
+          </Avatar>
           Vehicle History Playback
         </Typography>
         <Typography variant="body2" sx={{ color: 'text.secondary', mt: 1 }}>

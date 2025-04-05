@@ -219,7 +219,6 @@ const GPSHistoryMap = ({
         data: entry,
       });
       var col = "gray";
-      console.log(entry.ps);
       if (entry.ps == "EM") { col = "red" }
 
 
@@ -274,6 +273,8 @@ const GPSHistoryMap = ({
   };
 
   const displayLocationData = (data, coordinates) => {
+    console.log(data,'data')
+    console.log(coordinates,'coordinates')
     if (data) {
       const content = `
         <h4>Location Info</h4>

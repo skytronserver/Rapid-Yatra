@@ -22,6 +22,10 @@ import {
   Card,
   CardContent,
   Fade,
+  Container,
+  Stack,
+  Badge,
+  Avatar,
 } from "@mui/material";
 import MainCard from "../../ui-component/cards/MainCard";
 import MapComponent from "./LiveMap";
@@ -31,8 +35,9 @@ import { formatDateTime } from "../../helper";
 import CircularProgress from '@mui/material/CircularProgress';
 import "./tabstyle.css";
 import { useGetLiveTrackingMutation, useGetLiveTrackingQuery } from "../../store/services/locationservices";
-import { DirectionsCar, Close, FilterAlt, Refresh } from "@mui/icons-material";
+import { DirectionsCar, Close, FilterAlt, Refresh, LocationOn, Speed, AccessTime, BatteryChargingFull } from "@mui/icons-material";
 import ElegantLoader from "../../Components/Loader";
+import { Map as MapIcon } from '@mui/icons-material';
 
 const LiveTracking = () => {
   const theme = useTheme();
@@ -187,198 +192,273 @@ const LiveTracking = () => {
   return (
     <MainCard>
       {/* Header section */}
-      <Box sx={{ mb: 3 }}>
-        <Typography variant="h3" sx={{ 
-          fontSize: { xs: '1.5rem', sm: '1.75rem' }, 
-          fontWeight: 600,
-          color: 'text.primary',
-          mb: 0.5
+      <Box sx={{ 
+        mb: 4, 
+        display: 'flex', 
+        flexDirection: 'column',
+        alignItems: 'flex-start',
+        gap: 1
+      }}>
+        <Box sx={{ 
+          display: 'flex', 
+          alignItems: 'center', 
+          gap: 1.5,
+          mb: 1
         }}>
-          Live Vehicle Tracking
-        </Typography>
-        <Typography variant="body2" sx={{ color: 'text.secondary'}}>
-          Monitor your vehicles in real-time
-        </Typography>
+          <Avatar 
+            sx={{ 
+              bgcolor: theme.palette.primary.main,
+              width: 48,
+              height: 48
+            }}
+          >
+            <MapIcon fontSize="large" />
+          </Avatar>
+          <Box>
+            <Typography variant="h3" sx={{ 
+              fontSize: { xs: '1.5rem', sm: '1.75rem' }, 
+              fontWeight: 700,
+              color: 'text.primary',
+              lineHeight: 1.2
+            }}>
+              Live Vehicle Tracking
+            </Typography>
+            <Typography variant="body2" sx={{ 
+              color: 'text.secondary',
+              mt: 0.5
+            }}>
+              Monitor your vehicles in real-time
+            </Typography>
+          </Box>
+        </Box>
       </Box>
 
       {/* Main content */}
       <Grid container spacing={3}>
         {/* Left column - Controls and vehicle list */}
         <Grid item xs={12} md={4}>
-          {/* Search box */}
-          <Paper sx={{ p: 2, mb: 2, borderRadius: 2 }}>
-            <form onSubmit={handleSubmit}>
-              <TextField
-                fullWidth
-                placeholder="Search by vehicle registration number"
-                type="text"
-                value={vehicleNo}
-                name="vehicleNo"
-                onChange={handleInput}
-                variant="outlined"
-                size="small"
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <DirectionsCar color="action" />
-                    </InputAdornment>
-                  ),
-                  endAdornment: (
-                    <Button
-                      type="submit"
-                      variant="contained"
-                      sx={{ 
-                        borderRadius: '8px',
-                        minWidth: 'auto',
-                        p: 1
-                      }}
-                    >
-                      <SearchIcon />
-                    </Button>
-                  )
-                }}
-              />
-            </form>
-          </Paper>
-
-          {/* Status filters */}
-          <Paper sx={{ p: 2, mb: 2, borderRadius: 2 }}>
-            <Box sx={{ 
-              display: 'flex', 
-              justifyContent: 'space-between', 
-              alignItems: 'center',
-              mb: 1
+          <Stack spacing={3}>
+            {/* Search box */}
+            <Paper sx={{ 
+              p: 2.5, 
+              borderRadius: 2,
+              boxShadow: theme.shadows[2],
+              transition: 'all 0.3s ease',
+              '&:hover': {
+                boxShadow: theme.shadows[4]
+              }
             }}>
-              <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>
-                Vehicle Status
-              </Typography>
-              <Chip 
-                label={typeFilter === "default" ? "All Vehicles" : typeFilter} 
-                size="small"
-                color="primary"
-                variant="outlined"
-                onDelete={typeFilter !== "default" ? () => filterByType("default") : undefined}
-              />
-            </Box>
-            <Grid container spacing={1}>
-              {iconData && iconData.map((item, index) => (
-                <Grid item xs={4} key={index}>
-                  <Box
-                    onClick={() => filterByType(item.key)}
-                    sx={{
-                      display: 'flex',
-                      flexDirection: 'column',
-                      alignItems: 'center',
-                      cursor: 'pointer',
-                      p: 1,
-                      borderRadius: 1,
-                      transition: 'all 0.2s',
-                      '&:hover': {
-                        bgcolor: 'action.hover',
-                      },
-                      ...(typeFilter === item.key && {
-                        bgcolor: 'primary.lighter',
-                      })
-                    }}
-                  >
-                    <img 
-                      src={item.iconUrl} 
-                      alt={item.text} 
-                      style={{ width: '24px', height: '24px' }}
-                    />
-                    <Typography 
-                      variant="caption" 
-                      sx={{ 
-                        mt: 0.5, 
-                        textAlign: 'center',
-                        fontSize: '0.7rem',
-                        fontWeight: typeFilter === item.key ? 600 : 400
-                      }}
-                    >
-                      {item.text}
-                    </Typography>
-                  </Box>
-                </Grid>
-              ))}
-            </Grid>
-          </Paper>
-
-          {/* Vehicle list */}
-          <Paper sx={{ 
-            borderRadius: 2,
-            overflow: 'hidden',
-            height: 'calc(100vh - 350px)',
-            minHeight: '300px'
-          }}>
-            <Box sx={{ 
-              p: 2, 
-              borderBottom: '1px solid',
-              borderColor: 'divider',
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center'
-            }}>
-              <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>
-                Vehicle List
-              </Typography>
-              <Typography variant="caption" color="text.secondary">
-                {tableDataTop.length} vehicles
-              </Typography>
-            </Box>
-            <TableContainer sx={{ height: 'calc(100% - 50px)' }}>
-              <Table size="small" stickyHeader>
-                <TableBody>
-                  {tableDataTop.length > 0 ? (
-                    tableDataTop.map((row) =>
-                      checkType(typeFilter, row) && (
-                        <TableRow 
-                          key={row.id}
-                          onClick={() => handleButtonClick(row.id)}
-                          sx={{
-                            cursor: 'pointer',
-                            transition: 'all 0.2s',
-                            '&:hover': {
-                              bgcolor: 'action.hover',
-                            },
-                            ...(selectedId === row.id && {
-                              bgcolor: 'primary.lighter',
-                            })
-                          }}
-                        >
-                          <TableCell sx={{
-                            display: 'flex',
-                            alignItems: 'center',
-                            gap: 2,
-                            border: 'none',
-                            py: 1.5
-                          }}>
-                            <img 
-                              src={getIconStyle(row)} 
-                              style={{ width: '20px', height: '20px' }}
-                            />
-                            <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-                              <Typography variant="body2" sx={{ fontWeight: selectedId === row.id ? 600 : 400 }}>
-                                {row.vehicle_registration_number}
-                              </Typography>
-                              <Typography variant="caption" color="text.secondary">
-                                {formatDateTime(row.entry_time)}
-                              </Typography>
-                            </Box>
-                          </TableCell>
-                        </TableRow>
-                      )
+              <form onSubmit={handleSubmit}>
+                <TextField
+                  fullWidth
+                  placeholder="Search by vehicle registration number"
+                  type="text"
+                  value={vehicleNo}
+                  name="vehicleNo"
+                  onChange={handleInput}
+                  variant="outlined"
+                  size="small"
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <DirectionsCar color="primary" />
+                      </InputAdornment>
+                    ),
+                    endAdornment: (
+                      <Button
+                        type="submit"
+                        variant="contained"
+                        sx={{ 
+                          borderRadius: '8px',
+                          minWidth: 'auto',
+                          p: 1,
+                          boxShadow: 'none',
+                          '&:hover': {
+                            boxShadow: 'none'
+                          }
+                        }}
+                      >
+                        <SearchIcon />
+                      </Button>
                     )
-                  ) : (
-                    <TableRow>
-                      <TableCell sx={{ textAlign: 'center', py: 4 }}>
-                        <CircularProgress size={24} />
-                      </TableCell>
-                    </TableRow>
-                  )}
-                </TableBody>
-              </Table>
-            </TableContainer>
-          </Paper>
+                  }}
+                />
+              </form>
+            </Paper>
+
+            {/* Status filters */}
+            <Paper sx={{ 
+              p: 2.5, 
+              borderRadius: 2,
+              boxShadow: theme.shadows[2],
+              transition: 'all 0.3s ease',
+              '&:hover': {
+                boxShadow: theme.shadows[4]
+              }
+            }}>
+              <Box sx={{ 
+                display: 'flex', 
+                justifyContent: 'space-between', 
+                alignItems: 'center',
+                mb: 2
+              }}>
+                <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>
+                  Vehicle Status
+                </Typography>
+                <Chip 
+                  label={typeFilter === "default" ? "All Vehicles" : typeFilter} 
+                  size="small"
+                  color="primary"
+                  variant="outlined"
+                  onDelete={typeFilter !== "default" ? () => filterByType("default") : undefined}
+                />
+              </Box>
+              <Grid container spacing={1.5}>
+                {iconData && iconData.map((item, index) => (
+                  <Grid item xs={4} key={index}>
+                    <Box
+                      onClick={() => filterByType(item.key)}
+                      sx={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        cursor: 'pointer',
+                        p: 1.5,
+                        borderRadius: 2,
+                        transition: 'all 0.2s',
+                        '&:hover': {
+                          bgcolor: 'action.hover',
+                          transform: 'translateY(-2px)'
+                        },
+                        ...(typeFilter === item.key && {
+                          bgcolor: 'primary.lighter',
+                          boxShadow: theme.shadows[2]
+                        })
+                      }}
+                    >
+                      <img 
+                        src={item.iconUrl} 
+                        alt={item.text} 
+                        style={{ width: '28px', height: '28px' }}
+                      />
+                      <Typography 
+                        variant="caption" 
+                        sx={{ 
+                          mt: 1, 
+                          textAlign: 'center',
+                          fontSize: '0.75rem',
+                          fontWeight: typeFilter === item.key ? 600 : 400
+                        }}
+                      >
+                        {item.text}
+                      </Typography>
+                    </Box>
+                  </Grid>
+                ))}
+              </Grid>
+            </Paper>
+
+            {/* Vehicle list */}
+            <Paper sx={{ 
+              borderRadius: 2,
+              overflow: 'hidden',
+              height: isMobile ? '400px' : 'calc(100vh - 380px)',
+              minHeight: '300px',
+              maxHeight: '600px',
+              boxShadow: theme.shadows[2],
+              transition: 'all 0.3s ease',
+              '&:hover': {
+                boxShadow: theme.shadows[4]
+              }
+            }}>
+              <Box sx={{ 
+                p: 2, 
+                borderBottom: '1px solid',
+                borderColor: 'divider',
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                bgcolor: 'background.paper'
+              }}>
+                <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>
+                  Vehicle List
+                </Typography>
+                <Badge 
+                  badgeContent={tableDataTop.length} 
+                  color="primary"
+                  sx={{ '& .MuiBadge-badge': { fontSize: '0.8rem' } }}
+                >
+                  <DirectionsCar color="action" />
+                </Badge>
+              </Box>
+              <TableContainer sx={{ height: 'calc(100% - 60px)' }}>
+                <Table size="small" stickyHeader>
+                  <TableBody>
+                    {tableDataTop.length > 0 ? (
+                      tableDataTop.map((row) =>
+                        checkType(typeFilter, row) && (
+                          <TableRow 
+                            key={row.id}
+                            onClick={() => handleButtonClick(row.id)}
+                            sx={{
+                              cursor: 'pointer',
+                              transition: 'all 0.2s',
+                              '&:hover': {
+                                bgcolor: 'action.hover',
+                              },
+                              ...(selectedId === row.id && {
+                                bgcolor: 'primary.lighter',
+                                boxShadow: theme.shadows[1]
+                              })
+                            }}
+                          >
+                            <TableCell sx={{
+                              display: 'flex',
+                              alignItems: 'center',
+                              gap: 2,
+                              border: 'none',
+                              py: 1.5
+                            }}>
+                              <Avatar 
+                                sx={{ 
+                                  width: 32, 
+                                  height: 32,
+                                  bgcolor: 'background.paper',
+                                  boxShadow: theme.shadows[1]
+                                }}
+                              >
+                                <img 
+                                  src={getIconStyle(row)} 
+                                  style={{ width: '20px', height: '20px' }}
+                                />
+                              </Avatar>
+                              <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+                                <Typography variant="body2" sx={{ 
+                                  fontWeight: selectedId === row.id ? 600 : 500,
+                                  color: selectedId === row.id ? 'primary.main' : 'text.primary'
+                                }}>
+                                  {row.vehicle_registration_number}
+                                </Typography>
+                                <Typography variant="caption" color="text.secondary">
+                                  {formatDateTime(row.entry_time)}
+                                </Typography>
+                              </Box>
+                            </TableCell>
+                          </TableRow>
+                        )
+                      )
+                    ) : (
+                      <TableRow>
+                        <TableCell sx={{ textAlign: 'center', py: 4 }}>
+                          <CircularProgress size={24} />
+                        </TableCell>
+                      </TableRow>
+                    )}
+                  </TableBody>
+                </Table>
+              </TableContainer>
+            </Paper>
+          </Stack>
         </Grid>
 
         {/* Right column - Map */}
@@ -386,10 +466,16 @@ const LiveTracking = () => {
           <Paper sx={{ 
             borderRadius: 2,
             overflow: 'hidden',
-            height: 'calc(100vh - 200px)',
-            minHeight: '400px',
+            height: isMobile ? '500px' : 'calc(100vh - 250px)',
+            minHeight: '450px',
+            maxHeight: '800px',
             display: 'flex',
-            flexDirection: 'column'
+            flexDirection: 'column',
+            boxShadow: theme.shadows[2],
+            transition: 'all 0.3s ease',
+            '&:hover': {
+              boxShadow: theme.shadows[4]
+            }
           }}>
             <Box sx={{ 
               p: 2, 
@@ -397,11 +483,15 @@ const LiveTracking = () => {
               borderColor: 'divider',
               display: 'flex',
               justifyContent: 'space-between',
-              alignItems: 'center'
+              alignItems: 'center',
+              bgcolor: 'background.paper'
             }}>
-              <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>
-                Live Map
-              </Typography>
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                <LocationOn color="primary" />
+                <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>
+                  Live Map
+                </Typography>
+              </Box>
               <Box sx={{ display: 'flex', gap: 1 }}>
                 {selectedId && (
                   <Chip 
@@ -409,6 +499,7 @@ const LiveTracking = () => {
                     size="small"
                     color="primary"
                     variant="outlined"
+                    icon={<DirectionsCar />}
                   />
                 )}
                 <Button
@@ -444,10 +535,15 @@ const LiveTracking = () => {
       {/* Details panel */}
       <Fade in={showDetails && selectedId}>
         <Paper sx={{ 
-          mt: 3, 
+          mt: 4, 
           borderRadius: 2, 
           overflow: 'hidden',
-          position: 'relative'
+          position: 'relative',
+          boxShadow: theme.shadows[3],
+          transition: 'all 0.3s ease',
+          '&:hover': {
+            boxShadow: theme.shadows[5]
+          }
         }}>
           <Box sx={{ 
             p: 2, 
@@ -455,12 +551,23 @@ const LiveTracking = () => {
             borderColor: 'divider',
             display: 'flex',
             justifyContent: 'space-between',
-            alignItems: 'center'
+            alignItems: 'center',
+            bgcolor: 'background.paper'
           }}>
-            <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>
-              Vehicle Details
-            </Typography>
-            <IconButton size="small" onClick={handleCloseDetails}>
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+              <DirectionsCar color="primary" />
+              <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>
+                Vehicle Details
+              </Typography>
+            </Box>
+            <IconButton 
+              size="small" 
+              onClick={handleCloseDetails}
+              sx={{ 
+                bgcolor: 'background.paper',
+                '&:hover': { bgcolor: 'action.hover' }
+              }}
+            >
               <Close fontSize="small" />
             </IconButton>
           </Box>
@@ -475,7 +582,8 @@ const LiveTracking = () => {
                         sx={{
                           bgcolor: 'primary.lighter',
                           fontWeight: 600,
-                          py: 1
+                          py: 1.5,
+                          fontSize: '0.875rem'
                         }}
                       >
                         {keyMapping[key]}
@@ -486,9 +594,9 @@ const LiveTracking = () => {
               <TableBody>
                 {filteredData.length > 0 ? (
                   filteredData.map((row, rowIndex) => (
-                    <TableRow key={rowIndex}>
+                    <TableRow key={rowIndex} hover>
                       {Object.keys(keyMapping).map((key, cellIndex) => (
-                        <TableCell key={cellIndex} sx={{ py: 1 }}>
+                        <TableCell key={cellIndex} sx={{ py: 1.5 }}>
                           {fullText?.[row[key]] || 
                            (isoDatePattern.test(row[key]) && formatDateTime(row[key])) || 
                            row[key] || ""}
