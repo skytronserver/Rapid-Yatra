@@ -221,7 +221,7 @@ const Login = () => {
 
         <div className="relative h-auto ">
           {/* Content container - positioned relative to allow absolute positioning of children */}
-          <div className="mx-auto h-full py-[1rem] sm:py-[3rem] px-2 sm:px-3 lg:px-32">
+          <div className="mx-auto h-full py-[1rem] sm:py-[1.5rem] px-2 sm:px-3 lg:px-32">
             {/* Main content wrapper - controls overall padding and height */}
             <div className="flex flex-col md:flex-row md:justify-end h-full">
               {/* Left side spacer - hidden on mobile, visible on md+ screens */}
