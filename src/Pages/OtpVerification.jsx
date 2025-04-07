@@ -12,6 +12,7 @@ import {
   Typography,
   CircularProgress
 } from '@mui/material';
+import logo from "../Images/logo.png";
 
 const OtpVerification = () => {
   const navigate = useNavigate();
@@ -88,9 +89,13 @@ const OtpVerification = () => {
   };
 
   return (
+    <>
+    <div className="bg-slate-800 h-[2rem] py-2 px-10">
+    <img className=" h-16 w-64" src={logo} alt={"Mapwala"} />
+    </div>
     <Box
       sx={{
-        minHeight: '100vh',
+        minHeight: '80vh',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
@@ -176,6 +181,7 @@ const OtpVerification = () => {
         </CardContent>
       </Card>
     </Box>
+    </>
   );
 };
 

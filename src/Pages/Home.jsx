@@ -9,10 +9,9 @@ import {
   Legend,
   ArcElement,
 } from 'chart.js';
-import { Box, Card, CardContent, Grid, Typography, Paper, CircularProgress } from '@mui/material';
+import { Box, Card, CardContent, Grid, Typography, Paper, useTheme, useMediaQuery } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { getUserInfo } from '../helper';
-import { useState, useEffect } from 'react';
 // Register ChartJS components
 ChartJS.register(
   CategoryScale,
@@ -24,52 +23,93 @@ ChartJS.register(
   ArcElement
 );
 
-// Add bar chart options
-const barOptions = {
+// Add bar chart options with responsive settings
+const getBarOptions = (isMobile) => ({
   responsive: true,
   maintainAspectRatio: false,
   scales: {
     y: {
       beginAtZero: true,
+      ticks: {
+        font: {
+          size: isMobile ? 10 : 12
+        }
+      }
     },
+    x: {
+      ticks: {
+        font: {
+          size: isMobile ? 10 : 12
+        }
+      }
+    }
   },
   plugins: {
     legend: {
       position: 'top',
+      labels: {
+        font: {
+          size: isMobile ? 10 : 12
+        },
+        boxWidth: isMobile ? 10 : 12
+      }
     },
   },
-};
+});
 
-// Updated Styled components
+// Updated Styled components with responsive styles
 const StyledCard = styled(Card)(({ theme }) => ({
   height: '100%',
   background: 'linear-gradient(135deg, #f5f7ff 0%, #e4ecfb 100%)',
-  borderRadius: theme.spacing(2),
-  boxShadow: '0 8px 32px 0 rgba(31, 38, 135, 0.15)',
+  borderRadius: theme.spacing(1),
+  boxShadow: '0 4px 16px 0 rgba(31, 38, 135, 0.15)',
   transition: 'transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out',
   '&:hover': {
-    transform: 'translateY(-5px)',
-    boxShadow: '0 12px 40px 0 rgba(31, 38, 135, 0.25)',
+    transform: 'translateY(-3px)',
+    boxShadow: '0 8px 24px 0 rgba(31, 38, 135, 0.25)',
   },
+  [theme.breakpoints.down('sm')]: {
+    borderRadius: theme.spacing(0.5),
+  }
 }));
 
 const StatItem = styled(Paper)(({ theme }) => ({
-  padding: theme.spacing(2),
+  padding: theme.spacing(1.5),
   display: 'flex',
   justifyContent: 'space-between',
   alignItems: 'center',
   background: 'rgba(255, 255, 255, 0.7)',
   borderRadius: theme.spacing(1),
+  [theme.breakpoints.down('sm')]: {
+    padding: theme.spacing(1),
+    borderRadius: theme.spacing(0.5),
+  }
 }));
+
+// Define consistent gradient colors
+const gradientColors = {
+  blue: 'linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%)',
+  purple: 'linear-gradient(135deg, #f3e5f5 0%, #e1bee7 100%)',
+  slate: 'linear-gradient(135deg, #f5f7fa 0%, #e4e7eb 100%)',
+  gray: 'linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%)',
+};
+
+// Update chart colors
+const chartColors = {
+  primary: '#3f51b5',
+  secondary: '#7986cb',
+  tertiary: '#9fa8da',
+  quaternary: '#c5cae9',
+  success: '#4caf50',
+  warning: '#ff9800',
+  error: '#f44336',
+};
 
 const Home = () => {
   const user = getUserInfo();
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    // Simulate data loading
-    setIsLoading(false);
-  }, []);
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const isTablet = useMediaQuery(theme.breakpoints.down('md'));
 
   // Demo data for different user roles
   const manufacturerData = {
@@ -136,24 +176,18 @@ const Home = () => {
   };
 
   const renderDashboard = () => {
-    if (isLoading) {
-      return (
-        <Box display="flex" justifyContent="center" alignItems="center" minHeight="60vh">
-          <CircularProgress />
-        </Box>
-      );
-    }
-
     switch(user.role) {
       case "devicemanufacture":
         return (
-          <Grid container spacing={3}>
+          <Grid container spacing={isMobile ? 1 : 2} sx={{ height: 'calc(100vh - 80px)' }}>
             {/* eSIM Status */}
-            <Grid item xs={12} md={8}>
-              <StyledCard sx={{ background: 'linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%)' }}>
-                <CardContent>
-                  <Typography variant="h6" sx={{ mb: 2 }}>eSIM Status</Typography>
-                  <Box sx={{ height: 300 }}>
+            <Grid item xs={12} md={8} sx={{ height: { xs: '30vh', sm: '35vh', md: '45vh' } }}>
+              <StyledCard sx={{ background: gradientColors.blue, height: '100%' }}>
+                <CardContent sx={{ p: isMobile ? 1 : 2, height: '100%', display: 'flex', flexDirection: 'column' }}>
+                  <Typography variant={isMobile ? "subtitle2" : "h6"} sx={{ mb: 1, fontSize: isMobile ? '0.875rem' : '1rem' }}>
+                    eSIM Status
+                  </Typography>
+                  <Box sx={{ flexGrow: 1 }}>
                     <Bar data={{
                       labels: ['Total Activations', '1 Year Renewals', '2 Year Renewals'],
                       datasets: [{
@@ -161,20 +195,22 @@ const Home = () => {
                         data: [manufacturerData.esimInfo.totalActivation, 
                               manufacturerData.esimInfo.oneYearRenewal, 
                               manufacturerData.esimInfo.twoYearRenewal],
-                        backgroundColor: ['#36A2EB', '#FF6384', '#FFCE56'],
+                        backgroundColor: [chartColors.primary, chartColors.secondary, chartColors.tertiary],
                       }]
-                    }} options={barOptions} />
+                    }} options={getBarOptions(isMobile)} />
                   </Box>
                 </CardContent>
               </StyledCard>
             </Grid>
 
             {/* Device Status */}
-            <Grid item xs={12} md={4}>
-              <StyledCard sx={{ background: 'linear-gradient(135deg, #f3e5f5 0%, #e1bee7 100%)' }}>
-                <CardContent>
-                  <Typography variant="h6" sx={{ mb: 2 }}>Device Status</Typography>
-                  <Box sx={{ height: 300 }}>
+            <Grid item xs={12} md={4} sx={{ height: { xs: '30vh', sm: '35vh', md: '45vh' } }}>
+              <StyledCard sx={{ background: gradientColors.purple, height: '100%' }}>
+                <CardContent sx={{ p: isMobile ? 1 : 2, height: '100%', display: 'flex', flexDirection: 'column' }}>
+                  <Typography variant={isMobile ? "subtitle2" : "h6"} sx={{ mb: 1, fontSize: isMobile ? '0.875rem' : '1rem' }}>
+                    Device Status
+                  </Typography>
+                  <Box sx={{ flexGrow: 1 }}>
                     <Pie data={{
                       labels: ['Online', 'Offline'],
                       datasets: [{
@@ -182,8 +218,22 @@ const Home = () => {
                               manufacturerData.deviceStatusInfo.todayOffline +
                               manufacturerData.deviceStatusInfo.sevenDaysOffline +
                               manufacturerData.deviceStatusInfo.thirtyDaysOffline],
-                        backgroundColor: ['#36A2EB', '#FF6384'],
+                        backgroundColor: [chartColors.primary, chartColors.secondary],
                       }]
+                    }} options={{
+                      responsive: true,
+                      maintainAspectRatio: false,
+                      plugins: {
+                        legend: {
+                          position: 'top',
+                          labels: {
+                            font: {
+                              size: isMobile ? 10 : 12
+                            },
+                            boxWidth: isMobile ? 10 : 12
+                          }
+                        }
+                      }
                     }} />
                   </Box>
                 </CardContent>
@@ -191,33 +241,51 @@ const Home = () => {
             </Grid>
 
             {/* Stats Sections */}
-            <Grid item xs={12} md={6}>
-              <StyledCard sx={{ background: 'linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%)' }}>
-                <CardContent>
-                  <Typography variant="h6" sx={{ mb: 3 }}>General Info</Typography>
-                  <Grid container spacing={2}>
+            <Grid item xs={12} md={6} sx={{ height: { xs: '30vh', sm: '35vh', md: '45vh' } }}>
+              <StyledCard sx={{ background: gradientColors.slate, height: '100%' }}>
+                <CardContent sx={{ p: isMobile ? 1 : 2, height: '100%', display: 'flex', flexDirection: 'column' }}>
+                  <Typography variant={isMobile ? "subtitle2" : "h6"} sx={{ mb: 1, fontSize: isMobile ? '0.875rem' : '1rem' }}>
+                    General Info
+                  </Typography>
+                  <Grid container spacing={isMobile ? 0.5 : 1} sx={{ flexGrow: 1 }}>
                     <Grid item xs={12} sm={6}>
                       <StatItem>
-                        <Typography variant="body2" sx={{ fontSize: { xs: '0.875rem', sm: '1rem' } }}>Total Dealers</Typography>
-                        <Typography fontWeight="medium">{manufacturerData.miscInfo.dealer}</Typography>
+                        <Typography variant="body2" sx={{ fontSize: isMobile ? '0.7rem' : '0.75rem' }}>
+                          Total Dealers
+                        </Typography>
+                        <Typography fontWeight="medium" sx={{ fontSize: isMobile ? '0.8rem' : '0.875rem' }}>
+                          {manufacturerData.miscInfo.dealer}
+                        </Typography>
                       </StatItem>
                     </Grid>
                     <Grid item xs={12} sm={6}>
                       <StatItem>
-                        <Typography variant="body2" sx={{ fontSize: { xs: '0.875rem', sm: '1rem' } }}>Stock Allocated</Typography>
-                        <Typography fontWeight="medium">{manufacturerData.miscInfo.allocated}</Typography>
+                        <Typography variant="body2" sx={{ fontSize: isMobile ? '0.7rem' : '0.75rem' }}>
+                          Stock Allocated
+                        </Typography>
+                        <Typography fontWeight="medium" sx={{ fontSize: isMobile ? '0.8rem' : '0.875rem' }}>
+                          {manufacturerData.miscInfo.allocated}
+                        </Typography>
                       </StatItem>
                     </Grid>
                     <Grid item xs={12} sm={6}>
                       <StatItem>
-                        <Typography variant="body2" sx={{ fontSize: { xs: '0.875rem', sm: '1rem' } }}>Total Activations</Typography>
-                        <Typography fontWeight="medium">{manufacturerData.miscInfo.activation}</Typography>
+                        <Typography variant="body2" sx={{ fontSize: isMobile ? '0.7rem' : '0.75rem' }}>
+                          Total Activations
+                        </Typography>
+                        <Typography fontWeight="medium" sx={{ fontSize: isMobile ? '0.8rem' : '0.875rem' }}>
+                          {manufacturerData.miscInfo.activation}
+                        </Typography>
                       </StatItem>
                     </Grid>
                     <Grid item xs={12} sm={6}>
                       <StatItem>
-                        <Typography variant="body2" sx={{ fontSize: { xs: '0.875rem', sm: '1rem' } }}>Expired Devices</Typography>
-                        <Typography color="error">{manufacturerData.miscInfo.expired}</Typography>
+                        <Typography variant="body2" sx={{ fontSize: isMobile ? '0.7rem' : '0.75rem' }}>
+                          Expired Devices
+                        </Typography>
+                        <Typography color="text.secondary" sx={{ fontSize: isMobile ? '0.8rem' : '0.875rem' }}>
+                          {manufacturerData.miscInfo.expired}
+                        </Typography>
                       </StatItem>
                     </Grid>
                   </Grid>
@@ -225,35 +293,51 @@ const Home = () => {
               </StyledCard>
             </Grid>
 
-            <Grid item xs={12} md={6}>
-              <StyledCard sx={{ background: 'linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%)' }}>
-                <CardContent>
-                  <Typography variant="h6" sx={{ mb: 3 }}>Device Status Details</Typography>
-                  <Grid container spacing={2}>
+            <Grid item xs={12} md={6} sx={{ height: { xs: '30vh', sm: '35vh', md: '45vh' } }}>
+              <StyledCard sx={{ background: gradientColors.gray, height: '100%' }}>
+                <CardContent sx={{ p: isMobile ? 1 : 2, height: '100%', display: 'flex', flexDirection: 'column' }}>
+                  <Typography variant={isMobile ? "subtitle2" : "h6"} sx={{ mb: 1, fontSize: isMobile ? '0.875rem' : '1rem' }}>
+                    Device Status Details
+                  </Typography>
+                  <Grid container spacing={isMobile ? 0.5 : 1} sx={{ flexGrow: 1 }}>
                     <Grid item xs={12}>
                       <StatItem>
-                        <Typography>Online Devices</Typography>
-                        <Typography color="success.main" fontWeight="medium">
+                        <Typography sx={{ fontSize: isMobile ? '0.7rem' : '0.75rem' }}>
+                          Online Devices
+                        </Typography>
+                        <Typography color="primary" fontWeight="medium" sx={{ fontSize: isMobile ? '0.8rem' : '0.875rem' }}>
                           {manufacturerData.deviceStatusInfo.online}
                         </Typography>
                       </StatItem>
                     </Grid>
                     <Grid item xs={12}>
                       <StatItem>
-                        <Typography>Offline Today</Typography>
-                        <Typography color="error">{manufacturerData.deviceStatusInfo.todayOffline}</Typography>
+                        <Typography sx={{ fontSize: isMobile ? '0.7rem' : '0.75rem' }}>
+                          Offline Today
+                        </Typography>
+                        <Typography color="text.secondary" sx={{ fontSize: isMobile ? '0.8rem' : '0.875rem' }}>
+                          {manufacturerData.deviceStatusInfo.todayOffline}
+                        </Typography>
                       </StatItem>
                     </Grid>
                     <Grid item xs={12}>
                       <StatItem>
-                        <Typography>Offline (7 days)</Typography>
-                        <Typography color="warning.main">{manufacturerData.deviceStatusInfo.sevenDaysOffline}</Typography>
+                        <Typography sx={{ fontSize: isMobile ? '0.7rem' : '0.75rem' }}>
+                          Offline (7 days)
+                        </Typography>
+                        <Typography color="text.secondary" sx={{ fontSize: isMobile ? '0.8rem' : '0.875rem' }}>
+                          {manufacturerData.deviceStatusInfo.sevenDaysOffline}
+                        </Typography>
                       </StatItem>
                     </Grid>
                     <Grid item xs={12}>
                       <StatItem>
-                        <Typography>Offline (30 days)</Typography>
-                        <Typography color="warning.main">{manufacturerData.deviceStatusInfo.thirtyDaysOffline}</Typography>
+                        <Typography sx={{ fontSize: isMobile ? '0.7rem' : '0.75rem' }}>
+                          Offline (30 days)
+                        </Typography>
+                        <Typography color="text.secondary" sx={{ fontSize: isMobile ? '0.8rem' : '0.875rem' }}>
+                          {manufacturerData.deviceStatusInfo.thirtyDaysOffline}
+                        </Typography>
                       </StatItem>
                     </Grid>
                   </Grid>
@@ -265,13 +349,15 @@ const Home = () => {
 
       case "dealer":
         return (
-          <Grid container spacing={3}>
+          <Grid container spacing={isMobile ? 1 : 2} sx={{ height: 'calc(100vh - 80px)' }}>
             {/* Fitment Statistics */}
-            <Grid item xs={12} md={8}>
-              <StyledCard sx={{ background: 'linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%)' }}>
-                <CardContent>
-                  <Typography variant="h6" sx={{ mb: 2 }}>Fitment Statistics</Typography>
-                  <Box sx={{ height: 300 }}>
+            <Grid item xs={12} md={8} sx={{ height: { xs: '30vh', sm: '35vh', md: '45vh' } }}>
+              <StyledCard sx={{ background: gradientColors.blue, height: '100%' }}>
+                <CardContent sx={{ p: isMobile ? 1 : 2, height: '100%', display: 'flex', flexDirection: 'column' }}>
+                  <Typography variant={isMobile ? "subtitle2" : "h6"} sx={{ mb: 1, fontSize: isMobile ? '0.875rem' : '1rem' }}>
+                    Fitment Statistics
+                  </Typography>
+                  <Box sx={{ flexGrow: 1 }}>
                     <Bar data={{
                       labels: ['Total Fitments', 'Monthly Fitments', 'Daily Fitments'],
                       datasets: [{
@@ -279,20 +365,22 @@ const Home = () => {
                         data: [dealerData.dealerFitmentInfo.total, 
                               dealerData.dealerFitmentInfo.monthly, 
                               dealerData.dealerFitmentInfo.daily],
-                        backgroundColor: ['#36A2EB', '#FF6384', '#FFCE56'],
+                        backgroundColor: [chartColors.primary, chartColors.secondary, chartColors.tertiary],
                       }]
-                    }} options={barOptions} />
+                    }} options={getBarOptions(isMobile)} />
                   </Box>
                 </CardContent>
               </StyledCard>
             </Grid>
 
             {/* Device Status */}
-            <Grid item xs={12} md={4}>
-              <StyledCard sx={{ background: 'linear-gradient(135deg, #f3e5f5 0%, #e1bee7 100%)' }}>
-                <CardContent>
-                  <Typography variant="h6" sx={{ mb: 2 }}>Device Inventory</Typography>
-                  <Box sx={{ height: 300 }}>
+            <Grid item xs={12} md={4} sx={{ height: { xs: '30vh', sm: '35vh', md: '45vh' } }}>
+              <StyledCard sx={{ background: gradientColors.purple, height: '100%' }}>
+                <CardContent sx={{ p: isMobile ? 1 : 2, height: '100%', display: 'flex', flexDirection: 'column' }}>
+                  <Typography variant={isMobile ? "subtitle2" : "h6"} sx={{ mb: 1, fontSize: isMobile ? '0.875rem' : '1rem' }}>
+                    Device Inventory
+                  </Typography>
+                  <Box sx={{ flexGrow: 1 }}>
                     <Pie data={{
                       labels: ['Assigned', 'Stocked', 'Returned', 'Faulty'],
                       datasets: [{
@@ -300,8 +388,22 @@ const Home = () => {
                               dealerData.dealerDeviceInfo.stocked,
                               dealerData.dealerDeviceInfo.returned,
                               dealerData.dealerDeviceInfo.faulty],
-                        backgroundColor: ['#36A2EB', '#4CAF50', '#FF6384', '#FF9800'],
+                        backgroundColor: [chartColors.primary, chartColors.secondary, chartColors.tertiary, chartColors.quaternary],
                       }]
+                    }} options={{
+                      responsive: true,
+                      maintainAspectRatio: false,
+                      plugins: {
+                        legend: {
+                          position: 'top',
+                          labels: {
+                            font: {
+                              size: isMobile ? 10 : 12
+                            },
+                            boxWidth: isMobile ? 10 : 12
+                          }
+                        }
+                      }
                     }} />
                   </Box>
                 </CardContent>
@@ -309,35 +411,51 @@ const Home = () => {
             </Grid>
 
             {/* Device Status Details */}
-            <Grid item xs={12}>
-              <StyledCard sx={{ background: 'linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%)' }}>
-                <CardContent>
-                  <Typography variant="h6" sx={{ mb: 3 }}>Device Status Details</Typography>
-                  <Grid container spacing={2}>
+            <Grid item xs={12} sx={{ height: { xs: '30vh', sm: '35vh', md: '45vh' } }}>
+              <StyledCard sx={{ background: gradientColors.gray, height: '100%' }}>
+                <CardContent sx={{ p: isMobile ? 1 : 2, height: '100%', display: 'flex', flexDirection: 'column' }}>
+                  <Typography variant={isMobile ? "subtitle2" : "h6"} sx={{ mb: 1, fontSize: isMobile ? '0.875rem' : '1rem' }}>
+                    Device Status Details
+                  </Typography>
+                  <Grid container spacing={isMobile ? 0.5 : 1} sx={{ flexGrow: 1 }}>
                     <Grid item xs={12} sm={3}>
                       <StatItem>
-                        <Typography>Online Devices</Typography>
-                        <Typography color="success.main" fontWeight="medium">
+                        <Typography sx={{ fontSize: isMobile ? '0.7rem' : '0.75rem' }}>
+                          Online Devices
+                        </Typography>
+                        <Typography color="primary" fontWeight="medium" sx={{ fontSize: isMobile ? '0.8rem' : '0.875rem' }}>
                           {dealerData.deviceStatusInfo.online}
                         </Typography>
                       </StatItem>
                     </Grid>
                     <Grid item xs={12} sm={3}>
                       <StatItem>
-                        <Typography>Offline Today</Typography>
-                        <Typography color="error">{dealerData.deviceStatusInfo.todayOffline}</Typography>
+                        <Typography sx={{ fontSize: isMobile ? '0.7rem' : '0.75rem' }}>
+                          Offline Today
+                        </Typography>
+                        <Typography color="text.secondary" sx={{ fontSize: isMobile ? '0.8rem' : '0.875rem' }}>
+                          {dealerData.deviceStatusInfo.todayOffline}
+                        </Typography>
                       </StatItem>
                     </Grid>
                     <Grid item xs={12} sm={3}>
                       <StatItem>
-                        <Typography>7 Days Offline</Typography>
-                        <Typography color="warning.main">{dealerData.deviceStatusInfo.sevenDaysOffline}</Typography>
+                        <Typography sx={{ fontSize: isMobile ? '0.7rem' : '0.75rem' }}>
+                          7 Days Offline
+                        </Typography>
+                        <Typography color="text.secondary" sx={{ fontSize: isMobile ? '0.8rem' : '0.875rem' }}>
+                          {dealerData.deviceStatusInfo.sevenDaysOffline}
+                        </Typography>
                       </StatItem>
                     </Grid>
                     <Grid item xs={12} sm={3}>
                       <StatItem>
-                        <Typography>30 Days Offline</Typography>
-                        <Typography color="warning.main">{dealerData.deviceStatusInfo.thirtyDaysOffline}</Typography>
+                        <Typography sx={{ fontSize: isMobile ? '0.7rem' : '0.75rem' }}>
+                          30 Days Offline
+                        </Typography>
+                        <Typography color="text.secondary" sx={{ fontSize: isMobile ? '0.8rem' : '0.875rem' }}>
+                          {dealerData.deviceStatusInfo.thirtyDaysOffline}
+                        </Typography>
                       </StatItem>
                     </Grid>
                   </Grid>
@@ -349,19 +467,35 @@ const Home = () => {
 
       case "owner":
         return (
-          <Grid container spacing={3}>
+          <Grid container spacing={isMobile ? 1 : 2} sx={{ height: 'calc(100vh - 80px)' }}>
             {/* Vehicle Statistics */}
-            <Grid item xs={12} md={6}>
-              <StyledCard sx={{ background: 'linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%)' }}>
-                <CardContent>
-                  <Typography variant="h6" sx={{ mb: 2 }}>Vehicle Status</Typography>
-                  <Box sx={{ height: 300 }}>
+            <Grid item xs={12} md={6} sx={{ height: { xs: '30vh', sm: '35vh', md: '45vh' } }}>
+              <StyledCard sx={{ background: gradientColors.blue, height: '100%' }}>
+                <CardContent sx={{ p: isMobile ? 1 : 2, height: '100%', display: 'flex', flexDirection: 'column' }}>
+                  <Typography variant={isMobile ? "subtitle2" : "h6"} sx={{ mb: 1, fontSize: isMobile ? '0.875rem' : '1rem' }}>
+                    Vehicle Status
+                  </Typography>
+                  <Box sx={{ flexGrow: 1 }}>
                     <Pie data={{
                       labels: ['Active Vehicles', 'Inactive Vehicles'],
                       datasets: [{
                         data: [ownerData.vehicleInfo.active, ownerData.vehicleInfo.inactive],
-                        backgroundColor: ['#4CAF50', '#FF6384'],
+                        backgroundColor: [chartColors.primary, chartColors.secondary],
                       }]
+                    }} options={{
+                      responsive: true,
+                      maintainAspectRatio: false,
+                      plugins: {
+                        legend: {
+                          position: 'top',
+                          labels: {
+                            font: {
+                              size: isMobile ? 10 : 12
+                            },
+                            boxWidth: isMobile ? 10 : 12
+                          }
+                        }
+                      }
                     }} />
                   </Box>
                 </CardContent>
@@ -369,11 +503,13 @@ const Home = () => {
             </Grid>
 
             {/* Alert Statistics */}
-            <Grid item xs={12} md={6}>
-              <StyledCard sx={{ background: 'linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%)' }}>
-                <CardContent>
-                  <Typography variant="h6" sx={{ mb: 2 }}>Alert Statistics</Typography>
-                  <Box sx={{ height: 300 }}>
+            <Grid item xs={12} md={6} sx={{ height: { xs: '30vh', sm: '35vh', md: '45vh' } }}>
+              <StyledCard sx={{ background: gradientColors.gray, height: '100%' }}>
+                <CardContent sx={{ p: isMobile ? 1 : 2, height: '100%', display: 'flex', flexDirection: 'column' }}>
+                  <Typography variant={isMobile ? "subtitle2" : "h6"} sx={{ mb: 1, fontSize: isMobile ? '0.875rem' : '1rem' }}>
+                    Alert Statistics
+                  </Typography>
+                  <Box sx={{ flexGrow: 1 }}>
                     <Bar data={{
                       labels: ['Total Alerts', 'Monthly Alerts', 'Daily Alerts'],
                       datasets: [{
@@ -381,42 +517,60 @@ const Home = () => {
                         data: [ownerData.alertInfo.total, 
                               ownerData.alertInfo.monthly, 
                               ownerData.alertInfo.daily],
-                        backgroundColor: ['#36A2EB', '#FF6384', '#FFCE56'],
+                        backgroundColor: [chartColors.primary, chartColors.secondary, chartColors.tertiary],
                       }]
-                    }} options={barOptions} />
+                    }} options={getBarOptions(isMobile)} />
                   </Box>
                 </CardContent>
               </StyledCard>
             </Grid>
 
             {/* Device Health */}
-            <Grid item xs={12}>
-              <StyledCard sx={{ background: 'linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%)' }}>
-                <CardContent>
-                  <Typography variant="h6" sx={{ mb: 3 }}>Device Health</Typography>
-                  <Grid container spacing={2}>
+            <Grid item xs={12} sx={{ height: { xs: '30vh', sm: '35vh', md: '45vh' } }}>
+              <StyledCard sx={{ background: gradientColors.purple, height: '100%' }}>
+                <CardContent sx={{ p: isMobile ? 1 : 2, height: '100%', display: 'flex', flexDirection: 'column' }}>
+                  <Typography variant={isMobile ? "subtitle2" : "h6"} sx={{ mb: 1, fontSize: isMobile ? '0.875rem' : '1rem' }}>
+                    Device Health
+                  </Typography>
+                  <Grid container spacing={isMobile ? 0.5 : 1} sx={{ flexGrow: 1 }}>
                     <Grid item xs={12} sm={3}>
                       <StatItem>
-                        <Typography>Activated Devices</Typography>
-                        <Typography color="success.main">{ownerData.deviceHealth.activated}</Typography>
+                        <Typography sx={{ fontSize: isMobile ? '0.7rem' : '0.75rem' }}>
+                          Activated Devices
+                        </Typography>
+                        <Typography color="primary" sx={{ fontSize: isMobile ? '0.8rem' : '0.875rem' }}>
+                          {ownerData.deviceHealth.activated}
+                        </Typography>
                       </StatItem>
                     </Grid>
                     <Grid item xs={12} sm={3}>
                       <StatItem>
-                        <Typography>Offline Devices</Typography>
-                        <Typography color="error">{ownerData.deviceHealth.offline}</Typography>
+                        <Typography sx={{ fontSize: isMobile ? '0.7rem' : '0.75rem' }}>
+                          Offline Devices
+                        </Typography>
+                        <Typography color="text.secondary" sx={{ fontSize: isMobile ? '0.8rem' : '0.875rem' }}>
+                          {ownerData.deviceHealth.offline}
+                        </Typography>
                       </StatItem>
                     </Grid>
                     <Grid item xs={12} sm={3}>
                       <StatItem>
-                        <Typography>7 Days Offline</Typography>
-                        <Typography color="warning.main">{ownerData.deviceHealth.sevenDaysOffline}</Typography>
+                        <Typography sx={{ fontSize: isMobile ? '0.7rem' : '0.75rem' }}>
+                          7 Days Offline
+                        </Typography>
+                        <Typography color="text.secondary" sx={{ fontSize: isMobile ? '0.8rem' : '0.875rem' }}>
+                          {ownerData.deviceHealth.sevenDaysOffline}
+                        </Typography>
                       </StatItem>
                     </Grid>
                     <Grid item xs={12} sm={3}>
                       <StatItem>
-                        <Typography>30 Days Offline</Typography>
-                        <Typography color="warning.main">{ownerData.deviceHealth.thirtyDaysOffline}</Typography>
+                        <Typography sx={{ fontSize: isMobile ? '0.7rem' : '0.75rem' }}>
+                          30 Days Offline
+                        </Typography>
+                        <Typography color="text.secondary" sx={{ fontSize: isMobile ? '0.8rem' : '0.875rem' }}>
+                          {ownerData.deviceHealth.thirtyDaysOffline}
+                        </Typography>
                       </StatItem>
                     </Grid>
                   </Grid>
@@ -428,8 +582,8 @@ const Home = () => {
 
       default:
         return (
-          <Box display="flex" justifyContent="center" alignItems="center" minHeight="60vh">
-            <Typography variant="h6" color="error">
+          <Box display="flex" justifyContent="center" alignItems="center" height="calc(100vh - 80px)">
+            <Typography variant={isMobile ? "subtitle1" : "h6"} color="error">
               Invalid user role or unauthorized access
             </Typography>
           </Box>
@@ -438,8 +592,34 @@ const Home = () => {
   };
 
   return (
-    <Box sx={{ p: 4, bgcolor: '#f5f5f5', minHeight: '100vh' }}>
-      <Typography variant="h4" sx={{ mb: 4, fontWeight: 'bold' }}>
+    <Box sx={{ 
+      p: { xs: 1, sm: 2 }, 
+      bgcolor: '#f5f5f5', 
+      height: '100vh', 
+      overflow: 'auto',
+      '&::-webkit-scrollbar': {
+        width: '6px',
+        height: '6px',
+      },
+      '&::-webkit-scrollbar-track': {
+        background: 'transparent',
+      },
+      '&::-webkit-scrollbar-thumb': {
+        background: 'rgba(0, 0, 0, 0.2)',
+        borderRadius: '3px',
+        '&:hover': {
+          background: 'rgba(0, 0, 0, 0.3)',
+        },
+      },
+    }}>
+      <Typography 
+        variant={isMobile ? "h6" : "h5"} 
+        sx={{ 
+          mb: { xs: 1, sm: 2 }, 
+          fontWeight: 'bold',
+          fontSize: { xs: '1.25rem', sm: '1.5rem' }
+        }}
+      >
         Dashboard
       </Typography>
       {renderDashboard()}

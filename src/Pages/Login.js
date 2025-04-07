@@ -14,6 +14,7 @@ import { useLoginMutation } from "../store/services/loginService";
 import { useGenerateCaptchaQuery, useVerifyCaptchaMutation } from "../store/services/captchaService";
 import { toast } from 'react-hot-toast';
 import { cipherEncryption } from "../helper";
+import { Alert } from "@mui/material";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -21,6 +22,8 @@ const Login = () => {
   const [login, { isLoading }] = useLoginMutation();
   const { data: captchaData, refetch: refetchCaptcha } = useGenerateCaptchaQuery();
   const [verifyCaptcha] = useVerifyCaptchaMutation();
+  const [message, setMessage] = useState('');
+  const [isSuccess, setIsSuccess] = useState(false);
   const [formData, setFormData] = useState({
     phoneNumber: '',
     password: '',
@@ -101,6 +104,20 @@ const Login = () => {
     }
   };
 
+  const renderAlert = (success, message) => {
+    if (!message) return null;
+    
+    return success ? (
+      <Alert variant="filled" severity="success" sx={{ mt: 2 }}>
+        {message}
+      </Alert>
+    ) : (
+      <Alert variant="filled" severity="error" sx={{ mt: 2 }}>
+        {message}
+      </Alert>
+    );
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -109,7 +126,8 @@ const Login = () => {
     }
 
     if (!termsAccepted) {
-      toast.error('Please accept the terms and conditions to continue');
+      setIsSuccess(false);
+      setMessage('Please accept the terms and conditions to continue');
       return;
     }
 
@@ -122,7 +140,8 @@ const Login = () => {
       });
       const myCipher = cipherEncryption('skytrack');
       if ('data' in response && response.data.token) {
-        toast.success('OTP sent to your phone number');
+        setIsSuccess(true);
+        setMessage('OTP sent to your phone number');
         const cookiesData = `${myCipher(response.data?.user?.name)}-${myCipher(response.data?.user?.role)}-${myCipher(response.data?.user?.mobile)}`
         const skytrack_cookiesData = `${myCipher(response.data?.user?.email)}-${myCipher(response.data?.user?.role)}-${myCipher(response.data?.user?.date_joined)}-${myCipher(response.data?.user?.mobile)}`
         sessionStorage.setItem('cookiesData', cookiesData + '-' + response.data?.user?.id);
@@ -132,12 +151,14 @@ const Login = () => {
         navigate('/verify-otp');
       } else {
         const errorMessage = response?.data?.error || response?.error?.data?.error || 'An error occurred during login';
-        toast.error(errorMessage);
+        setIsSuccess(false);
+        setMessage(errorMessage);
         fetchCaptcha();
       }
     } catch (error) {
       console.error('Login error:', error);
-      toast.error('An error occurred during login');
+      setIsSuccess(false);
+      setMessage('An error occurred during login');
       fetchCaptcha();
     }
   };
@@ -198,9 +219,9 @@ const Login = () => {
           />
         )}
 
-        <div className="relative h-full">
+        <div className="relative h-auto ">
           {/* Content container - positioned relative to allow absolute positioning of children */}
-          <div className="mx-auto h-full py-[2rem] sm:py-[4rem] px-2 sm:px-3 lg:px-32">
+          <div className="mx-auto h-full py-[1rem] sm:py-[3rem] px-2 sm:px-3 lg:px-32">
             {/* Main content wrapper - controls overall padding and height */}
             <div className="flex flex-col md:flex-row md:justify-end h-full">
               {/* Left side spacer - hidden on mobile, visible on md+ screens */}
@@ -328,14 +349,14 @@ const Login = () => {
                           <p className="text-xs">
                             I accept the{" "}
                             <a
-                              href="#"
+                              href="/termscondition"
                               className="cursor-pointer text-blue-500 underline"
                             >
                               terms of use{" "}
                             </a>
                             and{" "}
                             <a
-                              href="#"
+                              href="/termscondition"
                               className="cursor-pointer text-blue-500 underline"
                             >
                               privacy policy
@@ -351,6 +372,7 @@ const Login = () => {
                       >
                         Login
                       </button>
+                      {renderAlert(isSuccess, message)}
                     </div>
                   </form>
                 </div>

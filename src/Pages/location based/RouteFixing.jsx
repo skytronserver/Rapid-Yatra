@@ -23,6 +23,15 @@ import {
   IconButton,
   Tooltip,
   Avatar,
+  Tabs,
+  Tab,
+  Drawer,
+  List,
+  ListItem,
+  ListItemText,
+  ListItemIcon,
+  ListItemButton,
+  Collapse,
 } from "@mui/material";
 import "ol/ol.css";
 import { Map, View } from "ol";
@@ -54,7 +63,13 @@ import {
   Route, 
   Map as MapIcon,
   Clear,
-  MyLocation
+  MyLocation,
+  Menu as MenuIcon,
+  Close,
+  Visibility,
+  VisibilityOff,
+  ExpandLess,
+  ExpandMore
 } from "@mui/icons-material";
 
 const RouteFixing = () => {
@@ -82,6 +97,10 @@ const RouteFixing = () => {
     message: "",
     type: "success"
   });
+  const [activeTab, setActiveTab] = useState(0);
+  const [mobileDrawerOpen, setMobileDrawerOpen] = useState(false);
+  const [showMap, setShowMap] = useState(true);
+  const [showControls, setShowControls] = useState(true);
 
   // Replace service calls with RTK Query hooks
   const [tagOwnerList] = useTagOwnerListMutation();
@@ -507,6 +526,101 @@ const RouteFixing = () => {
       setIsDeleting(false);
     }
   };
+
+  const handleTabChange = (event, newValue) => {
+    setActiveTab(newValue);
+  };
+
+  const toggleMobileDrawer = () => {
+    setMobileDrawerOpen(!mobileDrawerOpen);
+  };
+
+  const toggleMapVisibility = () => {
+    setShowMap(!showMap);
+  };
+
+  const toggleControlsVisibility = () => {
+    setShowControls(!showControls);
+  };
+
+  // Mobile drawer content
+  const mobileDrawerContent = (
+    <Box sx={{ width: isMobile ? '100%' : 320, p: 2, height: '100%', overflow: 'auto' }}>
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
+        <Typography variant="h6">Route Controls</Typography>
+        <IconButton onClick={toggleMobileDrawer}>
+          <Close />
+        </IconButton>
+      </Box>
+      
+      <Divider sx={{ mb: 2 }} />
+      
+      <List>
+        <ListItemButton onClick={toggleMapVisibility}>
+          <ListItemIcon>
+            {showMap ? <Visibility /> : <VisibilityOff />}
+          </ListItemIcon>
+          <ListItemText primary="Toggle Map" secondary={showMap ? "Map is visible" : "Map is hidden"} />
+        </ListItemButton>
+        
+        <ListItemButton onClick={toggleControlsVisibility}>
+          <ListItemIcon>
+            {showControls ? <Visibility /> : <VisibilityOff />}
+          </ListItemIcon>
+          <ListItemText primary="Toggle Controls" secondary={showControls ? "Controls are visible" : "Controls are hidden"} />
+        </ListItemButton>
+      </List>
+      
+      <Divider sx={{ my: 2 }} />
+      
+      <Typography variant="subtitle1" sx={{ mb: 1, fontWeight: 600 }}>
+        Vehicle Selection
+      </Typography>
+      
+      <form onSubmit={handleSubmit}>
+        <Autocomplete
+          value={deviceList && deviceList.length > 0 ? deviceList.find((item) => item.device && item.device.id === deviceId) || null : null}
+          onChange={handleAutocompleteChange}
+          options={inputValue && deviceList && deviceList.length > 0 ? deviceList : []}
+          getOptionLabel={(option) => option.vehicle_reg_no || ""}
+          renderInput={(params) => (
+            <TextField
+              {...params}
+              label="Vehicle Registration Number"
+              variant="outlined"
+              fullWidth
+              onChange={(e) => setInputValue(e.target.value)}
+              InputProps={{
+                ...params.InputProps,
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <DirectionsCar color="primary" />
+                  </InputAdornment>
+                )
+              }}
+            />
+          )}
+          noOptionsText="Enter Vehicle Registration Number"
+          isOptionEqualToValue={(option, value) => option.device.id === value.device.id}
+          disableClearable
+          sx={{ mb: 2 }}
+        />
+        <Button
+          type="submit"
+          variant="contained"
+          color="primary"
+          fullWidth
+          size="large"
+          startIcon={isLoading ? <CircularProgress size={20} color="inherit" /> : <Search />}
+          disabled={isLoading}
+          sx={{ height: '56px' }}
+        >
+          {isLoading ? 'Searching...' : 'Search'}
+        </Button>
+      </form>
+    </Box>
+  );
+
   return (
     <MainCard>
       <AutoHideAlert 
@@ -516,200 +630,367 @@ const RouteFixing = () => {
         type={alert.type}
       />
       
-      <Box sx={{ mb: 3 }}>
-        <Typography variant="h4" component="h1" sx={{ 
-          fontSize: { xs: '1.5rem', sm: '1.75rem' }, 
-          fontWeight: 600,
-          color: 'text.primary',
-          display: 'flex',
-          alignItems: 'center',
-          gap: 1
-        }}>
-        <Avatar 
-            sx={{ 
-              bgcolor: theme.palette.primary.main,
-              width: 48,
-              height: 48
-            }}
-          >
-            <MapIcon fontSize="large" />
-          </Avatar>
-          Route Management
-        </Typography>
-        <Typography variant="body2" sx={{ color: 'text.secondary', mt: 1 }}>
-          Select a vehicle and manage its routes
-        </Typography>
-      </Box>
-
-      <Card elevation={0} sx={{ mb: 3, borderRadius: 2, border: '1px solid', borderColor: 'divider' }}>
-        <CardContent sx={{ p: { xs: 2, sm: 3 } }}>
-          <form onSubmit={handleSubmit}>
-            <Grid container spacing={2} alignItems="center">
-              <Grid item xs={12} md={isTablet ? 12 : 8}>
-                <Autocomplete
-                  value={deviceList && deviceList.length > 0 ? deviceList.find((item) => item.device && item.device.id === deviceId) || null : null}
-                  onChange={handleAutocompleteChange}
-                  options={inputValue && deviceList && deviceList.length > 0 ? deviceList : []}
-                  getOptionLabel={(option) => option.vehicle_reg_no || ""}
-                  renderInput={(params) => (
-                    <TextField
-                      {...params}
-                      label="Vehicle Registration Number"
-                      variant="outlined"
-                      fullWidth
-                      onChange={(e) => setInputValue(e.target.value)}
-                      InputProps={{
-                        ...params.InputProps,
-                        startAdornment: (
-                          <InputAdornment position="start">
-                            <DirectionsCar color="primary" />
-                          </InputAdornment>
-                        )
-                      }}
-                    />
-                  )}
-                  noOptionsText="Enter Vehicle Registration Number"
-                  isOptionEqualToValue={(option, value) => option.device.id === value.device.id}
-                  disableClearable
-                />
-              </Grid>
-              <Grid item xs={12} md={isTablet ? 12 : 4}>
-                <Button
-                  type="submit"
-                  variant="contained"
-                  color="primary"
-                  fullWidth
-                  size="large"
-                  startIcon={isLoading ? <CircularProgress size={20} color="inherit" /> : <Search />}
-                  disabled={isLoading}
-                  sx={{ height: '56px' }}
-                >
-                  {isLoading ? 'Searching...' : 'Search'}
-                </Button>
-              </Grid>
-            </Grid>
-          </form>
-        </CardContent>
-      </Card>
-
-      {load && (
-        <Card elevation={0} sx={{ mb: 3, borderRadius: 2, border: '1px solid', borderColor: 'divider' }}>
-          <CardContent sx={{ p: { xs: 2, sm: 3 } }}>
-            <Grid container spacing={3}>
-              <Grid item xs={12}>
-                <FormControl fullWidth>
-                  <InputLabel>Select Route</InputLabel>
-                  <Select
-                    value={selectedRoute ? `${selectedRoute.routeId}|${selectedRoute.routeRout}` : ""}
-                    onChange={handleRouteSelect}
-                    label="Select Route"
-                    sx={{ mb: 2 }}
-                  >
-                    <MenuItem value="" disabled>
-                      Select a route
-                    </MenuItem>
-                    {routeData.map((route) => (
-                      <MenuItem value={`${route.id}|${route.route}`} key={route.id}>
-                        <Stack direction="row" alignItems="center" spacing={1}>
-                          <Route color="primary" />
-                          <Typography>Route #{route.id}</Typography>
-                        </Stack>
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
-              </Grid>
-              <Grid item xs={12}>
-                <Stack 
-                  direction={{ xs: 'column', sm: 'row' }} 
-                  spacing={2}
-                  divider={isMobile ? <Divider flexItem /> : null}
-                >
-                  <Button 
-                    onClick={addRoute} 
-                    variant="contained" 
-                    color="primary"
-                    startIcon={isSubmitting ? <CircularProgress size={20} color="inherit" /> : <Add />}
-                    disabled={isSubmitting}
-                    sx={{ flex: 1, py: 1.5 }}
-                  >
-                    {isSubmitting ? 'Adding Route...' : 'Add New Route'}
-                  </Button>
-                  <Button
-                    onClick={delRoute}
-                    variant="outlined"
-                    color="error"
-                    startIcon={isDeleting ? <CircularProgress size={20} color="inherit" /> : <Delete />}
-                    disabled={!selectedRoute || isDeleting}
-                    sx={{ flex: 1, py: 1.5 }}
-                  >
-                    {isDeleting ? 'Deleting...' : 'Delete Route'}
-                  </Button>
-                </Stack>
-              </Grid>
-            </Grid>
-          </CardContent>
-        </Card>
-      )}
-
-      <Card elevation={0} sx={{ 
-        borderRadius: 2, 
-        overflow: 'hidden',
-        position: 'relative',
-        border: '1px solid', 
-        borderColor: 'divider',
-        height: { xs: '400px', sm: '500px', md: '600px' }
+      <Box sx={{ 
+        mb: 3, 
+        display: 'flex', 
+        flexDirection: isMobile ? 'column' : 'row',
+        alignItems: isMobile ? 'flex-start' : 'center',
+        justifyContent: 'space-between',
+        gap: 1
       }}>
         <Box sx={{ 
-          position: 'absolute',
-          top: 10,
-          right: 10,
-          zIndex: 1000,
-          display: 'flex',
-          gap: 1
+          display: 'flex', 
+          alignItems: 'center', 
+          gap: 1.5,
+          mb: isMobile ? 1 : 0
         }}>
-          <Tooltip title="Clear Map">
-            <IconButton 
-              onClick={() => {
-                vectorSourceRef.current.clear();
-                setNewPoints([]);
-              }}
-              sx={{ 
-                bgcolor: 'background.paper',
-                boxShadow: 1,
-                '&:hover': { bgcolor: 'background.paper' }
-              }}
-            >
-              <Clear />
-            </IconButton>
-          </Tooltip>
-          <Tooltip title="Center Map">
-            <IconButton 
-              onClick={() => {
-                if (map.current) {
-                  map.current.getView().animate({
-                    center: fromLonLat([91.829437, 26.131644]),
-                    zoom: 7,
-                    duration: 1000
-                  });
-                }
-              }}
-              sx={{ 
-                bgcolor: 'background.paper',
-                boxShadow: 1,
-                '&:hover': { bgcolor: 'background.paper' }
-              }}
-            >
-              <MyLocation />
-            </IconButton>
-          </Tooltip>
+          <Avatar 
+            sx={{ 
+              bgcolor: theme.palette.primary.main,
+              width: { xs: 40, sm: 48 },
+              height: { xs: 40, sm: 48 }
+            }}
+          >
+            <MapIcon fontSize={isMobile ? "medium" : "large"} />
+          </Avatar>
+          <Box>
+            <Typography variant="h4" component="h1" sx={{ 
+              fontSize: { xs: '1.25rem', sm: '1.5rem', md: '1.75rem' }, 
+              fontWeight: 600,
+              color: 'text.primary',
+              lineHeight: 1.2
+            }}>
+              Route Management
+            </Typography>
+            <Typography variant="body2" sx={{ 
+              color: 'text.secondary',
+              mt: 0.5,
+              fontSize: { xs: '0.75rem', sm: '0.875rem' }
+            }}>
+              Select a vehicle and manage its routes
+            </Typography>
+          </Box>
         </Box>
-        <Box ref={mapRef} sx={{ 
-          width: "100%", 
-          height: "100%",
-          position: 'relative' 
-        }} />
-      </Card>
+        
+        {isMobile && (
+          <Box sx={{ display: 'flex', gap: 1, width: '100%', justifyContent: 'flex-end' }}>
+            <Button
+              variant="contained"
+              size="small"
+              startIcon={<MenuIcon />}
+              onClick={toggleMobileDrawer}
+              sx={{ 
+                borderRadius: '8px',
+                textTransform: 'none',
+                fontSize: '0.75rem'
+              }}
+            >
+              Controls
+            </Button>
+          </Box>
+        )}
+      </Box>
+
+      {/* Main content container - consistent structure for both mobile and desktop */}
+      <Box sx={{ width: '100%' }}>
+        {/* Mobile layout - registration box at top */}
+        {isMobile && (
+          <Box sx={{ mb: 3 }}>
+            <Card elevation={0} sx={{ mb: 3, borderRadius: 2, border: '1px solid', borderColor: 'divider' }}>
+              <CardContent sx={{ p: { xs: 2, sm: 3 } }}>
+                <form onSubmit={handleSubmit}>
+                  <Grid container spacing={2} alignItems="center">
+                    <Grid item xs={12} md={isTablet ? 12 : 8}>
+                      <Autocomplete
+                        value={deviceList && deviceList.length > 0 ? deviceList.find((item) => item.device && item.device.id === deviceId) || null : null}
+                        onChange={handleAutocompleteChange}
+                        options={inputValue && deviceList && deviceList.length > 0 ? deviceList : []}
+                        getOptionLabel={(option) => option.vehicle_reg_no || ""}
+                        renderInput={(params) => (
+                          <TextField
+                            {...params}
+                            label="Vehicle Registration Number"
+                            variant="outlined"
+                            fullWidth
+                            onChange={(e) => setInputValue(e.target.value)}
+                            InputProps={{
+                              ...params.InputProps,
+                              startAdornment: (
+                                <InputAdornment position="start">
+                                  <DirectionsCar color="primary" />
+                                </InputAdornment>
+                              )
+                            }}
+                          />
+                        )}
+                        noOptionsText="Enter Vehicle Registration Number"
+                        isOptionEqualToValue={(option, value) => option.device.id === value.device.id}
+                        disableClearable
+                      />
+                    </Grid>
+                    <Grid item xs={12} md={isTablet ? 12 : 4}>
+                      <Button
+                        type="submit"
+                        variant="contained"
+                        color="primary"
+                        fullWidth
+                        size="large"
+                        startIcon={isLoading ? <CircularProgress size={20} color="inherit" /> : <Search />}
+                        disabled={isLoading}
+                        sx={{ height: '56px' }}
+                      >
+                        {isLoading ? 'Searching...' : 'Search'}
+                      </Button>
+                    </Grid>
+                  </Grid>
+                </form>
+              </CardContent>
+            </Card>
+
+            {load && (
+              <Card elevation={0} sx={{ mb: 3, borderRadius: 2, border: '1px solid', borderColor: 'divider' }}>
+                <CardContent sx={{ p: { xs: 2, sm: 3 } }}>
+                  <Grid container spacing={3}>
+                    <Grid item xs={12}>
+                      <FormControl fullWidth>
+                        <InputLabel>Select Route</InputLabel>
+                        <Select
+                          value={selectedRoute ? `${selectedRoute.routeId}|${selectedRoute.routeRout}` : ""}
+                          onChange={handleRouteSelect}
+                          label="Select Route"
+                          sx={{ mb: 2 }}
+                        >
+                          <MenuItem value="" disabled>
+                            Select a route
+                          </MenuItem>
+                          {routeData.map((route) => (
+                            <MenuItem value={`${route.id}|${route.route}`} key={route.id}>
+                              <Stack direction="row" alignItems="center" spacing={1}>
+                                <Route color="primary" />
+                                <Typography>Route #{route.id}</Typography>
+                              </Stack>
+                            </MenuItem>
+                          ))}
+                        </Select>
+                      </FormControl>
+                    </Grid>
+                    <Grid item xs={12}>
+                      <Stack 
+                        direction={{ xs: 'column', sm: 'row' }} 
+                        spacing={2}
+                        divider={isMobile ? <Divider flexItem /> : null}
+                      >
+                        <Button 
+                          onClick={addRoute} 
+                          variant="contained" 
+                          color="primary"
+                          startIcon={isSubmitting ? <CircularProgress size={20} color="inherit" /> : <Add />}
+                          disabled={isSubmitting}
+                          sx={{ flex: 1, py: 1.5 }}
+                        >
+                          {isSubmitting ? 'Adding Route...' : 'Add New Route'}
+                        </Button>
+                        <Button
+                          onClick={delRoute}
+                          variant="outlined"
+                          color="error"
+                          startIcon={isDeleting ? <CircularProgress size={20} color="inherit" /> : <Delete />}
+                          disabled={!selectedRoute || isDeleting}
+                          sx={{ flex: 1, py: 1.5 }}
+                        >
+                          {isDeleting ? 'Deleting...' : 'Delete Route'}
+                        </Button>
+                      </Stack>
+                    </Grid>
+                  </Grid>
+                </CardContent>
+              </Card>
+            )}
+          </Box>
+        )}
+
+        <Grid container spacing={3}>
+          {/* Controls section - visible in desktop */}
+          {!isMobile && showControls && (
+            <Grid item xs={12} md={4}>
+              <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
+                <Card elevation={0} sx={{ borderRadius: 2, border: '1px solid', borderColor: 'divider' }}>
+                  <CardContent sx={{ p: 3 }}>
+                    <form onSubmit={handleSubmit}>
+                      <Grid container spacing={2} alignItems="center">
+                        <Grid item xs={12}>
+                          <Autocomplete
+                            value={deviceList && deviceList.length > 0 ? deviceList.find((item) => item.device && item.device.id === deviceId) || null : null}
+                            onChange={handleAutocompleteChange}
+                            options={inputValue && deviceList && deviceList.length > 0 ? deviceList : []}
+                            getOptionLabel={(option) => option.vehicle_reg_no || ""}
+                            renderInput={(params) => (
+                              <TextField
+                                {...params}
+                                label="Vehicle Registration Number"
+                                variant="outlined"
+                                fullWidth
+                                onChange={(e) => setInputValue(e.target.value)}
+                                InputProps={{
+                                  ...params.InputProps,
+                                  startAdornment: (
+                                    <InputAdornment position="start">
+                                      <DirectionsCar color="primary" />
+                                    </InputAdornment>
+                                  )
+                                }}
+                              />
+                            )}
+                            noOptionsText="Enter Vehicle Registration Number"
+                            isOptionEqualToValue={(option, value) => option.device.id === value.device.id}
+                            disableClearable
+                          />
+                        </Grid>
+                        <Grid item xs={12}>
+                          <Button
+                            type="submit"
+                            variant="contained"
+                            color="primary"
+                            fullWidth
+                            size="large"
+                            startIcon={isLoading ? <CircularProgress size={20} color="inherit" /> : <Search />}
+                            disabled={isLoading}
+                            sx={{ height: '56px' }}
+                          >
+                            {isLoading ? 'Searching...' : 'Search'}
+                          </Button>
+                        </Grid>
+                      </Grid>
+                    </form>
+                  </CardContent>
+                </Card>
+
+                {load && (
+                  <Card elevation={0} sx={{ borderRadius: 2, border: '1px solid', borderColor: 'divider' }}>
+                    <CardContent sx={{ p: 3 }}>
+                      <Grid container spacing={3}>
+                        <Grid item xs={12}>
+                          <FormControl fullWidth>
+                            <InputLabel>Select Route</InputLabel>
+                            <Select
+                              value={selectedRoute ? `${selectedRoute.routeId}|${selectedRoute.routeRout}` : ""}
+                              onChange={handleRouteSelect}
+                              label="Select Route"
+                              sx={{ mb: 2 }}
+                            >
+                              <MenuItem value="" disabled>
+                                Select a route
+                              </MenuItem>
+                              {routeData.map((route) => (
+                                <MenuItem value={`${route.id}|${route.route}`} key={route.id}>
+                                  <Stack direction="row" alignItems="center" spacing={1}>
+                                    <Route color="primary" />
+                                    <Typography>Route #{route.id}</Typography>
+                                  </Stack>
+                                </MenuItem>
+                              ))}
+                            </Select>
+                          </FormControl>
+                        </Grid>
+                        <Grid item xs={12}>
+                          <Stack 
+                            direction="row" 
+                            spacing={2}
+                          >
+                            <Button 
+                              onClick={addRoute} 
+                              variant="contained" 
+                              color="primary"
+                              startIcon={isSubmitting ? <CircularProgress size={20} color="inherit" /> : <Add />}
+                              disabled={isSubmitting}
+                              sx={{ flex: 1, py: 1.5 }}
+                            >
+                              {isSubmitting ? 'Adding Route...' : 'Add New Route'}
+                            </Button>
+                            <Button
+                              onClick={delRoute}
+                              variant="outlined"
+                              color="error"
+                              startIcon={isDeleting ? <CircularProgress size={20} color="inherit" /> : <Delete />}
+                              disabled={!selectedRoute || isDeleting}
+                              sx={{ flex: 1, py: 1.5 }}
+                            >
+                              {isDeleting ? 'Deleting...' : 'Delete Route'}
+                            </Button>
+                          </Stack>
+                        </Grid>
+                      </Grid>
+                    </CardContent>
+                  </Card>
+                )}
+              </Box>
+            </Grid>
+          )}
+
+          {/* Map section - always visible */}
+          <Grid item xs={12} md={!isMobile && showControls ? 8 : 12}>
+            <Card elevation={0} sx={{ 
+              borderRadius: 2, 
+              overflow: 'hidden',
+              position: 'relative',
+              border: '1px solid', 
+              borderColor: 'divider',
+              height: isMobile ? { xs: '400px', sm: '500px', md: '600px' } : 'calc(100vh - 250px)',
+              minHeight: isMobile ? '400px' : '600px'
+            }}>
+              <Box sx={{ 
+                position: 'absolute',
+                top: 10,
+                right: 10,
+                zIndex: 1000,
+                display: 'flex',
+                gap: 1
+              }}>
+                <Tooltip title="Clear Map">
+                  <IconButton 
+                    onClick={() => {
+                      vectorSourceRef.current.clear();
+                      setNewPoints([]);
+                    }}
+                    sx={{ 
+                      bgcolor: 'background.paper',
+                      boxShadow: 1,
+                      '&:hover': { bgcolor: 'background.paper' }
+                    }}
+                  >
+                    <Clear />
+                  </IconButton>
+                </Tooltip>
+                <Tooltip title="Center Map">
+                  <IconButton 
+                    onClick={() => {
+                      if (map.current) {
+                        map.current.getView().animate({
+                          center: fromLonLat([91.829437, 26.131644]),
+                          zoom: 7,
+                          duration: 1000
+                        });
+                      }
+                    }}
+                    sx={{ 
+                      bgcolor: 'background.paper',
+                      boxShadow: 1,
+                      '&:hover': { bgcolor: 'background.paper' }
+                    }}
+                  >
+                    <MyLocation />
+                  </IconButton>
+                </Tooltip>
+              </Box>
+              <Box ref={mapRef} sx={{ 
+                width: "100%", 
+                height: "100%",
+                position: 'relative' 
+              }} />
+            </Card>
+          </Grid>
+        </Grid>
+      </Box>
 
       <div
         ref={overlayRef}
@@ -728,7 +1009,7 @@ const RouteFixing = () => {
               id="delete" 
               size="small" 
               color="error" 
-              fullWidth 
+              fullWidth
               sx={{ justifyContent: 'flex-start', mb: 0.5 }}
             >
               <Delete fontSize="small" sx={{ mr: 1 }} /> Delete
@@ -736,7 +1017,7 @@ const RouteFixing = () => {
             <Button 
               id="cancel" 
               size="small" 
-              fullWidth 
+              fullWidth
               sx={{ justifyContent: 'flex-start' }}
             >
               <Clear fontSize="small" sx={{ mr: 1 }} /> Cancel
@@ -744,6 +1025,21 @@ const RouteFixing = () => {
           </Box>
         </Paper>
       </div>
+
+      {/* Mobile drawer for controls */}
+      <Drawer
+        anchor="right"
+        open={mobileDrawerOpen}
+        onClose={toggleMobileDrawer}
+        PaperProps={{
+          sx: {
+            width: isMobile ? '100%' : 320,
+            maxWidth: '100%'
+          }
+        }}
+      >
+        {mobileDrawerContent}
+      </Drawer>
     </MainCard>
   );
 };

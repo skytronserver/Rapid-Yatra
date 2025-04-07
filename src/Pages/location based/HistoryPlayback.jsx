@@ -13,14 +13,16 @@ import {
   Paper,
   InputAdornment,
   Stack, 
-  Avatar
+  Avatar,
+  Container
 } from '@mui/material';
 import { 
   DirectionsCar, 
   CalendarToday, 
   Search,
   History,
-  Map as MapIcon
+  Map as MapIcon,
+  Timeline
 } from '@mui/icons-material';
 import { useGetVehiclesQuery } from '../../store/services/locationservices';
 
@@ -72,9 +74,9 @@ const HistoryPlayback = () => {
   };
 
   return (
-    <MainCard>
+    <MainCard sx={{ height: '100vh', display: 'flex', flexDirection: 'column' }}>
       {/* Modern header section */}
-      <Box sx={{ mb: 4 }}>
+      <Box sx={{ mb: 3 }}>
         <Typography variant="h3" sx={{ 
           fontSize: '1.75rem', 
           fontWeight: 600,
@@ -86,11 +88,11 @@ const HistoryPlayback = () => {
            <Avatar 
             sx={{ 
               bgcolor: 'primary.main',
-              width: 48,
-              height: 48
+              width: 40,
+              height: 40
             }}
           >
-            <MapIcon fontSize="large" />
+            <MapIcon fontSize="medium" />
           </Avatar>
           Vehicle History Playback
         </Typography>
@@ -102,7 +104,7 @@ const HistoryPlayback = () => {
       {/* Search form */}
       <Paper sx={{ p: 3, mb: 3, borderRadius: 2 }}>
         <form onSubmit={handleSubmit}>
-          <Grid container spacing={3}>
+          <Grid container spacing={2}>
             <Grid item md={4} sm={12} xs={12}>
               <FormControl fullWidth>
                 <Autocomplete
@@ -122,6 +124,11 @@ const HistoryPlayback = () => {
                             <DirectionsCar color="action" />
                           </InputAdornment>
                         )
+                      }}
+                      sx={{
+                        '& .MuiOutlinedInput-root': {
+                          height: '50px'
+                        }
                       }}
                     />
                   )}
@@ -152,8 +159,8 @@ const HistoryPlayback = () => {
                   )
                 }}
                 sx={{
-                  '& input': {
-                    padding: '12px'
+                  '& .MuiOutlinedInput-root': {
+                    height: '50px'
                   }
                 }}
               />
@@ -176,8 +183,8 @@ const HistoryPlayback = () => {
                   )
                 }}
                 sx={{
-                  '& input': {
-                    padding: '12px'
+                  '& .MuiOutlinedInput-root': {
+                    height: '50px'
                   }
                 }}
               />
@@ -192,7 +199,7 @@ const HistoryPlayback = () => {
                 size="large"
                 startIcon={<Search />}
                 sx={{ 
-                  height: '56px',
+                  height: '50px',
                   borderRadius: '8px'
                 }}
               >
@@ -203,14 +210,14 @@ const HistoryPlayback = () => {
         </form>
       </Paper>
 
-      {/* Map section */}
-      {showMap && (
+      {/* Map section or fallback UI */}
+      {showMap ? (
         <Paper 
           sx={{ 
             borderRadius: 2,
             overflow: 'hidden',
-            height: 'calc(100vh - 380px)',
-            minHeight: '500px'
+            flex: 1,
+            minHeight: '400px'
           }}
         >
           <GPSHistoryMap
@@ -220,6 +227,46 @@ const HistoryPlayback = () => {
             downloadStatus={downloadStatus}
             setDownloadStatus={setDownloadStatus}
           />
+        </Paper>
+      ) : (
+        <Paper 
+          sx={{ 
+            borderRadius: 2,
+            overflow: 'hidden',
+            flex: 1,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+            p: 4,
+            bgcolor: 'background.default'
+          }}
+        >
+          <Avatar 
+            sx={{ 
+              bgcolor: 'primary.light',
+              width: 80,
+              height: 80,
+              mb: 2
+            }}
+          >
+            <Timeline fontSize="large" />
+          </Avatar>
+          <Typography variant="h5" sx={{ mb: 1, fontWeight: 500 }}>
+            Vehicle History Playback
+          </Typography>
+          <Typography variant="body1" sx={{ mb: 3, textAlign: 'center', maxWidth: 600, color: 'text.secondary' }}>
+            Select a vehicle and date range to view its movement history on the map.
+          </Typography>
+          <Button
+            variant="outlined"
+            color="primary"
+            startIcon={<MapIcon />}
+            onClick={() => setShowMap(true)}
+            sx={{ mt: 2 }}
+          >
+            View Map
+          </Button>
         </Paper>
       )}
     </MainCard>

@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 const Navbar = ({ page }) => {
   return (
     <div className="bg-slate-800">
-      <header class="relative flex max-w-screen-xl flex-col overflow-hidden px-4 py-4 text-white md:mx-auto md:flex-row md:items-center">
+      <header class="relative flex max-w-screen-xl flex-col overflow-hidden px-2 py-2 text-white md:mx-auto md:flex-row md:items-center">
         <img className=" h-16 w-64" src={logo} alt={"Mapwala"} />
         <input type="checkbox" class="peer hidden" id="navbar-open" />
         <label
