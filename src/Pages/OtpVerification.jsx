@@ -13,6 +13,7 @@ import {
   CircularProgress
 } from '@mui/material';
 import logo from "../Images/logo.png";
+import Footer from '../Components/Footer';
 
 const OtpVerification = () => {
   const navigate = useNavigate();
@@ -90,97 +91,114 @@ const OtpVerification = () => {
 
   return (
     <>
-    <div className="bg-slate-800 h-[2rem] py-2 px-10">
-    <img className=" h-16 w-64" src={logo} alt={"Mapwala"} />
-    </div>
-    <Box
-      sx={{
-        minHeight: '80vh',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        backgroundColor: '#f5f5f5',
-        p: { xs: 2, sm: 3 }
-      }}
-    >
-      <Card sx={{ maxWidth: 400, width: '100%', borderRadius: 3 }}>
-        <CardContent sx={{ p: 4 }}>
-          <Typography 
-            variant="h5" 
-            component="h2" 
-            sx={{ 
-              mb: 3, 
-              textAlign: 'center',
-              fontWeight: 500
-            }}
-          >
-            Verify OTP
-          </Typography>
-
-          <form onSubmit={handleVerifyOtp}>
-            <TextField
-              fullWidth
-              type="text"
-              inputProps={{ maxLength: 6 }}
-              placeholder="Enter 6-digit OTP"
-              value={otp}
-              onChange={(e) => setOtp(e.target.value)}
-              sx={{
-                mb: 3,
-                '& .MuiOutlinedInput-root': {
-                  borderRadius: 2,
-                  fontSize: '0.95rem',
-                }
-              }}
-            />
-
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              disabled={isSubmitting}
-              sx={{
-                py: 1.25,
-                textTransform: 'none',
-                fontSize: '1rem',
-                fontWeight: 400,
-                borderRadius: 2,
-                boxShadow: 'none',
-                '&:hover': {
-                  boxShadow: 1
-                }
+      <Box
+        sx={{
+          backgroundColor: '#1e293b',
+          py: 2,
+          px: 3,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center'
+        }}
+      >
+        <img 
+          src={logo} 
+          alt="Mapwala" 
+          style={{
+            height: '2.5rem',
+            width: 'auto'
+          }}
+        />
+      </Box>
+      <Box
+        sx={{
+          minHeight: '80vh',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          backgroundColor: '#f5f5f5',
+          p: { xs: 2, sm: 3 }
+        }}
+      >
+        <Card sx={{ maxWidth: 400, width: '100%', borderRadius: 3 }}>
+          <CardContent sx={{ p: 4 }}>
+            <Typography 
+              variant="h5" 
+              component="h2" 
+              sx={{ 
+                mb: 3, 
+                textAlign: 'center',
+                fontWeight: 500
               }}
             >
-              {isSubmitting ? (
-                <CircularProgress size={24} color="inherit" />
-              ) : (
-                'Verify OTP'
-              )}
-            </Button>
-          </form>
-
-          <Box sx={{ mt: 3, textAlign: 'center' }}>
-            <Typography color="text.secondary">
-              Time remaining: {Math.floor(remainingTime / 60)}:
-              {String(remainingTime % 60).padStart(2, '0')}
+              Verify OTP
             </Typography>
-            
-            <Button
-              onClick={handleResendOtp}
-              disabled={remainingTime > 0}
-              sx={{
-                mt: 1,
-                textTransform: 'none',
-                opacity: remainingTime > 0 ? 0.5 : 1,
-                cursor: remainingTime > 0 ? 'not-allowed' : 'pointer'
-              }}
-            >
-              Resend OTP
-            </Button>
-          </Box>
-        </CardContent>
-      </Card>
-    </Box>
+
+            <form onSubmit={handleVerifyOtp}>
+              <TextField
+                fullWidth
+                type="text"
+                inputProps={{ maxLength: 6 }}
+                placeholder="Enter 6-digit OTP"
+                value={otp}
+                onChange={(e) => setOtp(e.target.value)}
+                sx={{
+                  mb: 3,
+                  '& .MuiOutlinedInput-root': {
+                    borderRadius: 2,
+                    fontSize: '0.95rem',
+                  }
+                }}
+              />
+
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                disabled={isSubmitting}
+                sx={{
+                  py: 1.25,
+                  textTransform: 'none',
+                  fontSize: '1rem',
+                  fontWeight: 400,
+                  borderRadius: 2,
+                  boxShadow: 'none',
+                  '&:hover': {
+                    boxShadow: 1
+                  }
+                }}
+              >
+                {isSubmitting ? (
+                  <CircularProgress size={24} color="inherit" />
+                ) : (
+                  'Verify OTP'
+                )}
+              </Button>
+            </form>
+
+            <Box sx={{ mt: 3, textAlign: 'center' }}>
+              <Typography color="text.secondary">
+                Time remaining: {Math.floor(remainingTime / 60)}:
+                {String(remainingTime % 60).padStart(2, '0')}
+              </Typography>
+              
+              <Button
+                onClick={handleResendOtp}
+                disabled={remainingTime > 0}
+                sx={{
+                  mt: 1,
+                  textTransform: 'none',
+                  opacity: remainingTime > 0 ? 0.5 : 1,
+                  cursor: remainingTime > 0 ? 'not-allowed' : 'pointer'
+                }}
+              >
+                Resend OTP
+              </Button>
+            </Box>
+          </CardContent>
+        </Card>
+      </Box>
+      <Footer />
     </>
   );
 };
