@@ -201,7 +201,7 @@ function TagDeviceToVehicle() {
         }));
       }
     })();
-    setActiveStep(0);
+    setActiveStep(0)
   }, [reload, fetchDeviceList, categoryList]);
 
   const handleDealerOtp = (otp) => {
@@ -530,23 +530,11 @@ function TagDeviceToVehicle() {
                     <Grid container spacing={3}>
                       {Object.keys(updatedFormFields).map((field) => (
                         <Grid key={field} item md={6} sm={12} xs={12}>
-                          <Paper 
-                            elevation={0} 
-                            sx={{ 
-                              p: 2, 
-                              borderRadius: 2,
-                              border: '1px solid rgba(0,0,0,0.1)',
-                              '&:hover': {
-                                borderColor: 'primary.main',
-                              },
-                            }}
-                          >
-                            <FormField
-                              fieldConfig={updatedFormFields[field]}
-                              formik={formik}
-                              handleFileChange={handleFileChange}
-                            />
-                          </Paper>
+                          <FormField
+                            fieldConfig={updatedFormFields[field]}
+                            formik={formik}
+                            handleFileChange={handleFileChange}
+                          />
                         </Grid>
                       ))}
                       <Grid item xs={12} sx={{ textAlign: 'right', mt: 2 }}>
