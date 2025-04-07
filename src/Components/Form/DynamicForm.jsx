@@ -201,7 +201,7 @@ const DynamicForm = ({ fields, values = {}, onChange, onSubmit, submitText = 'Su
         );
       case 'file':
         return (
-          <div style={{ marginTop: "16px" }}>
+          <div>
             <input
               type="file"
               id={field.name}
@@ -218,20 +218,44 @@ const DynamicForm = ({ fields, values = {}, onChange, onSubmit, submitText = 'Su
                   width: "100%",
                   height: "50px",
                   borderRadius: "10px",
-                  justifyContent: "flex-start",
+                  justifyContent: "left",
                   borderColor: errors[field.name] ? 'error.main' : undefined,
-                  color: errors[field.name] ? 'error.main' : undefined
+                  color: errors[field.name] ? 'error.main' : undefined,
+                  position: "relative",
+                  overflow: "hidden",
+                  transition: "all 0.3s ease",
+                  "&:hover": {
+                    backgroundColor: "rgba(0, 0, 0, 0.04)"
+                  }
                 }}
               >
-                {field.label}
-                {field.required && " *"}
-                {" : "}
-                <span style={{ 
-                  color: errors[field.name] ? "#d32f2f" : "#2196f3", 
-                  fontStyle: "italic" 
+                <div style={{ 
+                  display: "flex", 
+                  flexDirection: "column", 
+                  alignItems: "left",
+                  justifyContent: "left",
+                  width: "100%"
                 }}>
-                  {values[field.name]?.name || ""}
-                </span>
+                  <span style={{ 
+                    fontSize: "0.875rem", 
+                    fontWeight: 500,
+                    marginBottom: "2px"
+                  }}>
+                    {field.label}
+                    {field.required && " *"}
+                  </span>
+                  <span style={{ 
+                    fontSize: "0.75rem", 
+                    color: values[field.name] ? "#2196f3" : "rgba(0, 0, 0, 0.6)",
+                    fontStyle: "italic",
+                    maxWidth: "90%",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    whiteSpace: "nowrap"
+                  }}>
+                    {values[field.name]?.name || (field.placeholder || "Click to select a file")}
+                  </span>
+                </div>
               </Button>
             </label>
             {field.message && (

@@ -61,7 +61,7 @@ const OtpVerification = () => {
         sessionStorage.setItem('isAuthenticated', true);
         sessionStorage.setItem('sessionID', Date.now().toString());
         sessionStorage.setItem('oAuthToken', response.data.token);
-        navigate('/dashboard');
+        navigate('/');
       } else {
         toast.error('Invalid OTP');
       }

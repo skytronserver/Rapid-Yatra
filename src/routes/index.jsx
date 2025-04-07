@@ -62,14 +62,14 @@ const AppRoutes = () => {
         }}
       />
       <Routes>
-        <Route path="/" element={<Login />} />
+        <Route path="/login" element={<Login />} />
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/services" element={<Services />} />
         <Route path="/verify-otp" element={<OtpVerification />} />
         <Route path="/termscondition" element={<TermsCondition />} />
         <Route element={<MainLayout />}>
-          <Route path="/dashboard" element={
+          <Route path="/" element={
             <ProtectedRoute allowedRoles={['devicemanufacture', 'dealer', 'owner']}>
               <Home />
             </ProtectedRoute>

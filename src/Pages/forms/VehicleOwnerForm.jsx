@@ -20,7 +20,7 @@ const VehicleOwnerForm = () => {
       });
       await createVehicleowner(formData).unwrap();
       toast.success('Vehicle Owner Created Successfully');
-      navigate('/vehicle-owners');
+      setFormValues(ownerInitialValues);
     }
     catch(error){
       console.log(error);

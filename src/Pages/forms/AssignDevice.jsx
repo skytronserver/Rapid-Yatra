@@ -58,6 +58,7 @@ const AssignDevice = () => {
       const response = await assignDevice(data).unwrap();
       console.log(response,"response");
       toast.success('Device assigned successfully');
+      setFormValues(assignDeviceInitials);
     } catch (error) {
       console.error('Error assigning device:', error);
       toast.error(error.data?.message || 'Failed to assign device');

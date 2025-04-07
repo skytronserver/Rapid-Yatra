@@ -22,8 +22,8 @@ const DealerForm = () => {
       
     //   await createDealer(formData).unwrap();
       toast.success('Dealer Created Successfully');
-      navigate('/dealers');
-    }
+      setFormValues(dealerInitialValues);
+   }
     catch(error){
       console.log(error);
       toast.error('Failed to create dealer');

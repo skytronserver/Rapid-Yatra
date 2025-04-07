@@ -18,7 +18,7 @@ const ProtectedRoute = ({ children, allowedRoles = [] }) => {
   }
   
   // If authenticated but not authorized, redirect to dashboard (or unauthorized page)
-  return <Navigate to="/dashboard" replace />;
+  return <Navigate to="/" replace />;
 };
 
 export default ProtectedRoute; 

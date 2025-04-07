@@ -89,7 +89,7 @@ const DeviceStock = () => {
     if (disabledFields.includes(field.name)) {
       return {
         ...field,
-        required: true,
+        // required: true,
         disabled: true
       };
     }

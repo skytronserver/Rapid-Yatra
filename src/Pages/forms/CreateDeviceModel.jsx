@@ -46,10 +46,15 @@ const CreateDeviceModel = () => {
         toast.success('OTP verified successfully');
         setShowOTP(false);
         setFormValues(deviceModelInitials);
+      } else if (response.error) {
+        // Handle API error response
+        console.log(response.error,"response.error");
+        const errorMessage = response.error.data?.error || 'Invalid OTP. Please try again.';
+        toast.error(errorMessage);
       }
     } catch (error) {
       console.error('OTP verification error:', error);
-      toast.error('OTP verification failed');
+      toast.error('OTP verification failed. Please try again.');
     }
   };
 
@@ -83,6 +88,7 @@ const CreateDeviceModel = () => {
         setDeviceId(response.data.id);
         setShowOTP(true);
         toast.success('Form submitted successfully. Please verify OTP.');
+        setFormValues(deviceModelInitials);
       }
     } catch (error) {
       console.error('Error:', error);

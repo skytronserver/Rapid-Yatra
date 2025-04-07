@@ -105,6 +105,7 @@ const Sidebar = ({ open, mobileOpen, onMobileClose, isDesktop }) => {
     if (!items) return [];
     return items.filter(item => {
       if (!item.roles) return true;
+      if (!user) return false;
       return item.roles.includes(user.role);
     });
   };

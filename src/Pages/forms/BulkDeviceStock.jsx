@@ -27,6 +27,7 @@ const BulkDeviceStock = () => {
       .then((response) => {
         console.log('Success:', response);
         toast.success('Bulk Device Stock Uploaded Successfully');
+        setFormValues(bulkInitials);
       })
       .catch((error) => {
         console.error('Error:', error);

@@ -21,7 +21,7 @@ import {
 
 export const menuItems = {
     main: [
-      { text: 'Dashboard', icon: <Dashboard />, path: '/dashboard', roles: ['devicemanufacture', 'dealer', 'owner'] },
+      { text: 'Dashboard', icon: <Dashboard />, path: '/', roles: ['devicemanufacture', 'dealer', 'owner'] },
     ],
     esim: [
         { text: 'Request ESIM activation', icon: <Assignment />, path: '/request-esim-activation', roles: ['dealer'] },

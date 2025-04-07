@@ -34,7 +34,13 @@ const TacExtensionPage = () => {
       
       if (response.data) {
         toast.success('OTP verified successfully');
-        // Navigate or handle success
+        setShowOTP(false);
+        setFormValues(modelExtensionInitials);
+      }
+      else if (response.error) {
+        console.log(response.error,"response.error");
+        const errorMessage = response.error.data?.error || 'Invalid OTP. Please try again.';
+        toast.error(errorMessage);
       }
     } catch (error) {
       console.error('OTP verification error:', error);
@@ -58,6 +64,7 @@ const TacExtensionPage = () => {
         setDeviceId(response.data.id);
         setShowOTP(true);
         toast.success('Form submitted successfully. Please verify OTP.');
+        setFormValues(modelExtensionInitials);
       }
     } catch (error) {
       console.error('TAC Extension error:', error);
