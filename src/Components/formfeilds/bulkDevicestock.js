@@ -25,6 +25,7 @@ export const bulkFormField = {
     name: "excel_file",
     type: "file",
     label: "Select the Excel File",
+    message: 'Only Excel files are allowed and must be below 512KB.',
     validation: Yup.mixed()
       .required("Excel File is required")
       .test("fileType", "Only Excel files are allowed", (value) => {

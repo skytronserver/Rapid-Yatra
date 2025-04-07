@@ -88,30 +88,35 @@ export const dealerFormField = {
     name:"authorizationLetter",
     type: "file",
     label: "Authorization Letter",
+    message: 'Only JPG, PDF, PNG files are allowed and must be below 512KB.',
     validation: Yup.mixed().required("Authorization Letter is required"),
   },
   companyRegistrationCertificate:{
     name:"companyRegistrationCertificate",
     type: "file",
     label: "Company/Shop Registration/Establishment Certificate",
+    message: 'Only JPG, PDF, PNG files are allowed and must be below 512KB.',
     validation: Yup.mixed().required("Company/Shop Registration/Establishment Certificate is required"),
   },
   gstCertificate:{
     name:"gstCertificate",
     type: "file",
     label: "GST Certificate",
+    message: 'Only JPG, PDF, PNG files are allowed and must be below 512KB.',
     validation: Yup.mixed().required("GST Certificate is required"),
   },
   deviceManufacturerLetter:{
     name:"deviceManufacturerLetter",
     type: "file",
     label: "Device Manufacturer Letter",
+    message: 'Only JPG, PDF, PNG files are allowed and must be below 512KB.',
     validation: Yup.mixed().required("Device Manufacturer Letter is required"),
   },
   userIdProof:{
     name:"userIdProof",
     type: "file",
     label: "User ID Proof",
+    message: 'Only JPG, PDF, PNG files are allowed and must be below 512KB.',
     validation: Yup.mixed().required("User ID Proof is required"),
   }
 };

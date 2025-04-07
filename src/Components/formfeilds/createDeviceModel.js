@@ -97,5 +97,6 @@ export const deviceModelFormField = {
         return value && value.size <= 524288; // 512 * 1024 bytes = 512KB
       }),
     accept: ".pdf,.jpg,.jpeg,.png",
+    message: 'Only PDF, JPG, JPEG, PNG files are allowed and must be below 512KB.',
   }
 };

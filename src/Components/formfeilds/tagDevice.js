@@ -62,6 +62,7 @@ export const taggingFields = {
     name: "category",
     type: "select",
     label: "Vehicle Category",
+    message: 'Only PDF, JPG, JPEG, PNG files are allowed and must be below 512KB.',
     validation: Yup.string().required("Vehicle Category is required"),
     options: categoryList,
   },
@@ -69,6 +70,7 @@ export const taggingFields = {
     name: "rcFile",
     type: "file",
     label: "Registration Certificate",
+    message: 'Only PDF, JPG, JPEG, PNG files are allowed and must be below 512KB.',
     validation: Yup.mixed().required("Registration Certificate is required"),
   },
 };

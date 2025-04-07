@@ -75,5 +75,6 @@ export const modelExtensionFormField = {
         return value?.size <= 5 * 1024 * 1024;
       }),
     accept: ".pdf,.doc,.docx,.jpg,.jpeg,.png",
+    message: 'Only PDF, DOC, DOCX, JPG, JPEG, PNG files are allowed and must be below 5MB.',      
   },
 };
