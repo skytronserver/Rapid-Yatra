@@ -15,6 +15,8 @@ import { useGenerateCaptchaQuery, useVerifyCaptchaMutation } from "../store/serv
 import { toast } from 'react-hot-toast';
 import { cipherEncryption } from "../helper";
 import { Alert } from "@mui/material";
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -247,9 +249,9 @@ const Login = () => {
                         placeholder="Your Phone Number"
                         required
                         type="tel"
-                        className={`mb-1 h-9 w-full flex-grow appearance-none rounded border ${
+                        className={`mb-1 h-10 w-full flex-grow appearance-none rounded border ${
                           errors.phoneNumber ? 'border-red-500' : 'border-gray-300'
-                        } bg-white px-2 shadow-sm ring-blue-200 transition duration-200 focus:border-blue-400 focus:outline-none focus:ring`}
+                        } bg-white px-3 shadow-sm ring-blue-200 transition duration-200 focus:border-blue-400 focus:outline-none focus:ring`}
                         id="phoneNumber"
                         name="phoneNumber"
                         value={formData.phoneNumber}
@@ -271,9 +273,9 @@ const Login = () => {
                           placeholder="Your Password"
                           required
                           type={showPassword ? "text" : "password"}
-                          className={`mb-1 h-9 w-full flex-grow appearance-none rounded border ${
+                          className={`mb-1 h-10 w-full flex-grow appearance-none rounded border ${
                             errors.password ? 'border-red-500' : 'border-gray-300'
-                          } bg-white px-2 pr-8 shadow-sm ring-blue-200 transition duration-200 focus:border-blue-400 focus:outline-none focus:ring`}
+                          } bg-white px-3 pr-8 shadow-sm ring-blue-200 transition duration-200 focus:border-blue-400 focus:outline-none focus:ring`}
                           id="password"
                           name="password"
                           value={formData.password}
@@ -284,7 +286,7 @@ const Login = () => {
                           className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-500 text-xs"
                           onClick={() => setShowPassword(!showPassword)}
                         >
-                          {showPassword ? "Hide" : "Show"}
+                          {showPassword ? <VisibilityOffIcon fontSize="small" /> : <VisibilityIcon fontSize="small" />}
                         </button>
                       </div>
                       {errors.password && (
@@ -300,9 +302,21 @@ const Login = () => {
                         Captcha
                       </label>
                       <div className="flex flex-col sm:flex-row gap-1.5 mb-1.5">
-                        <div className="bg-gray-50 p-1.5 rounded-lg border border-gray-200 flex-1 flex items-center justify-center min-h-[40px]">
+                        <div className="bg-gray-50 p-1.5 rounded-lg border border-gray-200 flex-1 flex items-center justify-center min-h-[40px] relative">
                           {captcha.isLoaded ? (
-                            <img src={captcha.text} alt="captcha" className="h-8 w-auto object-contain" />
+                            <>
+                              <img src={captcha.text} alt="captcha" className="h-8 w-auto object-contain" />
+                              <button
+                                type="button"
+                                onClick={fetchCaptcha}
+                                className="absolute right-1 top-1/2 -translate-y-1/2 md:hidden p-1 bg-blue-50 text-blue-600 rounded-full hover:bg-blue-100 disabled:opacity-50 disabled:hover:bg-blue-50 transition-colors duration-200"
+                                disabled={!captcha.isLoaded}
+                              >
+                                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                                  <path fillRule="evenodd" d="M4 2a1 1 0 011 1v2.101a7.002 7.002 0 0111.601 2.566 1 1 0 11-1.885.666A5.002 5.002 0 005.999 7H9a1 1 0 010 2H4a1 1 0 01-1-1V3a1 1 0 011-1zm.008 9.057a1 1 0 011.276.61A5.002 5.002 0 0014.001 13H11a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0v-2.101a7.002 7.002 0 01-11.601-2.566 1 1 0 01.61-1.276z" clipRule="evenodd" />
+                                </svg>
+                              </button>
+                            </>
                           ) : (
                             <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-blue-600"></div>
                           )}
@@ -310,7 +324,7 @@ const Login = () => {
                         <button
                           type="button"
                           onClick={fetchCaptcha}
-                          className="px-2 py-1 bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-100 disabled:opacity-50 disabled:hover:bg-blue-50 transition-colors duration-200 whitespace-nowrap flex items-center justify-center gap-1 text-xs"
+                          className="px-2 py-1 bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-100 disabled:opacity-50 disabled:hover:bg-blue-50 transition-colors duration-200 whitespace-nowrap flex items-center justify-center gap-1 text-xs hidden md:flex"
                           disabled={!captcha.isLoaded}
                         >
                           <svg xmlns="http://www.w3.org/2000/svg" className="h-3.5 w-3.5" viewBox="0 0 20 20" fill="currentColor">
@@ -323,9 +337,9 @@ const Login = () => {
                         placeholder="Enter captcha"
                         required
                         type="text"
-                        className={`mb-1 h-9 w-full flex-grow appearance-none rounded border ${
+                        className={`mb-1 h-10 w-full flex-grow appearance-none rounded border ${
                           errors.captchaReply ? 'border-red-500' : 'border-gray-300'
-                        } bg-white px-2 shadow-sm ring-blue-200 transition duration-200 focus:border-blue-400 focus:outline-none focus:ring`}
+                        } bg-white px-3 shadow-sm ring-blue-200 transition duration-200 focus:border-blue-400 focus:outline-none focus:ring`}
                         name="captchaReply"
                         value={formData.captchaReply}
                         onChange={handleInputChange}
@@ -368,7 +382,7 @@ const Login = () => {
                     <div className="mt-2 mb-1">
                       <button
                         type="submit"
-                        className="inline-flex h-9 w-full items-center justify-center rounded-lg bg-blue-600 px-3 font-medium tracking-wide text-white shadow-md ring-blue-200 transition duration-200 hover:bg-blue-700 focus:outline-none focus:ring"
+                        className="inline-flex h-10 w-full items-center justify-center rounded-lg bg-blue-600 px-3 font-medium tracking-wide text-white shadow-md ring-blue-200 transition duration-200 hover:bg-blue-700 focus:outline-none focus:ring"
                       >
                         Login
                       </button>
