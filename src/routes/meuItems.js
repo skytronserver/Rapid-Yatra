@@ -17,6 +17,7 @@ import {
     Assessment,
     History,
     Route,
+    Map,
   } from '@mui/icons-material';
 
 export const menuItems = {
@@ -60,6 +61,7 @@ export const menuItems = {
       { text: 'Live Tracking', icon: <DirectionsCar />, path: '/live-tracking', roles: ['owner'] },
       { text: 'History Playback', icon: <History />, path: '/history-playback', roles: ['owner'] },
       { text: 'Route Fixing', icon: <Route />, path: '/route-fixing', roles: ['owner'] },
+      { text: 'Plan Trip', icon: <Map />, path: '/trip', roles: ['owner'] },
     ]
 };
 

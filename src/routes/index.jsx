@@ -30,6 +30,7 @@ import UntagDevice from '../Pages/tagging/UntagDevice';
 import ProtectedRoute from '../Hooks/ProtectedRoute';
 import StateDistrictManagement from '../Pages/StateDistrictManagement';
 import DealerForm from '../Pages/forms/DealerForm';
+import Trip from '../Pages/Trip';
 
 const AppRoutes = () => {
   return (
@@ -168,6 +169,11 @@ const AppRoutes = () => {
           <Route path="/create-dealer" element={
             <ProtectedRoute allowedRoles={['devicemanufacture']}>
               <DealerForm />
+            </ProtectedRoute>
+          } />
+          <Route path="/trip" element={
+            <ProtectedRoute allowedRoles={['owner']}>
+              <Trip />
             </ProtectedRoute>
           } />
         </Route>
