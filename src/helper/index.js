@@ -1,3 +1,5 @@
+import forge from 'node-forge';
+
 export const cipherEncryption = (key) => {
     return (text) => {
         if (!text) return '';
@@ -245,5 +247,36 @@ export const keyMapping = {
     }
   }
   
+  export const encryptWithPublicKey = (data) => {
+    // RSA public key for encryption
+    const publicKeyPem = `-----BEGIN PUBLIC KEY-----
+  MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA6hUN7F1LHsJu7fCYMd2S
+  BOot3n++YPA4I19PJxVvPmNbv2Smm8orCnlp5daNAKy8HtuLHXclSmVSVL6M9J8f
+  2E2mUl0zlfs34KycxNs6JBV8+6MZSlsW6SltwKTuhWCcAVA5sK9nL358MclDwKZv
+  3Ya4TcNVwDyZlnT/SMJvRwBi/eHtYep4giKB7mnrMeCSL3QdRMoSPX/ohcQBIRsD
+  Q/rPeb4epepHB6yy3iQ7d9+jBlxCSv5Kkigu07kcCKzDNKtuO9WbNkg/46cStGLD
+  mlnScYUaN7TJLBpzqBHkliMoexKcYlPRG/+ApqiGoB9hztb1gfwBdTlOUhJtnN0y
+  UwIDAQAB
+  -----END PUBLIC KEY-----`;
+  
+    try {
+      // Convert the public key PEM to a forge public key object
+      const publicKey = forge.pki.publicKeyFromPem(publicKeyPem);
+  
+      // Encrypt the data using RSA-OAEP with SHA-1
+      const encryptedData = publicKey.encrypt(data, "RSA-OAEP", {
+        md: forge.md.sha1.create(),                // Use SHA-1 for hashing
+        mgf1: forge.mgf.mgf1.create(forge.md.sha1.create()), // MGF1 with SHA-1
+      });
+  
+      // Encode the encrypted data in base64 for transmission
+      const encryptedBase64 = forge.util.encode64(encryptedData);
+      
+      return encryptedBase64;
+    } catch (error) {
+      console.error('Encryption failed:', error);
+      throw new Error('Encryption failed');
+    }
+  };
   
   

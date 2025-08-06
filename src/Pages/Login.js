@@ -17,6 +17,7 @@ import { cipherEncryption } from "../helper";
 import { Alert } from "@mui/material";
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
+import { encryptWithPublicKey } from "../helper";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -136,7 +137,7 @@ const Login = () => {
     try {
       const response = await login({
         username: formData.phoneNumber,
-        password: formData.password,
+        password: encryptWithPublicKey(formData.password),
         captcha_key: captcha.captchaId,
         captcha_reply: formData.captchaReply
       });

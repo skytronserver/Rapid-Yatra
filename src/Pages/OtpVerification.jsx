@@ -14,6 +14,7 @@ import {
 } from '@mui/material';
 import logo from "../Images/logo.png";
 import Footer from '../Components/Footer';
+import { encryptWithPublicKey } from "../helper"; 
 
 const OtpVerification = () => {
   const navigate = useNavigate();
@@ -39,7 +40,7 @@ const OtpVerification = () => {
       const response = await verifyOtp({
         phone_number: sessionStorage.getItem('phoneNumber'),
         token: sessionStorage.getItem('tempToken'),
-        otp: otp
+        otp: encryptWithPublicKey(otp)
       });
 
       if ('data' in response && response.data.token) {
