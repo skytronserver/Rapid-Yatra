@@ -137,21 +137,23 @@ const Login = () => {
     try {
       const response = await login({
         username: formData.phoneNumber,
-        password: encryptWithPublicKey(formData.password),
+        password: formData.password,
         captcha_key: captcha.captchaId,
         captcha_reply: formData.captchaReply
       });
       const myCipher = cipherEncryption('skytrack');
       if ('data' in response && response.data.token) {
         setIsSuccess(true);
-        setMessage('OTP sent to your phone number');
         const cookiesData = `${myCipher(response.data?.user?.name)}-${myCipher(response.data?.user?.role)}-${myCipher(response.data?.user?.mobile)}`
         const skytrack_cookiesData = `${myCipher(response.data?.user?.email)}-${myCipher(response.data?.user?.role)}-${myCipher(response.data?.user?.date_joined)}-${myCipher(response.data?.user?.mobile)}`
         sessionStorage.setItem('cookiesData', cookiesData + '-' + response.data?.user?.id);
         localStorage.setItem('skytrackCookiesData', skytrack_cookiesData);
         sessionStorage.setItem('tempToken', response.data.token);
         sessionStorage.setItem('phoneNumber', formData.phoneNumber);
-        navigate('/verify-otp');
+        sessionStorage.setItem('isAuthenticated', true);
+        sessionStorage.setItem('sessionID', Date.now().toString());
+        sessionStorage.setItem('oAuthToken', response.data.token);
+        navigate('/');
       } else {
         const errorMessage = response?.data?.error || response?.error?.data?.error || 'An error occurred during login';
         setIsSuccess(false);
