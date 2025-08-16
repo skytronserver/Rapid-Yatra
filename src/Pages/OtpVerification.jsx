@@ -12,7 +12,7 @@ import {
   Typography,
   CircularProgress
 } from '@mui/material';
-import logo from "../Images/logo.png";
+import logo from "../Images/logo.jpg";
 import Footer from '../Components/Footer';
 import { encryptWithPublicKey } from "../helper"; 
 

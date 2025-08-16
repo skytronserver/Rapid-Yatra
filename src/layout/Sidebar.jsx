@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import logo from '../Images/logo.png';
+import logo from '../Images/logo.jpg'
 import { menuItems } from '../routes/meuItems';
 import {
   Drawer,
@@ -157,7 +157,7 @@ const Sidebar = ({ open, mobileOpen, onMobileClose, isDesktop }) => {
 
   const drawer = (
     <>
-      <LogoSection sx={{bgcolor: '#1E293B' }}>
+      <LogoSection sx={{bgcolor: '#ffffff' }}>
         <Box
           component="img"
           src={logo}

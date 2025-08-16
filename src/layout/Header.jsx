@@ -13,7 +13,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import LogoutIcon from '@mui/icons-material/Logout';
 import SettingsIcon from '@mui/icons-material/Settings';
-import logo from '../Images/logo.png';
+import logo from '../Images/logo.jpg';
 import profile from '../Images/profile.png';
 import { useNavigate } from 'react-router-dom';
 import { getUserInfo } from '../helper';
@@ -26,10 +26,11 @@ const LogoSection = styled(Box)(({ theme }) => ({
 }));
 
 const StyledAppBar = styled(AppBar)(({ theme }) => ({
-  backgroundColor: '#1E293B',
-  color: '#fff',
-  boxShadow: '0 1px 3px rgba(0, 0, 0, 0.12)',
+  backgroundColor: '#ffffff', // white like Tailwind navbar
+  color: '#2b0a3d',           // same text color as Tailwind
+  boxShadow: '0 1px 3px rgba(0, 0, 0, 0.06)', // same subtle shadow
 }));
+
 
 const Header = ({ open, toggleDrawer }) => {
   const navigate = useNavigate();

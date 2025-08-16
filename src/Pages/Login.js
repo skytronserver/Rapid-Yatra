@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from "react";
 import login2 from "../Images/login2.jpg";
 import phon_image from "../Images/phon_image.jpg";
-import login1 from "../Images/login1.jpg"
-// import login4 from "../Images/login4.png"
-import login3 from "../Images/login3.jpg"
-import login5 from "../Images/login5.jpg"
+import login1 from "../Images/login1.jpg";
+import login3 from "../Images/login3.jpg";
+import login5 from "../Images/login5.jpg";
 import Slider from "../Components/Slider";
 import Footer from "../Components/Footer";
 import Navbar from "../Components/Navbar";
@@ -12,12 +11,10 @@ import Screensize from "../Hooks/Screensize";
 import { useNavigate } from 'react-router-dom';
 import { useLoginMutation } from "../store/services/loginService";
 import { useGenerateCaptchaQuery, useVerifyCaptchaMutation } from "../store/services/captchaService";
-import { toast } from 'react-hot-toast';
-import { cipherEncryption } from "../helper";
 import { Alert } from "@mui/material";
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
-import { encryptWithPublicKey } from "../helper";
+import { cipherEncryption } from "../helper";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -27,112 +24,45 @@ const Login = () => {
   const [verifyCaptcha] = useVerifyCaptchaMutation();
   const [message, setMessage] = useState('');
   const [isSuccess, setIsSuccess] = useState(false);
-  const [formData, setFormData] = useState({
-    phoneNumber: '',
-    password: '',
-    captchaReply: ''
-  });
-  const [captcha, setCaptcha] = useState({
-    isLoaded: false,
-    text: '',
-    value: '',
-    captchaId: null
-  });
+  const [formData, setFormData] = useState({ phoneNumber: '', password: '', captchaReply: '' });
+  const [captcha, setCaptcha] = useState({ isLoaded: false, text: '', value: '', captchaId: null });
   const [showPassword, setShowPassword] = useState(false);
   const [termsAccepted, setTermsAccepted] = useState(false);
-  const [errors, setErrors] = useState({
-    phoneNumber: '',
-    password: '',
-    captchaReply: ''
-  });
+  const [errors, setErrors] = useState({ phoneNumber: '', password: '', captchaReply: '' });
 
   useEffect(() => {
     if (captchaData) {
-      setCaptcha({
-        isLoaded: true,
-        text: `data:image/png;base64,${captchaData.captcha}`,
-        value: '',
-        captchaId: captchaData.key
-      });
+      setCaptcha({ isLoaded: true, text: `data:image/png;base64,${captchaData.captcha}`, value: '', captchaId: captchaData.key });
     }
   }, [captchaData]);
 
-  const fetchCaptcha = () => {
-    refetchCaptcha();
-  };
+  const fetchCaptcha = () => refetchCaptcha();
 
   const validateForm = () => {
     let isValid = true;
-    const newErrors = {
-      phoneNumber: '',
-      password: '',
-      captchaReply: ''
-    };
-    
-    // Phone number validation
-    if (!/^\d{10}$/.test(formData.phoneNumber)) {
-      newErrors.phoneNumber = 'Phone number must be 10 digits';
-      isValid = false;
-    }
-    
-    // Password validation
-    if (formData.password.length < 6) {
-      newErrors.password = 'Password must be at least 6 characters';
-      isValid = false;
-    }
-    
-    // Captcha validation
-    if (!formData.captchaReply.trim()) {
-      newErrors.captchaReply = 'Captcha is required';
-      isValid = false;
-    }
-    
+    const newErrors = { phoneNumber: '', password: '', captchaReply: '' };
+    if (!/^\d{10}$/.test(formData.phoneNumber)) { newErrors.phoneNumber = 'Phone number must be 10 digits'; isValid = false; }
+    if (formData.password.length < 6) { newErrors.password = 'Password must be at least 6 characters'; isValid = false; }
+    if (!formData.captchaReply.trim()) { newErrors.captchaReply = 'Captcha is required'; isValid = false; }
     setErrors(newErrors);
     return isValid;
   };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
-    
-    // Clear error when user types
-    if (errors[name]) {
-      setErrors(prev => ({
-        ...prev,
-        [name]: ''
-      }));
-    }
+    setFormData(prev => ({ ...prev, [name]: value }));
+    if (errors[name]) setErrors(prev => ({ ...prev, [name]: '' }));
   };
 
   const renderAlert = (success, message) => {
     if (!message) return null;
-    
-    return success ? (
-      <Alert variant="filled" severity="success" sx={{ mt: 2 }}>
-        {message}
-      </Alert>
-    ) : (
-      <Alert variant="filled" severity="error" sx={{ mt: 2 }}>
-        {message}
-      </Alert>
-    );
+    return <Alert variant="filled" severity={success ? "success" : "error"} sx={{ mt: 2 }}>{message}</Alert>;
   }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    if (!validateForm()) {
-      return;
-    }
-
-    if (!termsAccepted) {
-      setIsSuccess(false);
-      setMessage('Please accept the terms and conditions to continue');
-      return;
-    }
+    if (!validateForm()) return;
+    if (!termsAccepted) { setIsSuccess(false); setMessage('Please accept the terms and conditions'); return; }
 
     try {
       const response = await login({
@@ -144,8 +74,8 @@ const Login = () => {
       const myCipher = cipherEncryption('skytrack');
       if ('data' in response && response.data.token) {
         setIsSuccess(true);
-        const cookiesData = `${myCipher(response.data?.user?.name)}-${myCipher(response.data?.user?.role)}-${myCipher(response.data?.user?.mobile)}`
-        const skytrack_cookiesData = `${myCipher(response.data?.user?.email)}-${myCipher(response.data?.user?.role)}-${myCipher(response.data?.user?.date_joined)}-${myCipher(response.data?.user?.mobile)}`
+        const cookiesData = `${myCipher(response.data?.user?.name)}-${myCipher(response.data?.user?.role)}-${myCipher(response.data?.user?.mobile)}`;
+        const skytrack_cookiesData = `${myCipher(response.data?.user?.email)}-${myCipher(response.data?.user?.role)}-${myCipher(response.data?.user?.date_joined)}-${myCipher(response.data?.user?.mobile)}`;
         sessionStorage.setItem('cookiesData', cookiesData + '-' + response.data?.user?.id);
         localStorage.setItem('skytrackCookiesData', skytrack_cookiesData);
         sessionStorage.setItem('tempToken', response.data.token);
@@ -155,246 +85,106 @@ const Login = () => {
         sessionStorage.setItem('oAuthToken', response.data.token);
         navigate('/');
       } else {
-        const errorMessage = response?.data?.error || response?.error?.data?.error || 'An error occurred during login';
-        setIsSuccess(false);
-        setMessage(errorMessage);
-        fetchCaptcha();
+        const errorMessage = response?.data?.error || response?.error?.data?.error || 'Login failed';
+        setIsSuccess(false); setMessage(errorMessage); fetchCaptcha();
       }
-    } catch (error) {
-      console.error('Login error:', error);
-      setIsSuccess(false);
-      setMessage('An error occurred during login');
-      fetchCaptcha();
-    }
+    } catch (error) { setIsSuccess(false); setMessage('Login error'); fetchCaptcha(); }
   };
 
-  const handleTermsChange = (e) => {
-    setTermsAccepted(e.target.checked);
-  };
+  const handleTermsChange = (e) => setTermsAccepted(e.target.checked);
 
-  const images = [
-    {
-      imgURL: login1,
-      imgAlt: "img-1",
-    },
-    {
-      imgURL: login2,
-      imgAlt: "img-2",
-    },
-    {
-      imgURL: login3,
-      imgAlt: "img-3",
-    },
-    {
-      imgURL: login5,
-      imgAlt: "img-4",
-    },
-    {
-      imgURL: login5,
-      imgAlt: "img-5",
-    },
-  ];
+  const images = [login1, login2, login3, login5];
 
   return (
     <div className="h-screen flex flex-col overflow-hidden">
-      {/* Main container - takes full viewport height and prevents scrolling */}
       <Navbar page={"home"} />
-
       <div className="relative flex-1">
-        {/* Content wrapper - takes remaining height after navbar */}
         {screenSize.width > 768 ? (
           <Slider className="absolute inset-0">
-            {/* Background image slider - positioned absolutely to fill the container */}
-            {images.map((image, index) => {
-              return (
-                <img
-                  className="h-full w-full object-cover"
-                  key={index}
-                  src={image.imgURL}
-                  alt={image.imgAlt}
-                />
-              );
-            })}
+            {images.map((img, i) => (
+              <img
+                key={i}
+                src={img}
+                alt={`slider-${i}`}
+                className="h-full w-full object-cover filter brightness-110"
+              />
+            ))}
           </Slider>
         ) : (
           <img
             src={phon_image}
-            className="absolute h-full w-full object-cover"
+            className="absolute h-full w-full object-cover filter brightness-110"
             alt=""
           />
         )}
 
-        <div className="relative h-auto ">
-          {/* Content container - positioned relative to allow absolute positioning of children */}
-          <div className="mx-auto h-full py-[1rem] sm:py-[4rem] px-2 sm:px-3 lg:px-32">
-            {/* Main content wrapper - controls overall padding and height */}
-            <div className="flex flex-col md:flex-row md:justify-end h-full">
-              {/* Left side spacer - hidden on mobile, visible on md+ screens */}
-              <div className="mb-4 w-full max-w-lg xl:mb-0 xl:w-7/12 xl:pr-6 hidden md:block">
-                {/* Left side content - intentionally empty for desktop */}
+        <div className="absolute inset-0 bg-black/20"></div>
+
+        <div className="relative h-full flex items-center justify-center px-4 sm:px-6 lg:px-32">
+          <div className="w-full max-w-md backdrop-blur-md bg-white/25 rounded-2xl p-8 shadow-2xl border border-white/20">
+            <h3 className="text-2xl font-bold text-gray-900 text-center mb-6">Login to Your Account</h3>
+            <form onSubmit={handleSubmit}>
+              {/* Phone */}
+              <div className="mb-4">
+                <input
+                  type="tel"
+                  name="phoneNumber"
+                  value={formData.phoneNumber}
+                  onChange={handleInputChange}
+                  placeholder="Phone Number"
+                  className={`w-full p-3 rounded-lg border ${errors.phoneNumber ? 'border-red-400' : 'border-gray-300'} bg-white/70 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-400`}
+                />
+                {errors.phoneNumber && <p className="text-red-500 text-xs mt-1">{errors.phoneNumber}</p>}
               </div>
-              {/* Login box container - controls width at different breakpoints */}
-              <div className="w-full max-w-[280px] sm:max-w-[320px] md:max-w-[360px] lg:max-w-[400px] mx-auto md:mx-0 md:ml-4">
-                {/* Login box - white background with shadow and border */}
-                <div className="h-auto bg-opacity-40 overflow-hidden rounded-lg border-t-4 border-blue-600 bg-white p-2.5 sm:p-3 shadow-lg shadow-blue-300">
-                  <h3 className="mb-3 text-base font-bold text-blue-900 text-center sm:text-lg">
-                    Login to your Account
-                  </h3>
-                  <form onSubmit={handleSubmit}>
-                    <div className="mb-2">
-                      <label
-                        htmlFor="phoneNumber"
-                        className="mb-1 inline-block text-sm font-medium text-blue-900"
-                      >
-                        Phone Number
-                      </label>
-                      <input
-                        placeholder="Your Phone Number"
-                        required
-                        type="tel"
-                        className={`mb-1 h-10 w-full flex-grow appearance-none rounded border ${
-                          errors.phoneNumber ? 'border-red-500' : 'border-gray-300'
-                        } bg-white px-3 shadow-sm ring-blue-200 transition duration-200 focus:border-blue-400 focus:outline-none focus:ring`}
-                        id="phoneNumber"
-                        name="phoneNumber"
-                        value={formData.phoneNumber}
-                        onChange={handleInputChange}
-                      />
-                      {errors.phoneNumber && (
-                        <p className="text-red-500 text-xs mb-1">{errors.phoneNumber}</p>
-                      )}
-                    </div>
-                    <div className="mb-2">
-                      <label
-                        htmlFor="password"
-                        className="mb-1 inline-block text-sm font-medium text-blue-900"
-                      >
-                        Password
-                      </label>
-                      <div className="relative">
-                        <input
-                          placeholder="Your Password"
-                          required
-                          type={showPassword ? "text" : "password"}
-                          className={`mb-1 h-10 w-full flex-grow appearance-none rounded border ${
-                            errors.password ? 'border-red-500' : 'border-gray-300'
-                          } bg-white px-3 pr-8 shadow-sm ring-blue-200 transition duration-200 focus:border-blue-400 focus:outline-none focus:ring`}
-                          id="password"
-                          name="password"
-                          value={formData.password}
-                          onChange={handleInputChange}
-                        />
-                        <button
-                          type="button"
-                          className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-500 text-xs"
-                          onClick={() => setShowPassword(!showPassword)}
-                        >
-                          {showPassword ? <VisibilityOffIcon fontSize="small" /> : <VisibilityIcon fontSize="small" />}
-                        </button>
-                      </div>
-                      {errors.password && (
-                        <p className="text-red-500 text-xs mb-1">{errors.password}</p>
-                      )}
-                    </div>
 
-                    <div className="mb-2">
-                      <label
-                        htmlFor="captchaReply"
-                        className="mb-1 inline-block text-sm font-medium text-blue-900"
-                      >
-                        Captcha
-                      </label>
-                      <div className="flex flex-col sm:flex-row gap-1.5 mb-1.5">
-                        <div className="bg-gray-50 p-1.5 rounded-lg border border-gray-200 flex-1 flex items-center justify-center min-h-[40px] relative">
-                          {captcha.isLoaded ? (
-                            <>
-                              <img src={captcha.text} alt="captcha" className="h-8 w-auto object-contain" />
-                              <button
-                                type="button"
-                                onClick={fetchCaptcha}
-                                className="absolute right-1 top-1/2 -translate-y-1/2 md:hidden p-1 bg-blue-50 text-blue-600 rounded-full hover:bg-blue-100 disabled:opacity-50 disabled:hover:bg-blue-50 transition-colors duration-200"
-                                disabled={!captcha.isLoaded}
-                              >
-                                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
-                                  <path fillRule="evenodd" d="M4 2a1 1 0 011 1v2.101a7.002 7.002 0 0111.601 2.566 1 1 0 11-1.885.666A5.002 5.002 0 005.999 7H9a1 1 0 010 2H4a1 1 0 01-1-1V3a1 1 0 011-1zm.008 9.057a1 1 0 011.276.61A5.002 5.002 0 0014.001 13H11a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0v-2.101a7.002 7.002 0 01-11.601-2.566 1 1 0 01.61-1.276z" clipRule="evenodd" />
-                                </svg>
-                              </button>
-                            </>
-                          ) : (
-                            <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-blue-600"></div>
-                          )}
-                        </div>
-                        <button
-                          type="button"
-                          onClick={fetchCaptcha}
-                          className="px-2 py-1 bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-100 disabled:opacity-50 disabled:hover:bg-blue-50 transition-colors duration-200 whitespace-nowrap flex items-center justify-center gap-1 text-xs hidden md:flex"
-                          disabled={!captcha.isLoaded}
-                        >
-                          <svg xmlns="http://www.w3.org/2000/svg" className="h-3.5 w-3.5" viewBox="0 0 20 20" fill="currentColor">
-                            <path fillRule="evenodd" d="M4 2a1 1 0 011 1v2.101a7.002 7.002 0 0111.601 2.566 1 1 0 11-1.885.666A5.002 5.002 0 005.999 7H9a1 1 0 010 2H4a1 1 0 01-1-1V3a1 1 0 011-1zm.008 9.057a1 1 0 011.276.61A5.002 5.002 0 0014.001 13H11a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0v-2.101a7.002 7.002 0 01-11.601-2.566 1 1 0 01.61-1.276z" clipRule="evenodd" />
-                          </svg>
-                          Refresh
-                        </button>
-                      </div>
-                      <input
-                        placeholder="Enter captcha"
-                        required
-                        type="text"
-                        className={`mb-1 h-10 w-full flex-grow appearance-none rounded border ${
-                          errors.captchaReply ? 'border-red-500' : 'border-gray-300'
-                        } bg-white px-3 shadow-sm ring-blue-200 transition duration-200 focus:border-blue-400 focus:outline-none focus:ring`}
-                        name="captchaReply"
-                        value={formData.captchaReply}
-                        onChange={handleInputChange}
-                        disabled={!captcha.isLoaded}
-                      />
-                      {errors.captchaReply && (
-                        <p className="text-red-500 text-xs mb-1">{errors.captchaReply}</p>
-                      )}
-                    </div>
+              {/* Password */}
+              <div className="mb-4 relative">
+                <input
+                  type={showPassword ? "text" : "password"}
+                  name="password"
+                  value={formData.password}
+                  onChange={handleInputChange}
+                  placeholder="Password"
+                  className={`w-full p-3 rounded-lg border ${errors.password ? 'border-red-400' : 'border-gray-300'} bg-white/70 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-400`}
+                />
+                <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-3 top-3 text-gray-500 hover:text-gray-900">
+                  {showPassword ? <VisibilityOffIcon /> : <VisibilityIcon />}
+                </button>
+                {errors.password && <p className="text-red-500 text-xs mt-1">{errors.password}</p>}
+              </div>
 
-                    <div className="mb-3">
-                      <label className="mb-1.5 flex text-xs">
-                        <input
-                          type="checkbox"
-                          name="accept"
-                          className="mr-1.5"
-                          checked={termsAccepted}
-                          onChange={handleTermsChange}
-                        />
-                        <div className="text-gray-800">
-                          <p className="text-xs">
-                            I accept the{" "}
-                            <a
-                              href="/termscondition"
-                              className="cursor-pointer text-blue-500 underline"
-                            >
-                              terms of use{" "}
-                            </a>
-                            and{" "}
-                            <a
-                              href="/termscondition"
-                              className="cursor-pointer text-blue-500 underline"
-                            >
-                              privacy policy
-                            </a>
-                          </p>
-                        </div>
-                      </label>
-                    </div>
-                    <div className="mt-2 mb-1">
-                      <button
-                        type="submit"
-                        className="inline-flex h-10 w-full items-center justify-center rounded-lg bg-blue-600 px-3 font-medium tracking-wide text-white shadow-md ring-blue-200 transition duration-200 hover:bg-blue-700 focus:outline-none focus:ring"
-                      >
-                        Login
-                      </button>
-                      {renderAlert(isSuccess, message)}
-                    </div>
-                  </form>
+              {/* Captcha */}
+              <div className="mb-4">
+                <div className="flex items-center gap-2 mb-2">
+                  {captcha.isLoaded ? (
+                    <img src={captcha.text} alt="captcha" className="h-10" />
+                  ) : (
+                    <div className="animate-spin h-10 w-10 border-b-2 border-gray-500 rounded-full"></div>
+                  )}
+                  <button type="button" onClick={fetchCaptcha} className="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300 text-gray-700">Refresh</button>
                 </div>
+                <input
+                  type="text"
+                  name="captchaReply"
+                  value={formData.captchaReply}
+                  onChange={handleInputChange}
+                  placeholder="Enter Captcha"
+                  className={`w-full p-3 rounded-lg border ${errors.captchaReply ? 'border-red-400' : 'border-gray-300'} bg-white/70 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-400`}
+                />
+                {errors.captchaReply && <p className="text-red-500 text-xs mt-1">{errors.captchaReply}</p>}
               </div>
-            </div>
+
+              {/* Terms */}
+              <div className="mb-4 flex items-center text-gray-800 text-sm">
+                <input type="checkbox" checked={termsAccepted} onChange={handleTermsChange} className="mr-2" />
+                I accept the <a href="/termscondition" className="underline text-gray-900">Terms</a> and <a href="/termscondition" className="underline text-gray-900">Privacy Policy</a>
+              </div>
+
+              <button type="submit" disabled={isLoading} className="w-full py-3 rounded-lg bg-gray-900 text-white font-semibold hover:bg-gray-800 transition">
+                {isLoading ? "Authenticating..." : "Login"}
+              </button>
+              {renderAlert(isSuccess, message)}
+            </form>
           </div>
         </div>
       </div>
