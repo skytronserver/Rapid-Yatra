@@ -13,7 +13,7 @@ const Footer = () => {
             PreciTrack™{" "}
           </a> */}
           
-          PreciTrack Mapwala Private Limited 2024
+          DARS Transtrade Private Limited
         </span>
         <ul class="flex flex-wrap items-center mt-3 text-sm font-medium text-white  sm:mt-0">
           <li>
