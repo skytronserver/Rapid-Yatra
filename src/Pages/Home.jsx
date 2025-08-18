@@ -88,22 +88,23 @@ const StatItem = styled(Paper)(({ theme }) => ({
 
 // Define consistent gradient colors
 const gradientColors = {
-  blue: 'linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%)',
-  purple: 'linear-gradient(135deg, #f3e5f5 0%, #e1bee7 100%)',
-  slate: 'linear-gradient(135deg, #f5f7fa 0%, #e4e7eb 100%)',
-  gray: 'linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%)',
+  blue: 'linear-gradient(135deg, #dbeafe 0%, #60a5fa 100%)',     // light blue → medium blue
+  purple: 'linear-gradient(135deg, #ede9fe 0%, #a78bfa 100%)',  // light purple → violet
+  slate: 'linear-gradient(135deg, #f1f5f9 0%, #94a3b8 100%)',   // light gray → slate
+  gray: 'linear-gradient(135deg, #f9fafb 0%, #d1d5db 100%)',    // very light gray → medium gray
 };
 
 // Update chart colors
 const chartColors = {
-  primary: '#3f51b5',
-  secondary: '#7986cb',
-  tertiary: '#9fa8da',
-  quaternary: '#c5cae9',
-  success: '#4caf50',
-  warning: '#ff9800',
-  error: '#f44336',
+  primary: '#6C63FF',     // soft indigo
+  secondary: '#A393EB',   // lavender
+  tertiary: '#C1C8E4',    // light blue-gray
+  quaternary: '#E6E9F5',  // very light pastel
+  success: '#4CAF7D',     // soft green
+  warning: '#FFB74D',     // warm amber
+  error: '#E57373',       // soft red
 };
+
 
 const Home = () => {
   const user = getUserInfo();
@@ -180,30 +181,7 @@ const Home = () => {
       case "devicemanufacture":
         return (
           <Grid container spacing={isMobile ? 1 : 2} sx={{ height: 'calc(100vh - 80px)' }}>
-            {/* eSIM Status */}
-            <Grid item xs={12} md={8} sx={{ height: { xs: '30vh', sm: '35vh', md: '45vh' } }}>
-              <StyledCard sx={{ background: gradientColors.blue, height: '100%' }}>
-                <CardContent sx={{ p: isMobile ? 1 : 2, height: '100%', display: 'flex', flexDirection: 'column' }}>
-                  <Typography variant={isMobile ? "subtitle2" : "h6"} sx={{ mb: 1, fontSize: isMobile ? '0.875rem' : '1rem' }}>
-                    eSIM Status
-                  </Typography>
-                  <Box sx={{ flexGrow: 1 }}>
-                    <Bar data={{
-                      labels: ['Total Activations', '1 Year Renewals', '2 Year Renewals'],
-                      datasets: [{
-                        label: 'eSIM Stats',
-                        data: [manufacturerData.esimInfo.totalActivation, 
-                              manufacturerData.esimInfo.oneYearRenewal, 
-                              manufacturerData.esimInfo.twoYearRenewal],
-                        backgroundColor: [chartColors.primary, chartColors.secondary, chartColors.tertiary],
-                      }]
-                    }} options={getBarOptions(isMobile)} />
-                  </Box>
-                </CardContent>
-              </StyledCard>
-            </Grid>
-
-            {/* Device Status */}
+              {/* Device Status */}
             <Grid item xs={12} md={4} sx={{ height: { xs: '30vh', sm: '35vh', md: '45vh' } }}>
               <StyledCard sx={{ background: gradientColors.purple, height: '100%' }}>
                 <CardContent sx={{ p: isMobile ? 1 : 2, height: '100%', display: 'flex', flexDirection: 'column' }}>
@@ -240,6 +218,30 @@ const Home = () => {
               </StyledCard>
             </Grid>
 
+            {/* eSIM Status */}
+            <Grid item xs={12} md={8} sx={{ height: { xs: '30vh', sm: '35vh', md: '45vh' } }}>
+              <StyledCard sx={{ background: gradientColors.blue, height: '100%' }}>
+                <CardContent sx={{ p: isMobile ? 1 : 2, height: '100%', display: 'flex', flexDirection: 'column' }}>
+                  <Typography variant={isMobile ? "subtitle2" : "h6"} sx={{ mb: 1, fontSize: isMobile ? '0.875rem' : '1rem' }}>
+                    eSIM Status
+                  </Typography>
+                  <Box sx={{ flexGrow: 1 }}>
+                    <Bar data={{
+                      labels: ['Total Activations', '1 Year Renewals', '2 Year Renewals'],
+                      datasets: [{
+                        label: 'eSIM Stats',
+                        data: [manufacturerData.esimInfo.totalActivation, 
+                              manufacturerData.esimInfo.oneYearRenewal, 
+                              manufacturerData.esimInfo.twoYearRenewal],
+                        backgroundColor: [chartColors.primary, chartColors.secondary, chartColors.tertiary],
+                      }]
+                    }} options={getBarOptions(isMobile)} />
+                  </Box>
+                </CardContent>
+              </StyledCard>
+            </Grid>
+
+          
             {/* Stats Sections */}
             <Grid item xs={12} md={6} sx={{ height: { xs: '30vh', sm: '35vh', md: '45vh' } }}>
               <StyledCard sx={{ background: gradientColors.slate, height: '100%' }}>
@@ -350,30 +352,7 @@ const Home = () => {
       case "dealer":
         return (
           <Grid container spacing={isMobile ? 1 : 2} sx={{ height: 'calc(100vh - 80px)' }}>
-            {/* Fitment Statistics */}
-            <Grid item xs={12} md={8} sx={{ height: { xs: '30vh', sm: '35vh', md: '45vh' } }}>
-              <StyledCard sx={{ background: gradientColors.blue, height: '100%' }}>
-                <CardContent sx={{ p: isMobile ? 1 : 2, height: '100%', display: 'flex', flexDirection: 'column' }}>
-                  <Typography variant={isMobile ? "subtitle2" : "h6"} sx={{ mb: 1, fontSize: isMobile ? '0.875rem' : '1rem' }}>
-                    Fitment Statistics
-                  </Typography>
-                  <Box sx={{ flexGrow: 1 }}>
-                    <Bar data={{
-                      labels: ['Total Fitments', 'Monthly Fitments', 'Daily Fitments'],
-                      datasets: [{
-                        label: 'Fitment Stats',
-                        data: [dealerData.dealerFitmentInfo.total, 
-                              dealerData.dealerFitmentInfo.monthly, 
-                              dealerData.dealerFitmentInfo.daily],
-                        backgroundColor: [chartColors.primary, chartColors.secondary, chartColors.tertiary],
-                      }]
-                    }} options={getBarOptions(isMobile)} />
-                  </Box>
-                </CardContent>
-              </StyledCard>
-            </Grid>
-
-            {/* Device Status */}
+               {/* Device Status */}
             <Grid item xs={12} md={4} sx={{ height: { xs: '30vh', sm: '35vh', md: '45vh' } }}>
               <StyledCard sx={{ background: gradientColors.purple, height: '100%' }}>
                 <CardContent sx={{ p: isMobile ? 1 : 2, height: '100%', display: 'flex', flexDirection: 'column' }}>
@@ -405,6 +384,29 @@ const Home = () => {
                         }
                       }
                     }} />
+                  </Box>
+                </CardContent>
+              </StyledCard>
+            </Grid>
+
+            {/* Fitment Statistics */}
+            <Grid item xs={12} md={8} sx={{ height: { xs: '30vh', sm: '35vh', md: '45vh' } }}>
+              <StyledCard sx={{ background: gradientColors.blue, height: '100%' }}>
+                <CardContent sx={{ p: isMobile ? 1 : 2, height: '100%', display: 'flex', flexDirection: 'column' }}>
+                  <Typography variant={isMobile ? "subtitle2" : "h6"} sx={{ mb: 1, fontSize: isMobile ? '0.875rem' : '1rem' }}>
+                    Fitment Statistics
+                  </Typography>
+                  <Box sx={{ flexGrow: 1 }}>
+                    <Bar data={{
+                      labels: ['Total Fitments', 'Monthly Fitments', 'Daily Fitments'],
+                      datasets: [{
+                        label: 'Fitment Stats',
+                        data: [dealerData.dealerFitmentInfo.total, 
+                              dealerData.dealerFitmentInfo.monthly, 
+                              dealerData.dealerFitmentInfo.daily],
+                        backgroundColor: [chartColors.primary, chartColors.secondary, chartColors.tertiary],
+                      }]
+                    }} options={getBarOptions(isMobile)} />
                   </Box>
                 </CardContent>
               </StyledCard>
@@ -468,6 +470,30 @@ const Home = () => {
       case "owner":
         return (
           <Grid container spacing={isMobile ? 1 : 2} sx={{ height: 'calc(100vh - 80px)' }}>
+
+             {/* Alert Statistics */}
+            <Grid item xs={12} md={6} sx={{ height: { xs: '30vh', sm: '35vh', md: '45vh' } }}>
+              <StyledCard sx={{ background: gradientColors.gray, height: '100%' }}>
+                <CardContent sx={{ p: isMobile ? 1 : 2, height: '100%', display: 'flex', flexDirection: 'column' }}>
+                  <Typography variant={isMobile ? "subtitle2" : "h6"} sx={{ mb: 1, fontSize: isMobile ? '0.875rem' : '1rem' }}>
+                    Alert Statistics
+                  </Typography>
+                  <Box sx={{ flexGrow: 1 }}>
+                    <Bar data={{
+                      labels: ['Total Alerts', 'Monthly Alerts', 'Daily Alerts'],
+                      datasets: [{
+                        label: 'Alert Stats',
+                        data: [ownerData.alertInfo.total, 
+                              ownerData.alertInfo.monthly, 
+                              ownerData.alertInfo.daily],
+                        backgroundColor: [chartColors.primary, chartColors.secondary, chartColors.tertiary],
+                      }]
+                    }} options={getBarOptions(isMobile)} />
+                  </Box>
+                </CardContent>
+              </StyledCard>
+            </Grid>
+
             {/* Vehicle Statistics */}
             <Grid item xs={12} md={6} sx={{ height: { xs: '30vh', sm: '35vh', md: '45vh' } }}>
               <StyledCard sx={{ background: gradientColors.blue, height: '100%' }}>
@@ -497,29 +523,6 @@ const Home = () => {
                         }
                       }
                     }} />
-                  </Box>
-                </CardContent>
-              </StyledCard>
-            </Grid>
-
-            {/* Alert Statistics */}
-            <Grid item xs={12} md={6} sx={{ height: { xs: '30vh', sm: '35vh', md: '45vh' } }}>
-              <StyledCard sx={{ background: gradientColors.gray, height: '100%' }}>
-                <CardContent sx={{ p: isMobile ? 1 : 2, height: '100%', display: 'flex', flexDirection: 'column' }}>
-                  <Typography variant={isMobile ? "subtitle2" : "h6"} sx={{ mb: 1, fontSize: isMobile ? '0.875rem' : '1rem' }}>
-                    Alert Statistics
-                  </Typography>
-                  <Box sx={{ flexGrow: 1 }}>
-                    <Bar data={{
-                      labels: ['Total Alerts', 'Monthly Alerts', 'Daily Alerts'],
-                      datasets: [{
-                        label: 'Alert Stats',
-                        data: [ownerData.alertInfo.total, 
-                              ownerData.alertInfo.monthly, 
-                              ownerData.alertInfo.daily],
-                        backgroundColor: [chartColors.primary, chartColors.secondary, chartColors.tertiary],
-                      }]
-                    }} options={getBarOptions(isMobile)} />
                   </Box>
                 </CardContent>
               </StyledCard>

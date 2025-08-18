@@ -145,7 +145,6 @@ const Contact = () => {
                           }`}
                           id="email"
                           type="email"
-                          placeholder="your.email@example.com"
                           value={email}
                           onChange={(e) => handleForm("email", e.target.value)}
                         />
@@ -164,7 +163,6 @@ const Contact = () => {
                         }`}
                         id="subject"
                         type="text"
-                        placeholder="What's this about?"
                         value={subject}
                         onChange={(e) => handleForm("subject", e.target.value)}
                       />
@@ -182,7 +180,6 @@ const Contact = () => {
                           : "border-gray-200 focus:border-indigo-400 bg-gray-50 focus:bg-white"
                       }`}
                       id="message"
-                      placeholder="Tell us about your project or inquiry..."
                       value={message}
                       onChange={(e) => handleForm("message", e.target.value)}
                     ></textarea>

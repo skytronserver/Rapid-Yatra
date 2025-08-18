@@ -5,11 +5,10 @@ import { Link } from "react-router-dom";
 const Navbar = ({ page }) => {
   return (
     <div className="bg-white shadow-md">
-      <header className="relative flex max-w-screen-xl flex-col overflow-hidden px-4 py-3 text-[#2b0a3d] md:mx-auto md:flex-row md:items-center">
-        
-        {/* Logo */}
-       <img className="h-10 w-36 md:h-16 md:w-40 lg:h-18 lg:w-50 object-contain" src={logo} alt="e-DISHA" />
+     <header className="relative flex max-w-screen-xl flex-col overflow-hidden px-4 py-0 m-0 text-[#2b0a3d] md:mx-auto md:flex-row md:items-center">
 
+        {/* Logo */}
+       <img className="h-14 w-36 md:h-16 md:w-40 lg:h-18 lg:w-50 object-contain" src={logo} alt="e-DISHA" />
 
         {/* Mobile Toggle */}
         <input type="checkbox" className="peer hidden" id="navbar-open" />

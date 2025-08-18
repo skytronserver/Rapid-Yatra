@@ -3,62 +3,32 @@ import { createTheme } from '@mui/material/styles';
 export const theme = createTheme({
   palette: {
     primary: {
-      main: '#1E293B',
-      light: '#334155',
-      dark: '#0F172A',
+      main: '#00695C',   // Teal
+      light: '#439889',
+      dark: '#004D40',
     },
     secondary: {
-      main: '#2196F3',
-      light: '#64B5F6',
-      dark: '#1976D2',
+      main: '#FFB300',   // Amber
+      light: '#FFD54F',
+      dark: '#FF8F00',
     },
     background: {
-      default: '#f5f5f5',
+      default: '#fdfdfd',
       paper: '#ffffff',
     },
   },
   typography: {
     fontFamily: '"Inter", "Roboto", "Helvetica", "Arial", sans-serif',
-    h1: {
-      fontSize: '2.5rem',
-      fontWeight: 600,
-    },
-    h2: {
-      fontSize: '2rem',
-      fontWeight: 600,
-    },
-    h3: {
-      fontSize: '1.75rem',
-      fontWeight: 600,
-    },
-    h4: {
-      fontSize: '1.5rem',
-      fontWeight: 600,
-    },
-    h5: {
-      fontSize: '1.25rem',
-      fontWeight: 600,
-    },
-    h6: {
-      fontSize: '1rem',
-      fontWeight: 600,
-    },
-    subtitle1: {
-      fontSize: '1rem',
-      fontWeight: 500,
-    },
-    subtitle2: {
-      fontSize: '0.875rem',
-      fontWeight: 500,
-    },
-    body1: {
-      fontSize: '1rem',
-      lineHeight: 1.5,
-    },
-    body2: {
-      fontSize: '0.875rem',
-      lineHeight: 1.5,
-    },
+    h1: { fontSize: '2.5rem', fontWeight: 600 },
+    h2: { fontSize: '2rem', fontWeight: 600 },
+    h3: { fontSize: '1.75rem', fontWeight: 600 },
+    h4: { fontSize: '1.5rem', fontWeight: 600 },
+    h5: { fontSize: '1.25rem', fontWeight: 600 },
+    h6: { fontSize: '1rem', fontWeight: 600 },
+    subtitle1: { fontSize: '1rem', fontWeight: 500 },
+    subtitle2: { fontSize: '0.875rem', fontWeight: 500 },
+    body1: { fontSize: '1rem', lineHeight: 1.5 },
+    body2: { fontSize: '0.875rem', lineHeight: 1.5 },
   },
   components: {
     MuiButton: {
@@ -107,4 +77,4 @@ export const theme = createTheme({
       },
     },
   },
-}); 
+});
