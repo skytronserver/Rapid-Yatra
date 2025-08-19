@@ -5,11 +5,15 @@ import Footer from "../Components/Footer";
 
 const About = () => {
   return (
+
     <div className="bg-gray-50 min-h-screen">
+
       <Navbar page={"about"} />
 
+      
+
       {/* Hero Section */}
-      <div className="py-20 px-6 max-w-7xl mx-auto text-center">
+      <div className="py-20 w-full mx-auto text-center">
         <h1 className="text-5xl font-bold text-slate-900">
           DARS Transtrade{" "}
           <span className="text-3xl text-blue-600 font-medium">Private Limited</span>
@@ -23,7 +27,7 @@ const About = () => {
       </div>
 
       {/* Main Content */}
-      <div className="max-w-7xl mx-auto px-6 space-y-24">
+      <div className="max-w-full mx-auto space-y-24">
 
         {/* Vision Section */}
         <div className="lg:grid lg:grid-cols-3 lg:gap-12 items-center">

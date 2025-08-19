@@ -3,7 +3,7 @@ import login2 from "../Images/logo2.jpg";
 import phon_image from "../Images/phon_image.jpg";
 import login1 from "../Images/logo1.jpg";
 import login3 from "../Images/login3.jpg";
-import login5 from "../Images/logo5.jpg";
+import login5 from "../Images/login5.jpg";
 import Slider from "../Components/Slider";
 import Footer from "../Components/Footer";
 import Navbar from "../Components/Navbar";
@@ -97,7 +97,7 @@ const Login = () => {
 
   return (
     <div className="h-screen flex flex-col overflow-hidden">
-      <Navbar page={"home"} />
+      <Navbar page={"/"} />
       <div className="relative flex-1">
         {screenSize.width > 768 ? (
           <Slider className="absolute inset-0">

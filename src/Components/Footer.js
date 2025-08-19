@@ -6,7 +6,7 @@ const Footer = () => {
     <footer
       class="bg-gray-800  shadow fixed inset-x-0 bottom-0 "
     >
-      <div class="w-full mx-auto max-w-screen-xl py-1 px-3 lg:py-4 md:flex md:items-center md:justify-between">
+      <div class="w-full mx-auto max-w-full py-1 px-3 lg:py-4 md:flex md:items-center md:justify-between">
         <span class="text-sm text-white sm:text-center ">
           ©{" "}
           {/* <a href="#" class="hover:underline">

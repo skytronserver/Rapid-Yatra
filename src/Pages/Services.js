@@ -11,8 +11,9 @@ const Services = () => {
     <div className="min-h-screen bg-white">
       <Navbar page={"services"} />
 
+      {/* Header Section */}
       <section className="py-16 bg-gradient-to-r from-blue-50 via-white to-slate-50">
-        <div className="max-w-6xl mx-auto px-6 text-center">
+        <div className="w-full px-6 text-center">
           <div className="mb-4">
             <span className="inline-block bg-blue-100 text-blue-700 px-5 py-2 rounded-full text-sm font-semibold">
               Our Solutions
@@ -25,16 +26,17 @@ const Services = () => {
         </div>
       </section>
 
+      {/* Services Blocks */}
       <section className="py-16 bg-gradient-to-r from-blue-50 via-white to-slate-50">
-        <div className="max-w-6xl mx-auto px-6 space-y-16 -mt-20"> {/* Increased negative margin */}
+        <div className="w-full px-6 space-y-16 -mt-20">
 
           {/* e-Disha V600 */}
-          <div className="flex flex-col lg:flex-row items-center gap-8 -mt-4"> {/* pull block up */}
+          <div className="flex flex-col lg:flex-row items-center gap-8 -mt-4">
             <div className="lg:w-1/2 relative">
               <img
                 src={edishaImg}
                 alt="e-Disha V600"
-                className="w-full h-72 object-cover rounded-2xl shadow-lg"
+                className="w-full h-96 object-cover rounded-2xl shadow-lg"
               />
               <div className="absolute -bottom-6 -right-6 w-28 h-28 bg-blue-500 opacity-20 rounded-full blur-xl"></div>
             </div>
@@ -55,7 +57,7 @@ const Services = () => {
               <img
                 src={fleetImg}
                 alt="Fleet & Logistics Solutions"
-                className="w-full h-72 object-cover rounded-2xl shadow-lg"
+                className="w-full h-96 object-cover rounded-2xl shadow-lg"
               />
               <div className="absolute -bottom-6 -left-6 w-28 h-28 bg-slate-500 opacity-20 rounded-full blur-xl"></div>
             </div>
@@ -75,7 +77,7 @@ const Services = () => {
               <img
                 src={supportImg}
                 alt="Technology & Support"
-                className="w-full h-72 object-cover rounded-2xl shadow-lg"
+                className="w-full h-96 object-cover rounded-2xl shadow-lg"
               />
               <div className="absolute -bottom-6 -right-6 w-28 h-28 bg-blue-600 opacity-20 rounded-full blur-xl"></div>
             </div>
@@ -87,12 +89,12 @@ const Services = () => {
               </p>
             </div>
           </div>
-
         </div>
       </section>
 
+      {/* Why Choose Us */}
       <section className="py-20 bg-slate-900">
-        <div className="max-w-6xl mx-auto px-6 text-center">
+        <div className="w-full px-6 text-center">
           <h2 className="text-4xl font-bold text-white mb-6">
             Why Choose DARS?
           </h2>
@@ -120,11 +122,9 @@ const Services = () => {
         </div>
       </section>
 
-
       <Footer />
     </div>
   );
 };
 
 export default Services;
-

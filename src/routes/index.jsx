@@ -31,7 +31,7 @@ import ProtectedRoute from '../Hooks/ProtectedRoute';
 import StateDistrictManagement from '../Pages/StateDistrictManagement';
 import DealerForm from '../Pages/forms/DealerForm';
 import Trip from '../Pages/Trip';
-
+import HomePage from '../Pages/Homepage';
 const AppRoutes = () => {
   return (
     <>
@@ -63,6 +63,7 @@ const AppRoutes = () => {
         }}
       />
       <Routes>
+        <Route path="/" element={<HomePage/>} />
         <Route path="/login" element={<Login />} />
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
