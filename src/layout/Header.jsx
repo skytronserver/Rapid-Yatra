@@ -26,7 +26,7 @@ const LogoSection = styled(Box)(({ theme }) => ({
 }));
 
 const StyledAppBar = styled(AppBar)(({ theme }) => ({
-  backgroundColor: '#ffffff', // white like Tailwind navbar
+  backgroundColor: '#e1f0fa', // white like Tailwind navbar
   color: '#2b0a3d',           // same text color as Tailwind
   boxShadow: '0 1px 3px rgba(0, 0, 0, 0.06)', // same subtle shadow
 }));
@@ -74,7 +74,7 @@ const Header = ({ open, toggleDrawer }) => {
             />
           </LogoSection>
         </Box>
-        
+
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
           <Box
             onClick={handleClick}
@@ -85,9 +85,9 @@ const Header = ({ open, toggleDrawer }) => {
               '&:hover': { opacity: 0.8 }
             }}
           >
-            <Typography 
-              variant="subtitle1" 
-              sx={{ 
+            <Typography
+              variant="subtitle1"
+              sx={{
                 mr: 2,
                 display: { xs: 'none', sm: 'block' }
               }}

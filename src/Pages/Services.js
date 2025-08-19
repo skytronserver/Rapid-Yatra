@@ -12,85 +12,84 @@ const Services = () => {
       <Navbar page={"services"} />
 
       <section className="py-16 bg-gradient-to-r from-blue-50 via-white to-slate-50">
-  <div className="max-w-6xl mx-auto px-6 text-center">
-    <div className="mb-4">
-      <span className="inline-block bg-blue-100 text-blue-700 px-5 py-2 rounded-full text-sm font-semibold">
-        Our Solutions
-      </span>
-    </div>
-    <h2 className="text-4xl md:text-5xl font-extrabold text-slate-900 mb-4 leading-tight">
-      Products & <span className="text-blue-600">Services</span>
-    </h2>
-    <div className="w-24 h-1 bg-gradient-to-r from-blue-600 to-blue-400 mx-auto mb-8 rounded-full"></div>
-  </div>
-</section>
+        <div className="max-w-6xl mx-auto px-6 text-center">
+          <div className="mb-4">
+            <span className="inline-block bg-blue-100 text-blue-700 px-5 py-2 rounded-full text-sm font-semibold">
+              Our Solutions
+            </span>
+          </div>
+          <h2 className="text-4xl md:text-5xl font-extrabold text-slate-900 mb-4 leading-tight">
+            Products & <span className="text-blue-600">Services</span>
+          </h2>
+          <div className="w-24 h-1 bg-gradient-to-r from-blue-600 to-blue-400 mx-auto mb-8 rounded-full"></div>
+        </div>
+      </section>
 
-<section className="py-16 bg-gradient-to-r from-blue-50 via-white to-slate-50">
-  <div className="max-w-6xl mx-auto px-6 space-y-16 -mt-20"> {/* Increased negative margin */}
+      <section className="py-16 bg-gradient-to-r from-blue-50 via-white to-slate-50">
+        <div className="max-w-6xl mx-auto px-6 space-y-16 -mt-20"> {/* Increased negative margin */}
 
-    {/* e-Disha V600 */}
-    <div className="flex flex-col lg:flex-row items-center gap-8 -mt-4"> {/* pull block up */}
-      <div className="lg:w-1/2 relative">
-        <img
-          src={edishaImg}
-          alt="e-Disha V600"
-          className="w-full h-72 object-cover rounded-2xl shadow-lg"
-        />
-        <div className="absolute -bottom-6 -right-6 w-28 h-28 bg-blue-500 opacity-20 rounded-full blur-xl"></div>
-      </div>
-      <div className="lg:w-1/2 space-y-4">
-        <h3 className="text-3xl font-bold text-slate-900">e-Disha V600</h3>
-        <p className="text-base text-slate-600 leading-relaxed">
-          The e-Disha V600 is a next-generation vehicle tracking and safety system
-          with precision GPS, instant SOS alerts, and SMS fallback for low-network areas.
-          Rugged and weather-resistant, it is ideal for commercial vehicles, fleets,
-          passenger transport, school buses, and emergency services.
-        </p>
-      </div>
-    </div>
+          {/* e-Disha V600 */}
+          <div className="flex flex-col lg:flex-row items-center gap-8 -mt-4"> {/* pull block up */}
+            <div className="lg:w-1/2 relative">
+              <img
+                src={edishaImg}
+                alt="e-Disha V600"
+                className="w-full h-72 object-cover rounded-2xl shadow-lg"
+              />
+              <div className="absolute -bottom-6 -right-6 w-28 h-28 bg-blue-500 opacity-20 rounded-full blur-xl"></div>
+            </div>
+            <div className="lg:w-1/2 space-y-4">
+              <h3 className="text-3xl font-bold text-slate-900">e-Disha V600</h3>
+              <p className="text-base text-slate-600 leading-relaxed">
+                The e-Disha V600 is a next-generation vehicle tracking and safety system
+                with precision GPS, instant SOS alerts, and SMS fallback for low-network areas.
+                Rugged and weather-resistant, it is ideal for commercial vehicles, fleets,
+                passenger transport, school buses, and emergency services.
+              </p>
+            </div>
+          </div>
 
-    {/* Fleet & Logistics Solutions */}
-    <div className="flex flex-col lg:flex-row-reverse items-center gap-8 -mt-4">
-      <div className="lg:w-1/2 relative">
-        <img
-          src={fleetImg}
-          alt="Fleet & Logistics Solutions"
-          className="w-full h-72 object-cover rounded-2xl shadow-lg"
-        />
-        <div className="absolute -bottom-6 -left-6 w-28 h-28 bg-slate-500 opacity-20 rounded-full blur-xl"></div>
-      </div>
-      <div className="lg:w-1/2 space-y-4">
-        <h3 className="text-3xl font-bold text-slate-900">Fleet & Logistics Solutions</h3>
-        <p className="text-base text-slate-600 leading-relaxed">
-          DARS provides intelligent tracking and monitoring for operational efficiency
-          and safety compliance. Our logistics and infrastructure support solutions
-          cater to cargo, passenger transport, and specialised fleets.
-        </p>
-      </div>
-    </div>
+          {/* Fleet & Logistics Solutions */}
+          <div className="flex flex-col lg:flex-row-reverse items-center gap-8 -mt-4">
+            <div className="lg:w-1/2 relative">
+              <img
+                src={fleetImg}
+                alt="Fleet & Logistics Solutions"
+                className="w-full h-72 object-cover rounded-2xl shadow-lg"
+              />
+              <div className="absolute -bottom-6 -left-6 w-28 h-28 bg-slate-500 opacity-20 rounded-full blur-xl"></div>
+            </div>
+            <div className="lg:w-1/2 space-y-4">
+              <h3 className="text-3xl font-bold text-slate-900">Fleet & Logistics Solutions</h3>
+              <p className="text-base text-slate-600 leading-relaxed">
+                DARS provides intelligent tracking and monitoring for operational efficiency
+                and safety compliance. Our logistics and infrastructure support solutions
+                cater to cargo, passenger transport, and specialised fleets.
+              </p>
+            </div>
+          </div>
 
-    {/* Technology & Support */}
-    <div className="flex flex-col lg:flex-row items-center gap-8 -mt-4">
-      <div className="lg:w-1/2 relative">
-        <img
-          src={supportImg}
-          alt="Technology & Support"
-          className="w-full h-72 object-cover rounded-2xl shadow-lg"
-        />
-        <div className="absolute -bottom-6 -right-6 w-28 h-28 bg-blue-600 opacity-20 rounded-full blur-xl"></div>
-      </div>
-      <div className="lg:w-1/2 space-y-4">
-        <h3 className="text-3xl font-bold text-slate-900">Technology & Support</h3>
-        <p className="text-base text-slate-600 leading-relaxed">
-          Leveraging IoT, telematics, and automation, we optimize transport operations.
-          Our comprehensive service and support ensure seamless operation and customer satisfaction.
-        </p>
-      </div>
-    </div>
+          {/* Technology & Support */}
+          <div className="flex flex-col lg:flex-row items-center gap-8 -mt-4">
+            <div className="lg:w-1/2 relative">
+              <img
+                src={supportImg}
+                alt="Technology & Support"
+                className="w-full h-72 object-cover rounded-2xl shadow-lg"
+              />
+              <div className="absolute -bottom-6 -right-6 w-28 h-28 bg-blue-600 opacity-20 rounded-full blur-xl"></div>
+            </div>
+            <div className="lg:w-1/2 space-y-4">
+              <h3 className="text-3xl font-bold text-slate-900">Technology & Support</h3>
+              <p className="text-base text-slate-600 leading-relaxed">
+                Leveraging IoT, telematics, and automation, we optimize transport operations.
+                Our comprehensive service and support ensure seamless operation and customer satisfaction.
+              </p>
+            </div>
+          </div>
 
-  </div>
-</section>
-
+        </div>
+      </section>
 
       <section className="py-20 bg-slate-900">
         <div className="max-w-6xl mx-auto px-6 text-center">

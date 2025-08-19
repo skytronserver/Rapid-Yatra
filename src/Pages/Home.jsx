@@ -93,7 +93,7 @@ const gradientColors = {
   slate: 'linear-gradient(135deg, #f1f5f9 0%, #94a3b8 100%)',   // light gray → slate
   gray: 'linear-gradient(135deg, #f9fafb 0%, #d1d5db 100%)',    // very light gray → medium gray
 };
-
+                                                                                                                                                                                                                                                                                                                                                          
 // Update chart colors
 const chartColors = {
   primary: '#6C63FF',     // soft indigo

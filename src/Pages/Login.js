@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
-import login2 from "../Images/login2.jpg";
+import login2 from "../Images/logo2.jpg";
 import phon_image from "../Images/phon_image.jpg";
-import login1 from "../Images/login1.jpg";
+import login1 from "../Images/logo1.jpg";
 import login3 from "../Images/login3.jpg";
-import login5 from "../Images/login5.jpg";
+import login5 from "../Images/logo5.jpg";
 import Slider from "../Components/Slider";
 import Footer from "../Components/Footer";
 import Navbar from "../Components/Navbar";

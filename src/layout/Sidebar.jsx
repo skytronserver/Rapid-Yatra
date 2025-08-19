@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import logo from '../Images/logo.jpg'
+import logo from '../Images/logo.png';
 import { menuItems } from '../routes/meuItems';
 import {
   Drawer,
@@ -29,7 +29,7 @@ const StyledDrawer = styled(Drawer)(({ theme }) => ({
   '& .MuiDrawer-paper': {
     width: drawerWidth,
     boxSizing: 'border-box',
-    backgroundColor: '#ffffff',
+    background: 'linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%)', // 🌈 new color
     borderRight: 'none',
     boxShadow: '4px 0 8px -3px rgba(0, 0, 0, 0.05)',
     transition: 'all 0.3s ease',
@@ -40,6 +40,7 @@ const StyledDrawer = styled(Drawer)(({ theme }) => ({
     'scrollbarWidth': 'none',
   },
 }));
+
 
 const LogoSection = styled(Box)(({ theme }) => ({
   padding: '20px 24px',
@@ -139,7 +140,7 @@ const Sidebar = ({ open, mobileOpen, onMobileClose, isDesktop }) => {
                 active={location.pathname === item.path ? 1 : 0}
               >
                 <ListItemIcon sx={{ minWidth: 40 }}>{item.icon}</ListItemIcon>
-                <ListItemText 
+                <ListItemText
                   primary={item.text}
                   sx={{
                     '& .MuiListItemText-primary': {
@@ -157,7 +158,7 @@ const Sidebar = ({ open, mobileOpen, onMobileClose, isDesktop }) => {
 
   const drawer = (
     <>
-      <LogoSection sx={{bgcolor: '#ffffff' }}>
+      <LogoSection sx={{ bgcolor: '#e1f0fa' }}>
         <Box
           component="img"
           src={logo}
@@ -167,10 +168,11 @@ const Sidebar = ({ open, mobileOpen, onMobileClose, isDesktop }) => {
         />
       </LogoSection>
 
-      <Box sx={{ 
-        mt: 2, 
-        px: 1, 
-        overflow: 'auto', 
+
+      <Box sx={{
+        mt: 2,
+        px: 1,
+        overflow: 'auto',
         height: 'calc(100vh - 70px)',
         overflowX: 'hidden'
       }}>
@@ -193,7 +195,7 @@ const Sidebar = ({ open, mobileOpen, onMobileClose, isDesktop }) => {
         {filterMenuItems(menuItems.TaggingAndActivation).length > 0 && (
           <Divider sx={{ my: 2, opacity: 0.5 }} />
         )}
-        
+
         {renderCategory('Create', menuItems.create, 'create')}
         {filterMenuItems(menuItems.create).length > 0 && (
           <Divider sx={{ my: 2, opacity: 0.5 }} />
@@ -203,7 +205,7 @@ const Sidebar = ({ open, mobileOpen, onMobileClose, isDesktop }) => {
         {filterMenuItems(menuItems.device).length > 0 && (
           <Divider sx={{ my: 2, opacity: 0.5 }} />
         )}
-        
+
         {renderCategory('Reports', menuItems.reports, 'reports')}
         {filterMenuItems(menuItems.reports).length > 0 && (
           <Divider sx={{ my: 2, opacity: 0.5 }} />
@@ -213,7 +215,7 @@ const Sidebar = ({ open, mobileOpen, onMobileClose, isDesktop }) => {
         {filterMenuItems(menuItems.settings).length > 0 && (
           <Divider sx={{ my: 2, opacity: 0.5 }} />
         )}
-        
+
         {renderCategory('Account', menuItems.account, 'account')}
       </Box>
     </>
@@ -226,15 +228,13 @@ const Sidebar = ({ open, mobileOpen, onMobileClose, isDesktop }) => {
         variant="temporary"
         open={mobileOpen}
         onClose={onMobileClose}
-        ModalProps={{
-          keepMounted: true,
-        }}
+        ModalProps={{ keepMounted: true }}
         sx={{
           display: { xs: 'block', md: 'none' },
           '& .MuiDrawer-paper': {
             width: drawerWidth,
             boxSizing: 'border-box',
-            backgroundColor: '#ffffff',
+            background: 'linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%)', // 🌈 same here
             borderRight: 'none',
             boxShadow: '4px 0 8px -3px rgba(0, 0, 0, 0.05)',
           },
@@ -242,6 +242,7 @@ const Sidebar = ({ open, mobileOpen, onMobileClose, isDesktop }) => {
       >
         {drawer}
       </Drawer>
+
 
       {/* Desktop Drawer */}
       <StyledDrawer
