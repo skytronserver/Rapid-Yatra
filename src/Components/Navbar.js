@@ -37,7 +37,7 @@ const Navbar = ({ page }) => {
           <ul className="flex flex-col items-center space-y-3 md:ml-auto md:flex-row md:space-y-0">
 
             <li className={`relative md:mr-12 ${page === "home" ? "text-[#FFD700] font-bold" : "hover:text-[#FFD700]"}`}>
-              <Link to="/">Home</Link>
+              <Link to="/ ">Home</Link>
             </li>
 
             <li className={`relative md:mr-12 ${page === "about" ? "text-[#FFD700] font-bold" : "hover:text-[#FFD700]"}`}>
