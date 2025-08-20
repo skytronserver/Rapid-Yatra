@@ -8,7 +8,7 @@ const Navbar = ({ page }) => {
       <header className="relative flex max-w-full flex-col overflow-hidden px-4 py-0 m-0 text-[#2b0a3d] md:mx-auto md:flex-row md:items-center">
 
         {/* Logo */}
-        <img className="h-14 w-36 md:h-16 md:w-40 lg:h-18 lg:w-50 object-contain" src={logo} alt="e-DISHA" />
+        <img className="h-18 w-36 md:h-16 md:w-40 lg:h-18 lg:w-50 object-contain" src={logo} alt="Rapid Yatra" />
 
         {/* Mobile Toggle */}
         <input type="checkbox" className="peer hidden" id="navbar-open" />
@@ -42,10 +42,6 @@ const Navbar = ({ page }) => {
 
             <li className={`relative md:mr-12 ${page === "about" ? "text-[#FFD700] font-bold" : "hover:text-[#FFD700]"}`}>
               <Link to="/about">About Us</Link>
-            </li>
-
-            <li className={`relative md:mr-12 ${page === "services" ? "text-[#FFD700] font-bold" : "hover:text-[#FFD700]"}`}>
-              <Link to="/services">Products & Services</Link>
             </li>
 
             <li className={`relative md:mr-12 ${page === "contact" ? "text-[#FFD700] font-bold" : "hover:text-[#FFD700]"}`}>

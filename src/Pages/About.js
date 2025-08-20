@@ -5,161 +5,189 @@ import Footer from "../Components/Footer";
 
 const About = () => {
   return (
-
-    <div className="bg-gray-50 min-h-screen">
-
+    <div className="bg-gradient-to-br from-orange-50 via-white to-red-50 min-h-screen">
       <Navbar page={"about"} />
 
-      
-
-      {/* Hero Section */}
-      <div className="py-20 w-full mx-auto text-center">
-        <h1 className="text-5xl font-bold text-slate-900">
-          DARS Transtrade{" "}
-          <span className="text-3xl text-blue-600 font-medium">Private Limited</span>
-        </h1>
-        <div className="flex items-center justify-center mt-6 space-x-4">
-          <div className="w-20 h-1 bg-blue-600"></div>
-          <p className="text-xl text-slate-600 font-medium">
-            Innovating Safety & Connectivity for a Moving World
+      {/* Dynamic Hero Section */}
+      <div className="relative py-20 overflow-hidden">
+        {/* Animated Background */}
+        <div className="absolute top-20 left-20 w-32 h-32 bg-orange-300/40 rounded-full animate-bounce opacity-60"></div>
+        <div className="absolute top-40 right-16 w-40 h-40 bg-red-300/30 rounded-full animate-pulse delay-100"></div>
+        <div className="absolute bottom-20 left-1/3 w-28 h-28 bg-amber-300/50 rounded-full animate-ping delay-200"></div>
+        
+        <div className="max-w-6xl mx-auto px-4 text-center relative z-10">
+          <div className="inline-flex items-center bg-gradient-to-r from-orange-100 to-red-100 px-6 py-3 rounded-full border-2 border-orange-200 mb-8 shadow-lg">
+            <div className="w-3 h-3 bg-green-500 rounded-full mr-3 animate-pulse"></div>
+            <span className="text-orange-700 font-bold">Supporting Make in India Initiative</span>
+          </div>
+          
+          <h1 className="text-7xl font-extrabold text-gray-900 mb-6 leading-tight">
+            About{" "}
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-500 via-red-500 to-amber-500 animate-pulse">
+              HEMRE
+            </span>
+          </h1>
+          
+          <div className="w-32 h-2 bg-gradient-to-r from-orange-500 to-red-500 mx-auto rounded-full mb-8"></div>
+          
+          <p className="text-2xl text-gray-700 max-w-4xl mx-auto leading-relaxed font-medium">
+            Leveraging technology and innovation to make travel safer, smarter, and more reliable
           </p>
         </div>
       </div>
 
-      {/* Main Content */}
-      <div className="max-w-full mx-auto space-y-24">
+      {/* Company Story Section */}
+      <div className="py-20 bg-white">
+        <div className="max-w-7xl mx-auto px-4">
+          <div className="grid lg:grid-cols-2 gap-16 items-center">
+            
+            <div className="relative">
+              <div className="absolute -top-4 -left-4 w-full h-full bg-gradient-to-br from-orange-400 to-red-400 rounded-3xl transform rotate-3"></div>
+              <img
+                src={aboutimg}
+                alt="HEMRE Position System"
+                className="relative w-full h-96 object-cover rounded-3xl shadow-2xl"
+              />
+              <div className="absolute -bottom-6 -right-6 bg-gradient-to-r from-orange-600 to-red-600 text-white px-8 py-4 rounded-2xl shadow-xl">
+                <div className="text-lg font-bold">Innovation Leader</div>
+                <div className="text-sm opacity-90">Since Inception</div>
+              </div>
+            </div>
 
-        {/* Vision Section */}
-        <div className="lg:grid lg:grid-cols-3 lg:gap-12 items-center">
-          <div className="lg:col-span-2">
-            <div className="bg-white shadow-lg p-10 relative rounded-xl">
-              <div className="absolute top-0 right-0 w-20 h-20 bg-blue-50 transform rotate-45 translate-x-10 -translate-y-10"></div>
-              <h2 className="text-2xl font-bold text-slate-900 mb-4">Our Vision</h2>
-              <div className="space-y-4 text-slate-700 leading-relaxed">
-                <p>
-                  At DARS Transtrade Pvt. Ltd., we believe that the future of mobility lies in 
-                  safety, reliability, and intelligent connectivity. This vision drives every 
-                  solution we create — from pioneering transport safety systems to delivering 
-                  advanced logistics and technology integration across industries.
-                </p>
-                <p className="border-l-4 border-blue-300 pl-4 bg-blue-50 py-2">
-                  The Company is creating space in the growing international merchant trade.
+            <div className="space-y-8">
+              <div>
+                <h2 className="text-5xl font-black text-gray-900 mb-6">
+                  HEMRE Position System
+                  <span className="block text-3xl text-orange-600 font-bold mt-2">Private Limited</span>
+                </h2>
+                
+                <div className="w-20 h-1 bg-gradient-to-r from-orange-500 to-red-500 mb-8"></div>
+                
+                <p className="text-xl text-gray-700 leading-relaxed">
+                  At HEMRE Position System Pvt. Ltd., we are committed to leveraging technology and 
+                  innovation to make travel safer, smarter, and more reliable. Supporting the Make in 
+                  India initiative, we empower transport services across the country with cutting-edge 
+                  navigation and tracking solutions.
                 </p>
               </div>
             </div>
           </div>
-
-          <div className="lg:col-span-1 mt-10 lg:mt-0 relative">
-            <div className="absolute inset-0 bg-gradient-to-br from-blue-600 to-slate-600 transform rotate-2 rounded-xl"></div>
-            <img
-              src={aboutimg}
-              alt="DARS Transtrade"
-              className="relative w-full h-80 object-cover shadow-lg rounded-xl"
-            />
-          </div>
         </div>
+      </div>
 
-        {/* Flagship Innovation */}
-        <div className="bg-gradient-to-r from-slate-800 to-blue-900 shadow-lg rounded-xl p-12 text-white">
-          <div className="text-center mb-8">
-            <div className="inline-block bg-white/20 px-6 py-2 text-sm font-bold tracking-widest mb-4">
-              FLAGSHIP INNOVATION
+      {/* Vision & Mission - Creative Layout */}
+      <div className="py-20 bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 relative overflow-hidden">
+        {/* Background Pattern */}
+        <div className="absolute inset-0 opacity-10">
+          <div className="absolute top-10 left-10 w-64 h-64 border-4 border-orange-400 rounded-full"></div>
+          <div className="absolute bottom-10 right-10 w-48 h-48 border-4 border-red-400 rounded-full"></div>
+        </div>
+        
+        <div className="max-w-6xl mx-auto px-4 relative z-10">
+          <div className="text-center mb-16">
+            <h2 className="text-5xl font-black text-white mb-4">Vision & Mission</h2>
+            <div className="w-32 h-2 bg-gradient-to-r from-orange-400 to-red-400 mx-auto rounded-full"></div>
+          </div>
+
+          <div className="grid lg:grid-cols-2 gap-12">
+            
+            {/* Vision */}
+            <div className="group relative">
+              <div className="absolute inset-0 bg-gradient-to-br from-orange-500 to-red-500 rounded-3xl transform group-hover:scale-105 transition-transform duration-300 opacity-90"></div>
+              <div className="relative bg-white p-10 m-1 rounded-3xl h-full shadow-2xl">
+                <div className="flex items-start mb-6">
+                  <div className="w-16 h-16 bg-gradient-to-br from-orange-100 to-orange-200 rounded-2xl flex items-center justify-center mr-6 shadow-lg">
+                    <span className="text-4xl">🌍</span>
+                  </div>
+                  <div>
+                    <h3 className="text-3xl font-bold text-gray-900">Our Vision</h3>
+                    <div className="w-16 h-1 bg-orange-500 mt-2"></div>
+                  </div>
+                </div>
+                <p className="text-lg text-gray-700 leading-relaxed">
+                  To be a leading provider of intelligent navigation and safety solutions that redefine road travel, 
+                  ensuring security, efficiency, and peace of mind for every journey.
+                </p>
+              </div>
             </div>
-            <h2 className="text-3xl font-bold mb-4">e-Disha V600</h2>
-            <div className="w-24 h-1 bg-white mx-auto mb-6"></div>
-            <p className="text-lg leading-relaxed max-w-3xl mx-auto">
-              Leading our product portfolio is the e-Disha V600, a next-generation, state-of-the-art 
-              vehicle tracking and safety system proudly manufactured and marketed by DARS. With 
-              precision GPS tracking, instant SOS alerts, and SMS fallback for low-network areas, 
-              the e-Disha V600 ensures that every journey is monitored, protected, and connected. 
-              Its rugged, weather-resistant build and driver-behaviour monitoring make it ideal for 
-              commercial vehicles, fleets, passenger transport, school buses, and emergency services alike.
-            </p>
+
+            {/* Mission */}
+            <div className="group relative">
+              <div className="absolute inset-0 bg-gradient-to-br from-blue-500 to-purple-500 rounded-3xl transform group-hover:scale-105 transition-transform duration-300 opacity-90"></div>
+              <div className="relative bg-white p-10 m-1 rounded-3xl h-full shadow-2xl">
+                <div className="flex items-start mb-6">
+                  <div className="w-16 h-16 bg-gradient-to-br from-blue-100 to-blue-200 rounded-2xl flex items-center justify-center mr-6 shadow-lg">
+                    <span className="text-4xl">🚀</span>
+                  </div>
+                  <div>
+                    <h3 className="text-3xl font-bold text-gray-900">Our Mission</h3>
+                    <div className="w-16 h-1 bg-blue-500 mt-2"></div>
+                  </div>
+                </div>
+                <p className="text-lg text-gray-700 leading-relaxed">
+                  We are committed to developing advanced technological solutions to meet the latent needs 
+                  of our customers, delivering innovation that enhances safety, reliability, and efficiency 
+                  in road transport across India.
+                </p>
+              </div>
+            </div>
           </div>
         </div>
+      </div>
 
-        {/* Solutions Portfolio */}
-        <div>
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-slate-900 mb-4">
-              Beyond a Single Product – A Legacy of Solutions
+      {/* Rapid Yatra Brand Section */}
+      <div className="py-20 bg-gradient-to-br from-orange-50 to-red-50">
+        <div className="max-w-6xl mx-auto px-4">
+          
+          <div className="text-center mb-16">
+            <div className="inline-flex items-center bg-gradient-to-r from-orange-600 to-red-600 text-white px-8 py-4 rounded-full shadow-xl mb-8">
+              <span className="text-lg font-bold tracking-wider">OUR BRAND</span>
+            </div>
+            
+            <h2 className="text-6xl font-black text-gray-900 mb-6">
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-600 to-red-600">
+                Rapid Yatra
+              </span>
             </h2>
-            <div className="flex justify-center items-center mb-6 space-x-2">
-              <div className="w-16 h-1 bg-slate-400"></div>
-              <div className="w-4 h-4 bg-slate-600 transform rotate-45"></div>
-              <div className="w-16 h-1 bg-slate-400"></div>
-            </div>
-            <p className="text-lg text-slate-600 max-w-4xl mx-auto">
-              DARS Transtrade has a proven track record in delivering integrated transport solutions, 
-              smart fleet management systems, and safety-compliance technologies for clients across 
-              India and internationally. Our expertise spans:
+            
+            <p className="text-2xl text-gray-700 font-semibold mb-12">
+              State-of-the-art vehicle tracking and safety system solution
             </p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-8">
-            {/* Solution Cards */}
+          {/* Services Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8">
             {[
-              {
-                title: "Intelligent Tracking & Monitoring",
-                desc: "Real-time data for operational efficiency and safety compliance.",
-                colorFrom: "from-blue-500",
-                colorTo: "to-blue-600",
-              },
-              {
-                title: "Logistics & Infrastructure Support",
-                desc: "Solutions tailored to the needs of cargo, passenger transport, and specialised fleets.",
-                colorFrom: "from-slate-500",
-                colorTo: "to-slate-600",
-              },
-              {
-                title: "Technology Integration",
-                desc: "Leveraging IoT, telematics, and automation to optimise transport operations.",
-                colorFrom: "from-green-500",
-                colorTo: "to-green-600",
-              },
-            ].map((card, idx) => (
-              <div key={idx} className="group relative">
-                <div className="bg-white shadow-lg p-8 h-full transform transition-all duration-300 group-hover:shadow-xl rounded-xl">
-                  <div className={`absolute top-0 left-0 w-full h-2 bg-gradient-to-r ${card.colorFrom} ${card.colorTo} rounded-t-xl`}></div>
-                  <div className="pt-4">
-                    <div className="w-16 h-16 bg-gray-100 flex items-center justify-center mb-6 rounded-full">
-                      <div className="w-8 h-8 bg-gray-600 rounded-full"></div>
+              { name: "School Buses", icon: "🚌", gradient: "from-yellow-400 to-orange-500" },
+              { name: "Commercial Vehicles", icon: "🚛", gradient: "from-blue-400 to-blue-600" },
+              { name: "Passenger Transport", icon: "🚐", gradient: "from-green-400 to-green-600" },
+              { name: "Emergency Services", icon: "🚑", gradient: "from-red-400 to-red-600" },
+              { name: "Cash Vans", icon: "🏦", gradient: "from-purple-400 to-purple-600" }
+            ].map((service, index) => (
+              <div key={index} className="group relative">
+                <div className={`absolute inset-0 bg-gradient-to-br ${service.gradient} rounded-3xl transform group-hover:scale-110 group-hover:rotate-3 transition-all duration-300`}></div>
+                <div className="relative bg-white p-8 m-1 rounded-3xl text-center shadow-lg group-hover:shadow-2xl transition-shadow duration-300">
+                  <div className="text-5xl mb-4">{service.icon}</div>
+                  <div className="flex items-center justify-center mb-2">
+                    <div className="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center mr-2">
+                      <span className="text-white text-xs font-bold">✓</span>
                     </div>
-                    <h3 className="text-xl font-bold text-slate-900 mb-4">{card.title}</h3>
-                    <p className="text-slate-600 leading-relaxed">{card.desc}</p>
-                    <div className="mt-6 w-12 h-1 bg-blue-600 rounded"></div>
+                    <h3 className="font-bold text-gray-900 text-lg">{service.name}</h3>
                   </div>
                 </div>
               </div>
             ))}
           </div>
-        </div>
 
-        {/* Transformation Mission */}
-        <div className="relative">
-          <div className="absolute inset-0 bg-slate-100 transform -skew-y-1"></div>
-          <div className="relative py-16 px-6 max-w-4xl mx-auto text-center space-y-8">
-            <div className="inline-flex items-center bg-white shadow-md px-8 py-4 mx-auto rounded-lg">
-              <div className="w-3 h-3 bg-blue-600 mr-3 rounded-full"></div>
-              <span className="text-slate-900 font-bold text-lg">MISSION STATEMENT</span>
-              <div className="w-3 h-3 bg-blue-600 ml-3 rounded-full"></div>
-            </div>
-
-            <p className="text-xl text-slate-700 leading-relaxed">
-              By combining our established capabilities with innovations like the e-Disha V600, 
-              we are transforming the way India moves — making every trip safer, smarter, and more accountable.
-            </p>
-
-            <div className="bg-white shadow-lg p-8 rounded-xl">
-              <h3 className="text-2xl font-bold text-slate-900 mb-2">DARS Transtrade Pvt. Ltd.</h3>
-              <div className="w-32 h-1 bg-gradient-to-r from-blue-600 to-green-600 mx-auto mb-4 rounded"></div>
-              <p className="text-lg text-slate-600 font-medium italic">
-                "Protecting journeys, powering progress."
+          {/* Call to Action */}
+          <div className="text-center mt-16">
+            <div className="inline-block bg-gradient-to-r from-orange-600 to-red-600 text-white px-12 py-6 rounded-2xl shadow-2xl transform hover:scale-105 transition-transform duration-300">
+              <p className="text-xl font-bold">
+                "Making every journey safer, smarter, and more reliable."
               </p>
             </div>
           </div>
         </div>
-
       </div>
 
       <Footer />

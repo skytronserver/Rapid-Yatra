@@ -4,7 +4,6 @@ import { Toaster } from 'react-hot-toast';
 import Login from '../Pages/Login';
 import About from '../Pages/About';
 import Contact from '../Pages/Contact';
-import Services from '../Pages/Services';
 import TermsCondition from '../Pages/TermsCondition';
 import Home from '../Pages/Home';
 import MainLayout from '../layout/MainLayout';
@@ -67,7 +66,6 @@ const AppRoutes = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
-        <Route path="/services" element={<Services />} />
         <Route path="/verify-otp" element={<OtpVerification />} />
         <Route path="/termscondition" element={<TermsCondition />} />
         <Route element={<MainLayout />}>
