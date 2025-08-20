@@ -69,7 +69,7 @@ const AppRoutes = () => {
         <Route path="/verify-otp" element={<OtpVerification />} />
         <Route path="/termscondition" element={<TermsCondition />} />
         <Route element={<MainLayout />}>
-          <Route path="/" element={
+          <Route path="/home" element={
             <ProtectedRoute allowedRoles={['devicemanufacture', 'dealer', 'owner']}>
               <Home />
             </ProtectedRoute>

@@ -83,7 +83,7 @@ const Login = () => {
         sessionStorage.setItem('isAuthenticated', true);
         sessionStorage.setItem('sessionID', Date.now().toString());
         sessionStorage.setItem('oAuthToken', response.data.token);
-        navigate('/');
+        navigate('/home');
       } else {
         const errorMessage = response?.data?.error || response?.error?.data?.error || 'Login failed';
         setIsSuccess(false); setMessage(errorMessage); fetchCaptcha();
