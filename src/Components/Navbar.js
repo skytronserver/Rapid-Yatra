@@ -52,6 +52,14 @@ const Navbar = ({ page }) => {
               <Link to="/contact">Contact</Link>
             </li>
 
+           <li className={`relative md:mr-12 ${page === "login" ? "text-[#FFD700] font-bold" : "hover:text-[#FFD700]"}`}>
+  <div className="md:border md:border-[#FFD700] md:rounded-lg md:px-4 md:py-2 md:hover:bg-[#FFD700] md:hover:text-black transition-all duration-300">
+    <Link to="/login">LogIn</Link>
+  </div>
+</li>
+
+
+
           </ul>
         </nav>
       </header>

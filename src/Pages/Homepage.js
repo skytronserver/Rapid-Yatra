@@ -58,11 +58,11 @@ const HomePage = () => {
               <div className="absolute inset-0 bg-gradient-to-r from-indigo-700 to-cyan-700 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
             </Link>
             <Link
-              to="/login"
+              to="/about"
               className="group px-6 sm:px-8 py-3 sm:py-4 bg-white/70 backdrop-blur-sm border-2 border-cyan-600 text-cyan-600 rounded-xl sm:rounded-2xl font-semibold hover:bg-cyan-50 hover:shadow-xl transition-all duration-300 hover:scale-105 text-sm sm:text-base"
             >
               <span className="group-hover:text-cyan-700 transition-colors duration-300">
-                Login
+                About Us
               </span>
             </Link>
           </div>
