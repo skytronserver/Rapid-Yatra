@@ -13,23 +13,30 @@ import MenuIcon from '@mui/icons-material/Menu';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import LogoutIcon from '@mui/icons-material/Logout';
 import SettingsIcon from '@mui/icons-material/Settings';
-import logo from '../Images/logo.jpg';
+import logo from '../Images/logo.png';
 import profile from '../Images/profile.png';
 import { useNavigate } from 'react-router-dom';
 import { getUserInfo } from '../helper';
+
 const LogoSection = styled(Box)(({ theme }) => ({
-  padding: '20px 24px',
+  padding: '20px 0px',
   display: 'flex',
   alignItems: 'center',
   height: 70,
   borderBottom: '1px solid rgba(0, 0, 0, 0.06)',
+  
+  '& img': {   // target the logo image
+    height: 60,  // increase this value as needed
+    width: 'auto',
+  },
 }));
 
 const StyledAppBar = styled(AppBar)(({ theme }) => ({
-  backgroundColor: '#e1f0fa', // white like Tailwind navbar
-  color: '#2b0a3d',           // same text color as Tailwind
-  boxShadow: '0 1px 3px rgba(0, 0, 0, 0.06)', // same subtle shadow
+  background: 'linear-gradient(135deg, #fff7ed 0%, #fef2f2 100%)', // matching the LogoSection background
+  color: '#2b0a3d', // your existing text color
+  boxShadow: '0 1px 3px rgba(0, 0, 0, 0.06)', // subtle shadow
 }));
+
 
 
 const Header = ({ open, toggleDrawer }) => {

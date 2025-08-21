@@ -4,11 +4,20 @@ import { Link } from "react-router-dom";
 
 const Navbar = ({ page }) => {
   return (
-    <div className="bg-white shadow-md">
+    <div
+      className="shadow-md"
+      style={{
+        background: "linear-gradient(135deg, #fff7ed 0%, #fef2f2 100%)",
+      }}
+    >
       <header className="relative flex max-w-full flex-col overflow-hidden px-4 py-0 m-0 text-[#2b0a3d] md:mx-auto md:flex-row md:items-center">
 
         {/* Logo */}
-        <img className="h-18 w-36 md:h-16 md:w-40 lg:h-18 lg:w-50 object-contain" src={logo} alt="Rapid Yatra" />
+        <img
+          className="h-16 w-48 md:h-20 md:w-56 lg:h-18 lg:w-64 object-contain -ml-16 md:ml-0"
+          src={logo}
+          alt="Rapid Yatra"
+        />
 
         {/* Mobile Toggle */}
         <input type="checkbox" className="peer hidden" id="navbar-open" />
@@ -37,7 +46,7 @@ const Navbar = ({ page }) => {
           <ul className="flex flex-col items-center space-y-3 md:ml-auto md:flex-row md:space-y-0">
 
             <li className={`relative md:mr-12 ${page === "home" ? "text-[#FFD700] font-bold" : "hover:text-[#FFD700]"}`}>
-              <Link to="/ ">Home</Link>
+              <Link to="/">Home</Link>
             </li>
 
             <li className={`relative md:mr-12 ${page === "about" ? "text-[#FFD700] font-bold" : "hover:text-[#FFD700]"}`}>
@@ -53,8 +62,6 @@ const Navbar = ({ page }) => {
                 <Link to="/login">LogIn</Link>
               </div>
             </li>
-
-
 
           </ul>
         </nav>

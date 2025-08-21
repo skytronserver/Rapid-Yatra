@@ -29,9 +29,9 @@ const StyledDrawer = styled(Drawer)(({ theme }) => ({
   '& .MuiDrawer-paper': {
     width: drawerWidth,
     boxSizing: 'border-box',
-    background: 'linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%)', // 🌈 new color
-    borderRight: 'none',
-    boxShadow: '4px 0 8px -3px rgba(0, 0, 0, 0.05)',
+    background: 'linear-gradient(135deg, #fff7ed 0%, #ffffff 50%, #fef2f2 100%)', // Orange-red gradient theme
+    borderRight: '1px solid rgba(251, 146, 60, 0.2)', // Orange border
+    boxShadow: '4px 0 8px -3px rgba(251, 146, 60, 0.15)',
     transition: 'all 0.3s ease',
     '&::-webkit-scrollbar': {
       display: 'none',
@@ -41,20 +41,20 @@ const StyledDrawer = styled(Drawer)(({ theme }) => ({
   },
 }));
 
-
 const LogoSection = styled(Box)(({ theme }) => ({
   padding: '20px 24px',
   display: 'flex',
   alignItems: 'center',
   height: 70,
-  borderBottom: '1px solid rgba(0, 0, 0, 0.06)',
+  borderBottom: '1px solid rgba(251, 146, 60, 0.2)',
+  background: 'linear-gradient(135deg, #fff7ed 0%, #fef2f2 100%)',
 }));
 
 const CategoryTitle = styled(Typography)(({ theme }) => ({
   fontSize: '0.75rem',
   fontWeight: 600,
   textTransform: 'uppercase',
-  color: theme.palette.text.secondary,
+  color: '#ea580c', // Orange-600
   padding: '16px 24px 8px',
   letterSpacing: '0.5px',
 }));
@@ -65,23 +65,31 @@ const CategoryHeader = styled(Box)(({ theme }) => ({
   justifyContent: 'space-between',
   cursor: 'pointer',
   padding: '16px 24px 8px',
+  borderRadius: '8px',
+  margin: '0 8px',
   '&:hover': {
-    backgroundColor: 'rgba(0, 0, 0, 0.04)',
+    backgroundColor: 'rgba(251, 146, 60, 0.1)',
   },
 }));
 
 const StyledListItem = styled(ListItem)(({ theme, active }) => ({
   margin: '4px 12px',
   borderRadius: '12px',
-  backgroundColor: active ? 'rgba(33, 150, 243, 0.08)' : 'transparent',
-  color: active ? theme.palette.primary.main : theme.palette.text.primary,
+  backgroundColor: active 
+    ? 'linear-gradient(135deg, rgba(251, 146, 60, 0.15), rgba(239, 68, 68, 0.1))' 
+    : 'transparent',
+  color: active ? '#ea580c' : theme.palette.text.primary, // Orange-600 when active
   transition: 'all 0.3s ease',
+  border: active ? '1px solid rgba(251, 146, 60, 0.3)' : '1px solid transparent',
   '&:hover': {
-    backgroundColor: active ? 'rgba(33, 150, 243, 0.12)' : 'rgba(0, 0, 0, 0.04)',
+    backgroundColor: active 
+      ? 'linear-gradient(135deg, rgba(251, 146, 60, 0.2), rgba(239, 68, 68, 0.15))' 
+      : 'rgba(251, 146, 60, 0.08)',
     transform: 'translateX(5px)',
+    border: '1px solid rgba(251, 146, 60, 0.4)',
   },
   '& .MuiListItemIcon-root': {
-    color: active ? theme.palette.primary.main : theme.palette.text.secondary,
+    color: active ? '#ea580c' : '#9ca3af', // Orange-600 when active, gray when not
   },
 }));
 
@@ -126,7 +134,16 @@ const Sidebar = ({ open, mobileOpen, onMobileClose, isDesktop }) => {
       <>
         <CategoryHeader onClick={() => toggleCategory(category)}>
           <CategoryTitle sx={{ p: 0 }}>{title}</CategoryTitle>
-          <IconButton size="small" sx={{ p: 0 }}>
+          <IconButton 
+            size="small" 
+            sx={{ 
+              p: 0, 
+              color: '#ea580c',
+              '&:hover': {
+                backgroundColor: 'rgba(251, 146, 60, 0.1)'
+              }
+            }}
+          >
             {expandedCategories[category] ? <ExpandLessIcon /> : <ExpandMoreIcon />}
           </IconButton>
         </CategoryHeader>
@@ -145,6 +162,7 @@ const Sidebar = ({ open, mobileOpen, onMobileClose, isDesktop }) => {
                   sx={{
                     '& .MuiListItemText-primary': {
                       fontWeight: location.pathname === item.path ? 600 : 400,
+                      color: location.pathname === item.path ? '#ea580c' : '#374151',
                     },
                   }}
                 />
@@ -158,16 +176,20 @@ const Sidebar = ({ open, mobileOpen, onMobileClose, isDesktop }) => {
 
   const drawer = (
     <>
-      <LogoSection sx={{ bgcolor: '#e1f0fa' }}>
+      <LogoSection>
         <Box
           component="img"
           src={logo}
           alt="Logo"
-          sx={{ height: 45, mr: 1, cursor: 'pointer' }}
+          sx={{ 
+            height: 75, 
+            mr: 1, 
+            cursor: 'pointer',
+            filter: 'drop-shadow(2px 2px 4px rgba(251, 146, 60, 0.2))'
+          }}
           onClick={() => navigate("/")}
         />
       </LogoSection>
-
 
       <Box sx={{
         mt: 2,
@@ -178,42 +200,42 @@ const Sidebar = ({ open, mobileOpen, onMobileClose, isDesktop }) => {
       }}>
         {renderCategory('Main', menuItems.main, 'main')}
         {filterMenuItems(menuItems.main).length > 0 && (
-          <Divider sx={{ my: 2, opacity: 0.5 }} />
+          <Divider sx={{ my: 2, opacity: 0.3, borderColor: 'rgba(251, 146, 60, 0.3)' }} />
         )}
 
         {renderCategory('Vehicle', menuItems.Vehicle, 'Vehicle')}
         {filterMenuItems(menuItems.Vehicle).length > 0 && (
-          <Divider sx={{ my: 2, opacity: 0.5 }} />
+          <Divider sx={{ my: 2, opacity: 0.3, borderColor: 'rgba(251, 146, 60, 0.3)' }} />
         )}
 
         {renderCategory('ESIM', menuItems.esim, 'esim')}
         {filterMenuItems(menuItems.esim).length > 0 && (
-          <Divider sx={{ my: 2, opacity: 0.5 }} />
+          <Divider sx={{ my: 2, opacity: 0.3, borderColor: 'rgba(251, 146, 60, 0.3)' }} />
         )}
 
         {renderCategory('Tagging&Activation', menuItems.TaggingAndActivation, 'TaggingAndActivation')}
         {filterMenuItems(menuItems.TaggingAndActivation).length > 0 && (
-          <Divider sx={{ my: 2, opacity: 0.5 }} />
+          <Divider sx={{ my: 2, opacity: 0.3, borderColor: 'rgba(251, 146, 60, 0.3)' }} />
         )}
 
         {renderCategory('Create', menuItems.create, 'create')}
         {filterMenuItems(menuItems.create).length > 0 && (
-          <Divider sx={{ my: 2, opacity: 0.5 }} />
+          <Divider sx={{ my: 2, opacity: 0.3, borderColor: 'rgba(251, 146, 60, 0.3)' }} />
         )}
 
         {renderCategory('Device', menuItems.device, 'device')}
         {filterMenuItems(menuItems.device).length > 0 && (
-          <Divider sx={{ my: 2, opacity: 0.5 }} />
+          <Divider sx={{ my: 2, opacity: 0.3, borderColor: 'rgba(251, 146, 60, 0.3)' }} />
         )}
 
         {renderCategory('Reports', menuItems.reports, 'reports')}
         {filterMenuItems(menuItems.reports).length > 0 && (
-          <Divider sx={{ my: 2, opacity: 0.5 }} />
+          <Divider sx={{ my: 2, opacity: 0.3, borderColor: 'rgba(251, 146, 60, 0.3)' }} />
         )}
 
         {renderCategory('Settings', menuItems.settings, 'settings')}
         {filterMenuItems(menuItems.settings).length > 0 && (
-          <Divider sx={{ my: 2, opacity: 0.5 }} />
+          <Divider sx={{ my: 2, opacity: 0.3, borderColor: 'rgba(251, 146, 60, 0.3)' }} />
         )}
 
         {renderCategory('Account', menuItems.account, 'account')}
@@ -234,15 +256,14 @@ const Sidebar = ({ open, mobileOpen, onMobileClose, isDesktop }) => {
           '& .MuiDrawer-paper': {
             width: drawerWidth,
             boxSizing: 'border-box',
-            background: 'linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%)', // 🌈 same here
-            borderRight: 'none',
-            boxShadow: '4px 0 8px -3px rgba(0, 0, 0, 0.05)',
+            background: 'linear-gradient(135deg, #fff7ed 0%, #ffffff 50%, #fef2f2 100%)',
+            borderRight: '1px solid rgba(251, 146, 60, 0.2)',
+            boxShadow: '4px 0 8px -3px rgba(251, 146, 60, 0.15)',
           },
         }}
       >
         {drawer}
       </Drawer>
-
 
       {/* Desktop Drawer */}
       <StyledDrawer
@@ -259,4 +280,4 @@ const Sidebar = ({ open, mobileOpen, onMobileClose, isDesktop }) => {
   );
 };
 
-export default Sidebar; 
+export default Sidebar;
