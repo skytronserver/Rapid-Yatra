@@ -6,7 +6,7 @@ import logo from "../Images/logo.png";
 
 const HomePage = () => {
   return (
-    <div className="bg-gradient-to-br from-orange-50 via-white to-red-50 h-screen relative flex flex-col overflow-hidden">
+    <div className="bg-gradient-to-br from-orange-50 via-white to-red-50 min-h-screen overflow-hidden relative flex flex-col fixed inset-0">
       <Navbar page="home" />
 
       {/* Decorative Background */}
@@ -22,7 +22,7 @@ const HomePage = () => {
           <div className="flex flex-col lg:flex-row items-center justify-between gap-2 h-full">
 
             {/* Main Content - Left Side */}
-            <div className="text-center lg:text-left flex-1 pr-0 lg:pr-4">
+            <div className="text-center lg:text-left flex-1 pr-0 lg:pr-4 mt-[-160px] sm:mt-0">
               {/* Badge */}
               <div className="inline-flex items-center px-5 py-2 bg-white/90 backdrop-blur-sm border border-orange-200/60 rounded-full text-sm sm:text-base lg:text-lg text-orange-700 font-semibold shadow-lg mb-5">
                 <span className="w-2 h-2 bg-green-500 rounded-full mr-3 animate-pulse"></span>
@@ -47,7 +47,7 @@ const HomePage = () => {
                 </p>
               </div>
 
-              {/* buttons */}
+              {/* Buttons */}
               <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
                 <Link
                   to="/about"
@@ -65,8 +65,6 @@ const HomePage = () => {
                   </span>
                 </Link>
               </div>
-
-
             </div>
 
             {/* Logo Section - Hidden on Mobile */}
